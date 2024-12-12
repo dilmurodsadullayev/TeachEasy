@@ -1,0 +1,94 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} home {% endblock title %}
+{% block content %}
+
+<link href="{% static 'css/index.css' %}" rel="stylesheet">
+
+<!-- Header Start -->
+<div class="container-fluid header-start px-0 mb-5">
+    <div class="row px-3 m-0" style="backdrop-filter: blur(5px); height: 650px;">
+
+        <div class="mb-2 mt-5 d-flex justify-content-center">
+            <h1 class="text-white" style="font-size: 50px; letter-spacing: 2px;">Xush kelibsiz,
+                {{request.user.username}} <br>
+                TeachEasy bilan qoling</h1>
+        </div>
+
+        <div class="col-lg-6 text-lg-left">
+            <h4 class="text-white mb-4 mt-5 mt-lg-0">O'qitishni osonlashtiradigan saytimizga xush kelibsiz!</h4>
+            <h1 class="display-3 font-weight-bold text-white">Course ni avtomatlashtirsh</h1>
+            <p class="text-white mb-4">Bu yerda siz o'quv markazdagi yoki uydagi kurlaringizni ishini
+                avtomatlashtirishingiz mumkin</p>
+            <a href="" class="btn btn-secondary mt-1 py-3 px-5">Learn More</a>
+        </div>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Testimonial Start -->
+<div class="container-fluid py-5">
+    <div class="container p-0">
+        <div class="text-center pb-2">
+            <p class="section-title px-5"><span class="px-2">Testimonial</span></p>
+            <h1 class="mb-4">What Parents Say!</h1>
+        </div>
+        {% if user_says %}
+        <div class="owl-carousel testimonial-carousel">
+            {% for user_say in user_says %}
+
+            <div class="testimonial-item px-3">
+                <div class="bg-light shadow-sm rounded mb-4 p-4">
+                    <h3 class="fas fa-quote-left text-primary mr-3"></h3>
+                    {{ user_say.message }}
+                </div>
+                <div class="d-flex align-items-center">
+                    {% if user_say.user.image %}
+                    <div style="width: 73px; height: 73px; border-radius: 50%; overflow: hidden; object-fit: cover;">
+                        <img src="{{ user_say.user.image.url }}" alt="Not Image">
+                    </div>
+                    <!-- class="rounded-circle" -->
+                    {% else %}
+                    <img class="rounded-circle" src="{% static 'img/user.png' %}" style="width: 70px; height: 70px;"
+                        alt="Not Image">
+                    {% endif %}
+
+                    <div class="pl-3">
+                        <h5>{{ user_say.user.username }}</h5>
+                        <i>{{ user_say.created_time }}</i>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <h4 class="text-center">Habarlar mavjud emas</h4>
+        {% endif %}
+    </div>
+</div>
+<!-- Testimonial End -->
+
+
+<div class="container">
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <h1>
+                <label for="commentTextarea" class="form-label">Comment</label>
+            </h1>
+            <textarea class="form-control" id="commentTextarea" rows="3" name="message"
+                placeholder="Typing comment..."></textarea>
+        </div>
+        {% if form.errors.message %}
+        <div class="text-danger">
+            {{ form.errors.message }}
+        </div>
+        {% endif %}
+        <div class="d-flex justify-content-end">
+            <input type="submit" value="Submit" class="btn btn-success">
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

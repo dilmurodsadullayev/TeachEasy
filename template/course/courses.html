@@ -1,0 +1,294 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} courses {% endblock title %}
+{% block content %}
+
+
+<!-- Header Start -->
+<div class="container-fluid bg-primary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+        <h3 class="display-3 font-weight-bold text-white">Our Classes</h3>
+        <div class="d-inline-flex text-white">
+            <p class="m-0"><a class="text-white" href="">Home</a></p>
+            <p class="m-0 px-2">/</p>
+            <p class="m-0">Our Classes</p>
+        </div>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create Course</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="courseName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="courseName" placeholder="Course name" name="name"
+                            required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="file" class="form-control" id="inputGroupFile01" name="image" required>
+                        <label class="input-group-text" for="inputGroupFile01">Upload</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" name="description" required></textarea>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="startTime">Start Time</label>
+                        <input type="time" class="form-control" id="startTime" name="start_time" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="endTime">End Time</label>
+                        <input type="time" class="form-control" id="endTime" name="end_time" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Sum</span>
+                        <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
+                            name="price" required>
+                        <span class="input-group-text">.00</span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="scheduleDays" class="form-label">Available Days</label>
+                        <input type="text" class="form-control" id="scheduleDays" placeholder="Example: Odd days"
+                            name="schedule_days" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel1">Course 1</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput2" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Course name">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="inputGroupFile02">
+                    <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea2" class="form-label">Description</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea2" rows="3"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupDate04">Start date</label>
+                    <input type="time" class="form-control" id="inputGroupDate04">
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupDate05">End date</label>
+                    <input type="time" class="form-control" id="inputGroupDate05">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Sum</span>
+                    <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <span class="input-group-text">.00</span>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput6" class="form-label">Available days</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput6"
+                        placeholder="Example: Odd days ">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel2">Course 2</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput7" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput7" placeholder="Course name">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="inputGroupFile11">
+                    <label class="input-group-text" for="inputGroupFile11">Upload</label>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea12" class="form-label">Description</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea12" rows="3"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupDate13">Start date</label>
+                    <input type="time" class="form-control" id="inputGroupDate13">
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupDate14">End date</label>
+                    <input type="time" class="form-control" id="inputGroupDate14">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Sum</span>
+                    <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <span class="input-group-text">.00</span>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput15" class="form-label">Available days</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput15"
+                        placeholder="Example: Odd days ">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel3">Course 3</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput8" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput8" placeholder="Course name">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="inputGroupFile12">
+                    <label class="input-group-text" for="inputGroupFile12">Upload</label>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea13" class="form-label">Description</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea13" rows="3"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupDate15">Start date</label>
+                    <input type="time" class="form-control" id="inputGroupDate15">
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupDate16">End date</label>
+                    <input type="time" class="form-control" id="inputGroupDate16">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Sum</span>
+                    <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <span class="input-group-text">.00</span>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput16" class="form-label">Available days</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput16"
+                        placeholder="Example: Odd days ">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Class Start -->
+<div class="container-fluid pt-5">
+    <div class="container">
+        <div class="text-center pb-2">
+            <p class="section-title px-5"><span class="px-2">Popular Classes</span></p>
+            <h1 class="mb-4">Classes for Your Kids</h1>
+            <div class="d-flex justify-content-end mb-3">
+                {% if request.user.role == "ADMIN" or request.user.role == "TEACHER" %}
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Create course
+                </button>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="row">
+            {% if course_data %}
+            {% for course in course_data %}
+            <div class="col-lg-4 mb-5">
+                <div class="card border-0 bg-light shadow-sm pb-2">
+                    {% if course.image.url %}
+                    <img class="card-img-top mb-2" style="width: 349px; height: 233px;" src="{{ course.image.url }}"
+                        alt="coruse ni rasimi yo'q">
+                    {% else %}
+                    <img class="card-img-top mb-2" src="{% static 'img/class-1.jpg' %}" alt="">
+                    {% endif %}
+                    <div class="card-body text-center">
+                        <h4 class="card-title">{{ course.name }}</h4>
+                        <p class="card-text">{{ course.description }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent py-4 px-5 border-bottom">
+                        <div class="row border-bottom">
+                            <div class="col-6 py-1 text-right border-right"><strong>Avilable days</strong></div>
+                            <div class="col-6 py-1">{{ course.schedule_days }}</div>
+                        </div>
+                        <div class="row border-bottom">
+                            <div class="col-6 py-1 text-right border-right"><strong>Class Time</strong></div>
+                            <div class="col-6 py-1">{{ course.start_time }} {{ course.end_time }}</div>
+                        </div>
+                        <div class="row border-bottom">
+                            <div class="col-6 py-1 text-right border-right"><strong>Tution Fee</strong></div>
+                            <div class="col-6 py-1">{{ course.price }}</div>
+                        </div>
+                        <div class="row border-bottom">
+                            <div class="col-6 py-1 text-right border-right"><strong>Tasks</strong></div>
+                            <div class="col-6 py-1"><a href="{% url 'group_tasks' course.id %}">See task</a></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 py-1 text-right border-right"><strong>Attendances</strong></div>
+                            <div class="col-6 py-1"><a href="{% url 'attendances' course.id %}">See attendance</a></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 mb-3">
+                        <div class="col-6 text-right"><strong>Course Student</strong></div>
+                        <div class="col-6"><a href="{% url 'course_students' course.pk %}">Show</a></div>
+                    </div>
+                    <div class="d-flex">
+                        <a href="{% url 'course_edit' course.pk %}" class="btn btn-primary px-4 mx-auto mb-4">Edit</a>
+                        <a href="{% url 'course_delete' course.pk %}"
+                            class="btn btn-warning px-4 mx-auto mb-4">Delete</a>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h4 class="text-center">Course lar mavjud emas</h4>
+            {% endif %}
+
+
+        </div>
+    </div>
+</div>
+<!-- Class End -->
+
+
+{% endblock content %}

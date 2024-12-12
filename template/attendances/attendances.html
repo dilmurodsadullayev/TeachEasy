@@ -1,0 +1,104 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} attendances {% endblock title %}
+{% block content %}
+
+<div class="container mt-5">
+
+  <div class="d-flex justify-content-center">
+
+    <h2 class="mb-3">Matematika guruhi Davomadi</h2>
+
+  </div>
+  <div class="pagination d-flex justify-content-center">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {% if date_page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?date_page={{ date_page_obj.previous_page_number }}" aria-label="Previous">
+            Previous
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">Previous</span>
+        </li>
+        {% endif %}
+
+        {% for num in date_page_obj.paginator.page_range %}
+          {% if num == date_page_obj.number %}
+          <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ num }} <span class="sr-only">(current)</span></span>
+          </li>
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?date_page={{ num }}">{{ num }}</a>
+          </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if date_page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?date_page={{ date_page_obj.next_page_number }}" aria-label="Next">
+            Next
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">Next</span>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+
+  {% if marks %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Full Name</th>
+        {% for attendance in paginated_dates %}
+        <th scope="col">
+          {% if attendance.date == today %}
+          <a href="{% url 'attendance_update' course_id=course.id attendance_id=attendance.id %}">
+            {{ attendance.date}}</a>
+          {% else %}
+          {{ attendance.date }}
+          {% endif %}
+        </th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      {% for student_with_mark in students_with_marks %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ student_with_mark.student.user.first_name }} {{ student_with_mark.student.user.last_name }}</td>
+        {% for mark in student_with_mark.marks %}
+        {% if mark.is_attended %}
+        <td><button class="btn btn-success">yes</button></td>
+        {% else %}
+        <td><button class="btn btn-danger">no</button></td>
+        {% endif %}
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+  <h2 class="text-center">Davomadlar mavjud emas</h2>
+  {% endif %}
+  <div class="d-flex justify-content-start mt-3">
+    {% if is_att_taken %}
+      <a><button type="button" class="btn btn-outline-danger mr-1">Not Attendance take</button></a>
+    {% else %}
+    <a href="{% url 'attendance_take' course.id %}"><button type="button"
+          class="btn btn-outline-primary mr-1">Attendance take</button></a>
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock content %}

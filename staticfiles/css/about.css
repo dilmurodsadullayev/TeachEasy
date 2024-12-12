@@ -1,0 +1,15 @@
+.img-circle-conatiner {
+    display: flex;
+    align-items: center;
+}
+
+.img-circle {
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.img-circle img {
+    width: 100px;
+}

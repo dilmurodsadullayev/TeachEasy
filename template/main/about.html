@@ -1,0 +1,78 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} about {% endblock title %}
+
+{% block content %}
+
+<link href="{% static 'css/about.css' %}" rel="stylesheet">
+<!-- Header Start -->
+<div class="container-fluid bg-primary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+        <h3 class="display-3 font-weight-bold text-white">About Us</h3>
+        <div class="d-inline-flex text-white">
+            <p class="m-0"><a class="text-white" href="{% url 'index' %}">Home</a></p>
+            <p class="m-0 px-2">/</p>
+            <p class="m-0">About Us</p>
+        </div>
+    </div>
+</div>
+<!-- Header End -->
+
+<div class="card ml-5 mr-5">
+    <div class="card-header">
+        About site
+    </div>
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <p>Bu saytda siz kursni ishlarini avtomatlashitirshingiz mumkin. Ya'ni Kursdagi
+                davomatlar,to'lovlar,topshiriqlar,kurslarini reklama qilishi mumkin
+
+            </p>
+            <footer class="blockquote-footer">Teacher roliga o'tmoqchi bo'lsangiz manashu botga murojat qilishingiz
+                mumkin 👉<cite title="Source Title"><a style="text-decoration: none;" href="#aaa">TeachEasy</a></cite>
+            </footer>
+        </blockquote>
+    </div>
+</div>
+<h1 class="h1 ml-5 mr-5 mt-3" id="aaa">About our Roles</h1>
+<div class="row">
+    <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card m-5">
+            <div class="card-header d-flex justify-content-between">
+                <div class="img-circle-conatiner">
+                    <div class="img-circle">
+                        <img src="{% static 'img/teacher_image.jpg' %}" alt="img teacher">
+                    </div>
+                    <span class="p-2 h3">Teacher</span>
+                </div>
+                <span class="text-info">12 Dec, 2024</span>
+            </div>
+            <div class="card-body">
+                <blockquote class="blockquote mb-0 text-justify">
+                    <p>Bunda guruh yaratish va guruhga talabalarni qo'shilshi mumkin. .</p>
+                </blockquote>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card m-5">
+            <div class="card-header d-flex justify-content-between">
+                <div class="img-circle-conatiner">
+                    <div class="img-circle">
+                        <img src="{% static 'img/student_image.jpg' %}" alt="img teacher">
+                    </div>
+                    <span class="p-2 h3">Student</span>
+                </div>
+                <span class="text-info">12 Dec, 2024</span>
+            </div>
+            <div class="card-body">
+                <blockquote class="blockquote mb-0 text-justify">
+                    <p>Student kursga qo'shilishi mumkin..</p>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

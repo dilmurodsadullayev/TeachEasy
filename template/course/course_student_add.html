@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} course student add{% endblock title %}
+{% block content %}
+
+<div class="container mt-5">
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.student.id_for_label }}" class="form-label">Students</label>
+            {{ form.student }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Start date</label>
+            <input type="date" name="start_date" class="form-control">
+        </div>
+        <button class="btn btn-outline-success" type="submit">Save</button>
+        <a class="btn btn-outline-primary" href="{% url 'course_students' course.id %}">Cancel</a>
+    </form>
+</div>
+{% endblock content %}

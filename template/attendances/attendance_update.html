@@ -1,0 +1,54 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} attendance update {% endblock title %}
+{% block content %}
+
+<div class="container mt-5">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white">
+      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Courses</a></li>
+      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Attendances</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Update attendance</li>
+    </ol>
+  </nav>
+  <div class="d-flex justify-content-center mb-3">
+    <h1>Update attendance</h1>
+  </div>
+
+  <form action="{% url 'attendance_update' course_id=course_id attendance_id=attendance.id %}" method="post">
+    {% csrf_token %}
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">{{ attendance.date }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ mark }}
+        {% for mark in marks %}
+        <tr>
+          <th scope="row">{{ mark.student.id }}</th>
+          <td>
+            {{ mark.student.user.first_name }} {{ mark.student.user.last_name }}
+          </td>
+          <td>
+            <input name="is_attended_{{ mark.id }}" type="checkbox" class="ml-4 form-check-input"
+                   {% if mark.is_attended%} checked {% endif %}>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <input type="submit" class="btn btn-outline-success" value="save">
+
+  </form>
+
+</div>
+
+
+{% endblock content %}

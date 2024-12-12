@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} group tasks {% endblock title %}
+{% block content %}
+
+
+
+<div class="container mt-5">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white">
+      <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Group tasks</li>
+    </ol>
+  </nav>
+  <div class="d-flex justify-content-end">
+    <a href="{% url 'create_group_task' course_id=course %}" class="btn btn-primary">Create task</a>
+  </div>
+  <div class="d-flex justify-content-center mb-3">
+    <h1>Group tasks</h1>
+  </div>
+
+  {% if course_tasks %}
+  {% for course_task in course_tasks %}
+  <div class="d-flex mt-4 justify-content-center">
+    <div class="d-flex">
+      <div class="detial-of-teacher">
+        <h1>Course name: <span class="text-info font-weight-bold">{{ course_task.course.name }}</span></h1>
+        <h3>Task name: <span class="text-info font-weight-bold">{{ course_task.task_name }}</span></h3>
+        <p>{{ course_task.definition }} </p>
+      </div>
+      <div class="img-of-teacher w-auto">
+        <img class="w-75" style="width: 75px; height: 75px;" src="{{ course_task.course.image.url }}">
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <div class="mt-3 ml-3 date-spans d-flex flex-column justify-content-end">
+        <span><strong>Start date:</strong> <span class="text-success">{{ course_task.given_date }}</span></span>
+        <span><strong>End date:</strong> <span class="text-danger">{{ course_task.until_date }}</span></span>
+      </div>
+    </div>
+  </div>
+
+
+  {% endfor %}
+  {% else %}
+  <h2 class="text-center">Tasklar mavjud emas</h2>
+  {% endif %}
+</div>
+
+
+{% endblock content %}

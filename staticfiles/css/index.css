@@ -1,0 +1,45 @@
+.get-in-touch-div {
+    display: flex;
+}
+
+.get-in-touch {
+    height: 3px;
+    width: 170px;
+    border-radius: 10px;
+    display: inline-block;
+    background: #17a2b8;
+    position: absolute;
+    left: 10px;
+    top: 35px;
+}
+
+.get-in-touch span {
+    position: absolute;
+    height: 3px;
+    width: 3px;
+    border-radius: 30px;
+    background: white;
+    animation-name: anim;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
+}
+
+@keyframes anim {
+
+    to {
+        margin-left: 100%;
+    }
+
+    from {
+        margin-right: 20%;
+    }
+}
+
+.header-start {
+    height: 650px;
+    background-image: url('/static/img/header.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}

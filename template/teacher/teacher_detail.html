@@ -1,0 +1,70 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}{{ teacher.user.username }} teacher detail{% endblock title %}
+{% block content %}
+
+<div class="container mt-4">
+
+  <h2 class="text-center mb-4">Teacher {{ teacher.user.username }} haqida to'liq malumotlar</h2>
+  <div class="card border-0 bg-light shadow-sm pb-2" style="border-radius: 20px;">
+
+    <div class="d-flex justify-content-center mt-4">
+      <img class="w-50 mb-2" style="border-radius: 20px;" src="{% static 'img/team-4.jpg' %}" alt="">
+    </div>
+    <div class="card-body text-center">
+      <h4 class="card-title">{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h4>
+      <p class="card-text">Justo ea diam stet diam ipsum no sit, ipsum vero et et diam ipsum duo
+        et no et, ipsum ipsum erat duo amet clita duo</p>
+
+    </div>
+    <div class="card-footer bg-transparent py-4 px-5 border-bottom">
+      <div class="row border-bottom">
+        <div class="col-6 py-1 text-right border-right"><strong>Courses</strong></div>
+        <div class="col-6 py-1">
+          {% for course in courses %}
+          {{ course.name }}&nbsp;
+          {% endfor %}
+        </div>
+      </div>
+      <div class="row border-bottom">
+        <div class="col-6 py-1 text-right border-right"><strong>Birth day</strong></div>
+        {% if techer.user.birth_date %}
+        <div class="col-6 py-1">{{ techer.user.birth_date }}</div>
+        {% else %}
+        <div class="col-6 py-1">Tug'ulgan sana kiritilmagan</div>
+        {% endif %}
+      </div>
+      <div class="row border-bottom">
+        <div class="col-6 py-1 text-right border-right"><strong>Address</strong></div>
+        <div class="col-6 py-1">
+          {% if teacher.user.address %}
+          {{ teacher.user.address }}
+          {% else %}
+          Address yo'q!
+          {% endif %}
+        </div>
+      </div>
+      <div class="row border-bottom">
+        <div class="col-6 py-1 text-right border-right"><strong>Phone number</strong></div>
+        <div class="col-6 py-1">
+          {% if teacher.user.phone_number %}
+          {{ teacher.user.phone_number }}
+          {% else %}
+          Telefon raqam yo'q
+          {% endif %}
+        </div>
+      </div>
+      <div class="d-flex mt-4">
+        <a href="{% url 'teacher_edit' %}" class="btn btn-primary px-4 mx-auto mb-4">Edit</a>
+        {% if request.user.role == "ADMIN" %}
+        <a href="" class="btn btn-warning px-4 mx-auto mb-4">Delete</a>
+        {% endif %}
+      </div>
+
+    </div>
+
+
+  </div>
+</div>
+
+{% endblock content %}

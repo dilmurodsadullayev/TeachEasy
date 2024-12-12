@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} {{ student.username }} delete {% endblock title %}
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="text-center">Studentni o'chirish</h1>
+    <p>Studentni o'chirishni tasdiqlang:</p>
+    <p><strong>Stundent nomi:</strong> {{ student.username }}</p>
+    <p>Rostan ham ushbu kursni o'chirmoqchimisiz?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button class="btn btn-outline-danger" type="submit">Ha</button>
+        <a class="btn btn-outline-secondary"
+            href="{% url 'student_detail' course_id=course_student.course.id student_id=course_student.student.id %}">Bekor
+            qilish</a>
+    </form>
+</div>
+{% endblock content %}
