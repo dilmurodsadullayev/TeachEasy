@@ -1,0 +1,50 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} join request {% endblock title %}
+{% block content %}
+<div class="container mb-5">
+    <style>
+        .course-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .course-container {
+            max-width: 600px;
+            margin: 50px auto;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        .course-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .course-owner {
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+
+
+    <div class="course-container">
+        <img src="{{ course.image.url }}" alt="Course Image" class="course-image">
+        <h1 class="course-title">{{ course.name }}</h1>
+        <p class="course-owner">O'qituvchi: {{ course.teacher.user.username }} {{ course.teacher.user.email }}</p>
+        <p>Siz bu kursga qo'shilish so'rovini yubordingiz.</p>
+        <p>Kursning Teacher tomonidan tasdiqlangandan so'ng, sizni kursga kirish huquqi beriladi.</p>
+        <a href="{% url 'courses' %}" class="btn btn-secondary">Orqaga qaytish</a>
+    </div>
+
+
+</div>
+{% endblock content %}
