@@ -3,5 +3,25 @@
 {% block title %} profile {% endblock title %}
 {% block content %}
 
+<div class="container mt-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Course</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for join_request in join_requests %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ join_request.student.user.username }}</td>
+                <td>{{ join_request.course.name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock content %}
