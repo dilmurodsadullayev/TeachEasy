@@ -88,3 +88,7 @@ class UserSayForm(forms.ModelForm):
         return instance
     
 
+# class UserEditForm(forms.ModelForm):
+#     class Meta:
+#         model = CustomUser
+#         fields = []

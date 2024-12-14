@@ -612,11 +612,51 @@ def teacher_detail_view(request,teacher_id):
 
 def profile_view(request):
     join_requests = JoinRequest.objects.all()
+    user = request.user
+    
+    if user.role == "TEACHER":
+        teacher = Teacher.objects.get(user=user)
+        courses = Course.objects.filter(teacher=teacher)
+        course_students = CourseStudent.objects.filter(teacher=teacher)
+        number = 0
+        for course_student in course_students:
+            number+=1
+        print(number)
+        ctx = {
+            'join_requests': join_requests,
+            'user': user,
+            'courses': courses,
+            'course_students': course_student,
+            'number': number
+        }
+        return render(request, 'main/profile.html',ctx)
 
+    else:
+        ctx = {
+            'join_requests': join_requests,
+            'user': user
+        }
+        return render(request, 'main/profile.html',ctx)
+
+
+
+def user_edit_view(request,user_id):
+    user = CustomUser.objects.get(id=user_id)
+
+    if request.method == "POST":
+        form = StudentEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = StudentEditForm(instance=user)
+
+    # Har bir sharoit uchun HttpResponse qaytarilishi ta'minlanadi
     ctx = {
-        'join_requests': join_requests
+        'form': form,
     }
-    return render(request, 'main/profile.html',ctx)
+    return render(request,'main/user_edit.html',ctx)
+
     
 
 
