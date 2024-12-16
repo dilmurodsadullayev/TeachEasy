@@ -151,28 +151,32 @@ USE_TZ = True
 #ishla yaxshimi
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+import os
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR/'static']
-STATIC_ROOT = BASE_DIR/'staticfiles'
+STATIC_URL = config("STATIC_URL")
+STATIC_ROOT = os.path.join(BASE_DIR, config("STATIC_ROOT"))
+STATICFILES_DIRS = [BASE_DIR / config("STATIC_URL")]
 STATICFILES_FINDERS = [
-   'django.contrib.staticfiles.finders.FileSystemFinder',
-   'django.contrib.staticfiles.finders.AppDirectoriesFinder'
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
+# Media fayllar
+MEDIA_URL = config("MEDIA_URL")
+MEDIA_ROOT = os.path.join(BASE_DIR, config("MEDIA_ROOT"))
 
-# STATIC_URL = config("STATIC_URL")
-# STATIC_ROOT = config("STATIC_ROOT")
+# Statik fayllar Windows uchun
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [BASE_DIR / 'static']
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATICFILES_FINDERS = [
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+# ]
 
-# # Media fayllar
-# MEDIA_URL = config("MEDIA_URL")
-# MEDIA_ROOT = config("MEDIA_ROOT")
+# MEDIA_URL = '/media/'  # Media fayllar uchun URL
+# MEDIA_ROOT = BASE_DIR / 'media'  # Foydalanuvchi yuklagan fayllar saqlanadigan joy
 
-
-# import os
-
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type

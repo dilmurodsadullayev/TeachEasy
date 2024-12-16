@@ -32,6 +32,7 @@ from .views import (
     teacher_edit_view,
     #profile
     profile_view,
+    user_edit_view,
     #404
     error_404_view
 
@@ -70,6 +71,7 @@ urlpatterns = [
     path('teacher-edit',teacher_edit_view,name='teacher_edit'),
     #profile
     path('profile',profile_view,name='profile'),
+    path('profile/<int:user_id>/edit',user_edit_view,name='user_edit'),
     #404
     path('404',error_404_view,name='error'),
 

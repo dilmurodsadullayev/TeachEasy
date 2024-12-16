@@ -607,13 +607,61 @@ def teacher_detail_view(request,teacher_id):
 
 
 def profile_view(request):
+<<<<<<< HEAD
     return render(request, 'main/profile.html')
+=======
+    join_requests = JoinRequest.objects.all()
+    user = request.user
+    
+    if user.role == "TEACHER":
+        teacher = Teacher.objects.get(user=user)
+        courses = Course.objects.filter(teacher=teacher)
+        course_students = CourseStudent.objects.filter(teacher=teacher)
+        number = 0
+        for course_student in course_students:
+            number+=1
+        print(number)
+        ctx = {
+            'join_requests': join_requests,
+            'user': user,
+            'courses': courses,
+            'course_students': course_students,
+            'number': number
+        }
+        return render(request, 'main/profile.html',ctx)
+
+    else:
+        ctx = {
+            'join_requests': join_requests,
+            'user': user
+        }
+        return render(request, 'main/profile.html',ctx)
+
+
+
+def user_edit_view(request,user_id):
+    user = CustomUser.objects.get(id=user_id)
+
+    if request.method == "POST":
+        form = StudentEditForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = StudentEditForm(instance=user)
+
+
+    ctx = {
+        'form': form,
+    }
+    return render(request,'main/user_edit.html',ctx)
+
+>>>>>>> c498a58af27a4469af99abd215a7144074290f86
     
 
 
 def error_404_view(request):
-    return render(request,'main/404.html'
-    )
+    return render(request,'404.html')
 
 
 
@@ -623,3 +671,8 @@ def change_user_role(request, user_id, new_role):
     user.role = new_role
     user.save()  # Signal avtomatik ravishda ishlaydi
     return redirect('user_list') 
+
+
+
+
+
