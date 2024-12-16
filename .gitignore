@@ -1,0 +1,46 @@
+# Python bytecode files
+*.py[cod]
+__pycache__
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.sqlite3
+db.sqlite3
+media
+staticfiles
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# MySQL or PostgreSQL
+*.sql
+*.sqlite3
+
+# Environment variable files
+.env
+.env.*
+
+# Jupyter Notebook files
+.ipynb_checkpoints/
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+
+# Backup files
+*~

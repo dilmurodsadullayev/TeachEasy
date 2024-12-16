@@ -607,9 +607,6 @@ def teacher_detail_view(request,teacher_id):
 
 
 def profile_view(request):
-<<<<<<< HEAD
-    return render(request, 'main/profile.html')
-=======
     join_requests = JoinRequest.objects.all()
     user = request.user
     
@@ -656,7 +653,6 @@ def user_edit_view(request,user_id):
     }
     return render(request,'main/user_edit.html',ctx)
 
->>>>>>> c498a58af27a4469af99abd215a7144074290f86
     
 
 
