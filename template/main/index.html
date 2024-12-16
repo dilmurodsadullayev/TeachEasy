@@ -11,9 +11,14 @@
     <div class="row px-3 m-0" style="backdrop-filter: blur(5px); height: 650px;">
 
         <div class="mb-2 mt-5 d-flex justify-content-center">
-            <h1 class="text-white" style="font-size: 50px; letter-spacing: 2px;">Xush kelibsiz,
+            <h1 class="text-white" style="font-size: 50px; letter-spacing: 2px;">
+                {% if request.user.is_authenticated %}
+                Xush kelibsiz,
                 {{request.user.username}} <br>
                 TeachEasy bilan qoling</h1>
+            {% else %}
+            TeachEasy bilan qoling</h1>
+            {% endif %}
         </div>
 
         <div class="col-lg-6 text-lg-left">

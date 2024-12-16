@@ -626,7 +626,7 @@ def profile_view(request):
             'join_requests': join_requests,
             'user': user,
             'courses': courses,
-            'course_students': course_student,
+            'course_students': course_students,
             'number': number
         }
         return render(request, 'main/profile.html',ctx)
@@ -661,8 +661,7 @@ def user_edit_view(request,user_id):
 
 
 def error_404_view(request):
-    return render(request,'main/404.html'
-    )
+    return render(request,'404.html')
 
 def join_request_view(request,course_id):
 
@@ -692,3 +691,8 @@ def change_user_role(request, user_id, new_role):
     user.role = new_role
     user.save()  # Signal avtomatik ravishda ishlaydi
     return redirect('user_list') 
+
+
+
+
+
