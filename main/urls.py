@@ -15,7 +15,6 @@ from .views import (
     course_delete_view,
     course_student_view,
     course_student_add_view,
-    join_request_view,
     # registrations
     signup_view,
     sign_in_view,
@@ -47,7 +46,6 @@ urlpatterns = [
     path('blogs',blogs_view,name='blogs'),
     #course
     path('courses',CoursesView.as_view(),name='courses'),
-    path('course/<int:course_id>/join-send',join_request_view,name='join_request'),
     path('course/<int:pk>/edit',course_update_view,name='course_edit'),
     path('course/<int:pk>/delete',course_delete_view,name='course_delete'),
     path('course/<int:course_id>/students',course_student_view,name='course_students'),

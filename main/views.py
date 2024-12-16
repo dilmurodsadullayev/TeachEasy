@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect,render
-from .models import Course,UserSay,CustomUser,Student,Teacher,CourseStudent,CourseTask,Attendance,Mark,JoinRequest
+from .models import Course,UserSay,CustomUser,Student,Teacher,CourseStudent,CourseTask,Attendance,Mark
 from .forms import CourseCreateForm,UserSayForm,CustomUserCreationForm,CourseUpdateForm,CourseStudentCreateForm,StudentEditForm,GroupTaskForm
 from django.views.generic import View
 from django.contrib.auth import get_user_model,authenticate, login
@@ -93,13 +93,9 @@ class CoursesView(View):
         else:
             course_data = Course.objects.all()
             form = CourseCreateForm()
-            is_join_request = JoinRequest.objects.get(student=student).exists()
-            
             ctx = {
                 'course_data': course_data,
                 'form': form,
-                'is_join_request': is_join_request
-
             }
             return render(request, self.template_name, ctx)
             
@@ -414,7 +410,7 @@ def attendances_view(request,course_id):
                 
         
     # return HttpResponse(students_with_marks)
-    # print(students_with_marks)
+    print(students_with_marks)
 
     paginator = Paginator(students_with_marks, 14)  # Show 10 students per page
     page = request.GET.get('page')
@@ -611,12 +607,7 @@ def teacher_detail_view(request,teacher_id):
 
 
 def profile_view(request):
-    join_requests = JoinRequest.objects.all()
-
-    ctx = {
-        'join_requests': join_requests
-    }
-    return render(request, 'main/profile.html',ctx)
+    return render(request, 'main/profile.html')
     
 
 
@@ -624,27 +615,7 @@ def error_404_view(request):
     return render(request,'main/404.html'
     )
 
-def join_request_view(request,course_id):
 
-    course = Course.objects.get(id=course_id)
-    user = request.user
-    student = Student.objects.get(id=user.id)
-    
-    # print(is_join_request)
-    # if is_join_request:
-    join_request = JoinRequest.objects.create(
-        student = student,
-        course = course,
-        is_sent = True
-    ) 
-    # is_join_request = JoinRequest.objects.get(student=student).exists()
-
-    ctx = {
-        "course": course,
-    }
-    return render(request,'course/join_request.html',ctx)
-    # else:
-    #     return HttpResponse("Siz course ga so'rov yuborgansiz iltimos kuting")
 
 
 def change_user_role(request, user_id, new_role):
