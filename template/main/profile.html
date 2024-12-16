@@ -16,7 +16,7 @@
                 <span class="position-absolute"
                     style="margin: 1% 4%; border-radius: 10px; background-color: grey; color: white;"><i
                         class="bi bi-person" style="color: white;"></i>
-                    {{ user.username }} {{ user.id }}</span>
+                    {{ user.username }}</span>
                 <div style=" width:300px; height: 300px; border-radius: 50%; overflow: hidden; object-fit: cover;">
                     {% if user.image %}
                     <img style="width: 100%;" src="{{ user.image.url }}" alt="no image">
@@ -46,7 +46,7 @@
             <div class="col-md-6">
                 <label for="inputPassword4" class="form-label">Birth date</label>
                 {% if user.birth_date %}
-                <input type="date" class="form-control" id="inputPassword4" value="{{ user.birth_date }}">
+                <input type="date" class="form-control" id="inputPassword4" value="{{ user.birth_date|date:'Y-m-d'  }}">
                 {% else %}
                 <input type="date" class="form-control" id="inputPassword4" value="2023-05-28">
                 {% endif %}

@@ -6,6 +6,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from enum import Enum
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
+import os
 
 
 
@@ -49,6 +50,22 @@ class CustomUser(AbstractUser):
 
     def is_student(self):
         return self.role == UserRoleEnum.STUDENT.name
+
+
+    def save(self, *args, **kwargs):
+        # Eski rasmni tekshirish va o'chirish
+        if self.pk:
+            old_image = CustomUser.objects.get(pk=self.pk).image
+            if old_image and old_image != self.image:
+                if os.path.isfile(old_image.path):
+                    os.remove(old_image.path)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        # Rasmni o'chirish
+        if self.image and os.path.isfile(self.image.path):
+            os.remove(self.image.path)
+        super().delete(*args, **kwargs)
 
 class UserSay(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name='user_says')

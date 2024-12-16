@@ -644,14 +644,14 @@ def user_edit_view(request,user_id):
     user = CustomUser.objects.get(id=user_id)
 
     if request.method == "POST":
-        form = StudentEditForm(request.POST, instance=user)
+        form = StudentEditForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect('profile')
     else:
         form = StudentEditForm(instance=user)
 
-    # Har bir sharoit uchun HttpResponse qaytarilishi ta'minlanadi
+
     ctx = {
         'form': form,
     }

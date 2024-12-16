@@ -61,8 +61,8 @@ class StudentEditForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'birth_date', 'address', 'phone_number', 'image','email']
-
-    
+        
+            
 
 
 #Group task 
