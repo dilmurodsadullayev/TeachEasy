@@ -12,7 +12,8 @@ from .models import (
     UserSay,
     Teacher,
     Student,
-    Owner
+    Owner,
+    JoinRequest
 
 )
 # Register your models here.
@@ -44,6 +45,7 @@ admin.site.register(UserSay,UserSayAdmin)
 admin.site.register(Teacher)
 admin.site.register(Student)
 admin.site.register(Owner)
+admin.site.register(JoinRequest)
 
 
 

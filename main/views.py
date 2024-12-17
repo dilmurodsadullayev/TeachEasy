@@ -55,7 +55,7 @@ def contact_view(request):
 
 #Course
 
-class CoursesView(View):
+class CoursesView(LoginRequiredMixin,View):
     template_name = 'course/courses.html'
 
     def get(self, request):
@@ -68,11 +68,9 @@ class CoursesView(View):
                 # ADMIN uchun barcha kurslar
                 course_data = Course.objects.all()
                 form = CourseCreateForm()
-                is_join_request = JoinRequest.objects.get(student=student).exists()
                 ctx = {
                     'course_data': course_data,
                     'form': form,
-                    'is_join_request': is_join_request
                 }
                 return render(request, self.template_name, ctx)
             
