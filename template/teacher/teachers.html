@@ -94,19 +94,21 @@
         </div>
         <div class="row list-of-teacher">
 
-
+            <!-- User teacher ekanligini tekshirish sharti ochilgan -->
             {% if request.user.id == teacher.user.id %}
             <div class="col-md-6 col-lg-3 text-center team mb-5">
                 <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
+                    <!-- teacherni rasmi boligini tekshirish ochilgan -->
                     {% if teacher.user.image %}
-                    <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
-                        <img class="img-fluid" style="width: 100px;" src="{{ teacher.user.image.url }}" alt="">
-                    </a>
+                        <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
+                            <img class="img-fluid" style="width: 100px;" src="{{ teacher.user.image.url }}" alt="">
+                        </a>
                     {% else %}
-                    <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
-                        <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
-                    </a>
+                        <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
+                            <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
+                        </a>
                     {% endif %}
+                    <!-- teacherni rasmi boligini tekshirish yopilgan -->
                     <div
                         class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
                         <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
@@ -117,58 +119,69 @@
                                 class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
+                <!-- teacherni ism va familyasi bormi sharti ochilgan -->
                 {% if teacher.user.first_name or teacher.user.last_name %}
-                <h4>{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h4>
+                    <h4>{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h4>
                 {% else %}
-                <h4>{{ teacher.user.username }}</h4>
+                    <h4>{{ teacher.user.username }}</h4>
                 {% endif %}
+                <!-- teacherni ism va familyasi bormi sharti yopilgan -->
                 <i>
+                    <!-- course larni chiqarish sikl ochilgan ochilgan -->
                     {% for course in courses %}
-                    {{ course.name }}<button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i
-                            class="bi bi-pencil-fill"></i></button>
+                        {{ course.name }}<button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i
+                             class="bi bi-pencil-fill"></i></button>
                     {% endfor %}
+                    <!-- course larni chiqarish sikl ochilgan yopilgan -->
                 </i>
 
             </div>
+            <!-- User role admin ekanligini tekshirish sharti ochilgan -->
             {% elif request.user.role == "ADMIN" %}
-            {% if teacher_courses %}
-            {% for teacher in teacher_courses %}
-            <div class="col-md-6 col-lg-3 text-center team mb-5">
-                <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
-                    {% if teacher.teacher.user.image %}
-                    <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
-                        <img class="img-fluid" style="width: 100px;" src="{{ teacher.teacher.user.image.url }}" alt="">
-                    </a>
-                    {% else %}
-                    <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
-                        <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
-                    </a>
-                    {% endif %}
-                    <div
-                        class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-                        <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
-                            href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
-                            href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light text-center px-0" style="width: 38px; height: 38px;" href="#"><i
-                                class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                {% if teacher.teacher.user.first_name or teacher.teacher.user.last_name %}
-                <h4>{{ teacher.teacher.user.first_name }} {{ teacher.teacher.user.last_name }}</h4>
-                {% else %}
-                <h4>{{ teacher.teacher.user.username }}</h4>
+<!--            teacher va course lar mavjud bo'lsa uchun shart ochilgan -->
+                {% if teacher_courses %}
+                    {% for teacher in teacher_courses %}
+                        <div class="col-md-6 col-lg-3 text-center team mb-5">
+                            <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
+                                {% if teacher.teacher.user.image %}
+                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                    <img class="img-fluid" style="width: 100px;" src="{{ teacher.teacher.user.image.url }}" alt="">
+                                </a>
+                                {% else %}
+                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                    <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
+                                </a>
+                                {% endif %}
+                                <div
+                                    class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
+                                    <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                        href="#"><i class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                        href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-outline-light text-center px-0" style="width: 38px; height: 38px;" href="#"><i
+                                            class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                            {% if teacher.teacher.user.first_name or teacher.teacher.user.last_name %}
+                            <h4>{{ teacher.teacher.user.first_name }} {{ teacher.teacher.user.last_name }}</h4>
+                            {% else %}
+                            <h4>{{ teacher.teacher.user.username }}</h4>
+                            {% endif %}
+
+                            {% for course in teacher.course %}
+                            {{ course }}<button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i
+                                    class="bi bi-pencil-fill"></i></button>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
                 {% endif %}
-                {% for course in teacher.course %}
-                {{ course }}<button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i
-                        class="bi bi-pencil-fill"></i></button>
-                {% endfor %}
-            </div>
-            {% endfor %}
+
             {% else %}
-            <h2 class="text-center">
-                Sizni rolingiz student shuni uchun sizga nimani ko'rsatishni o'ylab ko'raman
-            </h2>
+
+                <h2 class="text-center">
+                    Teacher lar ro'yxati va course lari yo'q
+                </h2>
 
             {% endif %}
 

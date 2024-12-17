@@ -555,7 +555,7 @@ def teacher_edit_view(request):
 def teachers_view(request):
     # only_admin = request.user.role == 'ADMIN'
     user = request.user
-    if user.role == "ADMIN":
+    if user.role == "ADMIN" or user.role == "STUDENT":
         
         teachers = Teacher.objects.all()
         
@@ -595,6 +595,8 @@ def teachers_view(request):
 
         return render(request, 'teacher/teachers.html',ctx)
 
+   
+
 
 
 
@@ -609,7 +611,7 @@ def teacher_detail_view(request,teacher_id):
     }
     return render(request,'teacher/teacher_detail.html',ctx)
 
-
+@login_required
 def profile_view(request):
     join_requests = JoinRequest.objects.all()
     user = request.user

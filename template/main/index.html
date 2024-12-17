@@ -13,20 +13,19 @@
         <div class="mb-2 mt-5 d-flex justify-content-center">
             <h1 class="text-white" style="font-size: 50px; letter-spacing: 2px;">
                 {% if request.user.is_authenticated %}
-                Xush kelibsiz,
+                Welcome to,
                 {{request.user.username}} <br>
-                TeachEasy bilan qoling</h1>
+                Stay with TeachEasy</h1>
             {% else %}
-            TeachEasy bilan qoling</h1>
             {% endif %}
         </div>
 
         <div class="col-lg-6 text-lg-left">
-            <h4 class="text-white mb-4 mt-5 mt-lg-0">O'qitishni osonlashtiradigan saytimizga xush kelibsiz!</h4>
-            <h1 class="display-3 font-weight-bold text-white">Course ni avtomatlashtirsh</h1>
-            <p class="text-white mb-4">Bu yerda siz o'quv markazdagi yoki uydagi kurlaringizni ishini
-                avtomatlashtirishingiz mumkin</p>
-            <a href="" class="btn btn-secondary mt-1 py-3 px-5">Learn More</a>
+            <h4 class="text-white mb-4 mt-5 mt-lg-0">Welcome to our website that makes learning easy!</h4>
+            <h1 class="display-3 font-weight-bold text-white">Automate the course</h1>
+            <p class="text-white mb-4">This is where you can do your coursework at the training center or at home.
+you can automate</p>
+            <a href="{% url 'about' %}" class="btn btn-secondary mt-1 py-3 px-5">Learn More</a>
         </div>
     </div>
 </div>
@@ -68,7 +67,7 @@
             {% endfor %}
         </div>
         {% else %}
-        <h4 class="text-center">Habarlar mavjud emas</h4>
+        <h4 class="text-center">There are no news items</h4>
         {% endif %}
     </div>
 </div>
