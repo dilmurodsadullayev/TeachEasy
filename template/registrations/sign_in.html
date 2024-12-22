@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
-<!-- <body style="background: rgb(255,255,255);
+<body style="background: rgb(255,255,255);
 background: linear-gradient(0deg, rgba(255,255,255,1) 2%, rgba(0,212,255,1) 100%); height: 48vw">
 
 
@@ -95,28 +95,8 @@ background: linear-gradient(0deg, rgba(255,255,255,1) 2%, rgba(0,212,255,1) 100%
         </div>
         {% endif %}
     </div>
-</body> -->
+</body>
 
-<div class="container mt-5">
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
 
-        <button type="submit" class="btn btn-outline-primary">Sign IN</button>
-    </form>
-    <p class="signup">Don't have an account?
-        <a rel="noopener noreferrer" href="{% url 'signup' %}" class="">Sign up</a>
-    </p>
-    <a href="{% url 'index' %}" class="text-info text-decoration-none"><i class="bi bi-arrow-left"
-            style="padding-right: 7px;"></i>Main page</a>
-
-    {% if form.errors %}
-    <ul>
-        {% for field, errors in form.errors.items %}
-        <li><strong>{{ field }}:</strong> {{ errors|join:", " }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-</div>
 
 </html>

@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+
 <head>
     <meta charset="utf-8">
     <title>{% block title %} {% endblock title %}</title>
@@ -42,10 +45,11 @@
 
 <body>
     <!-- Navbar Start -->
-    <div class="container-fluid bg-light position-relative shadow">
-        <div class="header-center">
-            <h5 class="text-center" style="color:red;">Site is running in test mode</h5>
+     <div class="header-center">
+            <h5 class="text-center" style="color:red; background:yellow; padding:5px 0">Site is running in test mode</h5>
         </div>
+    <div class="container-fluid bg-light position-relative shadow">
+
 
         <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
             <a href="" class="navbar-brand font-weight-bold text-secondary" style="font-size: 50px;">

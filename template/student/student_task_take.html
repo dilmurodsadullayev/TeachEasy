@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} join request {% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <form method="post">{% csrf_token %}
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input name="name" type="text" class="form-control" id="name" aria-describedby="emailHelp">
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input name="description" type="text" class="form-control" id="description" aria-describedby="description">
+      </div>
+      <div class="mb-3">
+        <label for="until_date" class="form-label">Until Date</label>
+        <input name="until_date" type="date" class="form-control" id="until_date" aria-describedby="until_date">
+      </div>
+      <div class="mb-3 form-check">
+        <input name="is_done" type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+{% endblock content %}

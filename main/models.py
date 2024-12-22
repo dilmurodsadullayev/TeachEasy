@@ -21,7 +21,7 @@ class UserRoleEnum(Enum):
 
 class CustomUser(AbstractUser):
     birth_date = models.DateField(blank=True, null=True)
-    address = models.TextField(blank=True)
+    address = models.TextField(blank=True, null=True)
     phone_number = PhoneNumberField(unique=True, blank=True, null=True)
     role = models.CharField(
         max_length=20,
@@ -79,7 +79,7 @@ class UserSay(models.Model):
         
     
 class Student(models.Model):
-    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
@@ -122,6 +122,7 @@ class JoinRequest(models.Model):
     student = models.ForeignKey(Student,on_delete=models.SET_NULL,null=True)
     course = models.ForeignKey(Course,on_delete=models.CASCADE)
     is_sent = models.BooleanField(default=False)
+    joinded = models.BooleanField(default=False)
 
 
     def __str__(self):
@@ -171,8 +172,8 @@ class CourseTask(models.Model):
 
 
 class StudentTask(models.Model):
-    student = models.ForeignKey(CourseStudent, on_delete=models.CASCADE, related_name='student_tasks')
-    course = models.ForeignKey(CourseStudent, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='student_tasks')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     description = models.TextField()
     given_date = models.DateField()
@@ -184,8 +185,8 @@ class StudentTask(models.Model):
 
 
 class CoursePayment(models.Model):
-    course = models.ForeignKey(CourseStudent, on_delete=models.CASCADE)
-    student = models.ForeignKey(CourseStudent, on_delete=models.CASCADE, related_name='payments')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     price = models.FloatField()
     pay_date = models.DateField()
     payment_method = models.CharField(max_length=20)  # Bu yerga tanlov qo'shishingiz mumkin

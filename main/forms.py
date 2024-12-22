@@ -1,7 +1,7 @@
 from django import forms
 from markdown_it.rules_inline import image
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser,Course,Teacher,CourseStudent,Student,CourseTask,UserSay,Mark
+from .models import CustomUser,Course,Teacher,CourseStudent,Student,CourseTask,UserSay,StudentTask
 
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(
@@ -87,6 +87,12 @@ class UserSayForm(forms.ModelForm):
             instance.save()
         return instance
     
+
+class StudentTakeTask(forms.ModelForm):
+    class Meta:
+        model = StudentTask
+        fields = ['student', 'course', 'name', 'description', 'given_date', 'until_date', 'is_done']
+
 
 # class UserEditForm(forms.ModelForm):
 #     class Meta:

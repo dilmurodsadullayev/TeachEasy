@@ -1,0 +1,135 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} Course Payments {% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <a class="btn btn-outline-primary text-right" href="{% url 'course_pay_take' course_id %}">Payment</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">FullName</th>
+            <th scope="col">Status</th>
+            <th scope="col">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for course_payment in course_payments %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>
+                {{ course_payment.student.user.username }}
+            </td>
+            {% if course_payment.student.user.first_name or course_payment.student.user.last_name %}
+            <td>{{ course_payment.student.user.first_name }} {{ course_payment.student.user.last_name }}</td>
+            {% else %}
+            <td>No Name</td>
+            {% endif %}
+            {% if course_payment.is_paid %}
+            <td>
+                <button type="button" class="btn btn-outline-success">To'langan</button>
+            </td>
+            {% else %}
+            <td>
+                <button type="button" class="btn btn-outline-danger">To'lanmagan</button>
+            </td>
+            {% endif %}
+            <td>
+                <button
+                        style="
+                    border: none; /* Chegarani olib tashlaydi */
+                        background: none; /* Tugma fonini olib tashlaydi */
+                        padding: 0; /* Tugmaning ichki bo'sh joylarini olib tashlaydi */
+                        cursor: pointer;"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal{{ forloop.counter }}">
+                    <img width="50" height="50" src="https://img.icons8.com/clouds/100/create-new.png"
+                         alt="create-new"/>
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal dialogs: har bir talabaga mos -->
+{% for course_payment in course_payments %}
+<div
+        class="modal fade"
+        id="modal{{ forloop.counter }}"
+        tabindex="-1"
+        aria-labelledby="modalLabel{{ forloop.counter }}"
+        aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel{{ forloop.counter }}">
+                    {{ course_payment.student.user.username }} haqida ma'lumot
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!--                    <div class="col-md-6">-->
+                    <!--                        <label for="inputEmail4" class="form-label">ID:</label>-->
+                    <!--                        <input type="number" class="form-control" id="inputEmail4"-->
+                    <!--                               value="{{ course_payment.student.user.id }}">-->
+                    <!--                    </div>-->
+                    <!--                    <div class="col-md-6">-->
+                    <!--                        <label for="inputPassword4" class="form-label">Ism:</label>-->
+                    <!--                        <input type="text" class="form-control" id="inputPassword4"-->
+                    <!--                               value="{{ course_payment.student.user.first_name }}">-->
+                    <!--                    </div>-->
+                    <!--                    <div class="col-md-6">-->
+                    <!--                        <label for="inputSecondName4" class="form-label">Familiya:</label>-->
+                    <!--                        <input type="text" class="form-control" id="inputSecondName4"-->
+                    <!--                               value="{{ course_payment.student.user.last_name }}">-->
+                    <!--                    </div>-->
+                    <!--                    <div class="col-md-6">-->
+                    <!--                        <label for="inputEmail5" class="form-label">Email:</label>-->
+                    <!--                        <input type="text" class="form-control" id="inputEmail5"-->
+                    <!--                               value="{{ course_payment.student.user.email }}">-->
+                    <!--                    </div>-->
+                    <div class="col-md-6">
+                        <label for="inputPrice4" class="form-label">Price:</label>
+                        <input type="number" class="form-control" id="inputPrice4"
+                               value="">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPayDate4" class="form-label">Pay date:</label>
+                        <input type="date" class="form-control" id="inputPayDate4"
+                               value="">
+                    </div>
+                    <div class="mt-2">
+                        <label for="inputSecondName4" class="form-label">Payment method:</label>
+                        <input type="text" class="form-control" id="inputSecondName4"
+                               value="">
+                    </div>
+                    <div class="mt-2">
+                        <label class="form-check-label" for="flexCheckChecked">
+                            Paid
+                        </label>
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" onclick="deleteUser({{ course_payment.student.user.id }})"
+                        data-bs-dismiss="modal">O'chirish
+                </button>
+                <div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                    <button type="button" class="btn btn-primary" onclick="updateUser()">Yangilash</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endfor %}
+<script src="{% static 'js/attendances.js' %}"></script>
+{% endblock content %}

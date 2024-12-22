@@ -1,19 +1,21 @@
-from django.shortcuts import get_object_or_404, redirect,render
-from .models import Course,UserSay,CustomUser,Student,Teacher,CourseStudent,CourseTask,Attendance,Mark,JoinRequest
-from .forms import CourseCreateForm,UserSayForm,CustomUserCreationForm,CourseUpdateForm,CourseStudentCreateForm,StudentEditForm,GroupTaskForm
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import Course, UserSay, CustomUser, Student, Teacher, CourseStudent, CourseTask, Attendance, Mark, \
+    JoinRequest, CoursePayment,StudentTask
+from .forms import CourseCreateForm, UserSayForm, CustomUserCreationForm, CourseUpdateForm, CourseStudentCreateForm, \
+    StudentEditForm, GroupTaskForm,StudentTakeTask
 from django.views.generic import View
-from django.contrib.auth import get_user_model,authenticate, login
+from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from datetime import datetime
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
+import json
 # Create your views here
 
 class IndexView(View):
@@ -25,28 +27,23 @@ class IndexView(View):
             return redirect('index')
         else:
             ctx = {'form': form}
-            
-        return render(request, 'main/index.html', ctx)            
 
-    def get(self, request): 
-        user_says = UserSay.objects.all()
-
-        ctx = { 
-            'user_says': user_says
-        } 
         return render(request, 'main/index.html', ctx)
 
-    
+    def get(self, request):
+        user_says = UserSay.objects.all()
 
+        ctx = {
+            'user_says': user_says
+        }
+        return render(request, 'main/index.html', ctx)
 
 
 def about_view(request):
-    
-
     ctx = {
-    
+
     }
-    return render(request, 'main/about.html',ctx)
+    return render(request, 'main/about.html', ctx)
 
 
 def contact_view(request):
@@ -55,7 +52,7 @@ def contact_view(request):
 
 #Course
 
-class CoursesView(LoginRequiredMixin,View):
+class CoursesView(LoginRequiredMixin, View):
     template_name = 'course/courses.html'
 
     def get(self, request):
@@ -64,7 +61,7 @@ class CoursesView(LoginRequiredMixin,View):
         #     return redirect('login')
         if request.user.is_authenticated:
 
-            if request.user.role == "ADMIN" or request.user.role == "STUDENT":
+            if request.user.role == "ADMIN":
                 # ADMIN uchun barcha kurslar
                 course_data = Course.objects.all()
                 form = CourseCreateForm()
@@ -73,10 +70,10 @@ class CoursesView(LoginRequiredMixin,View):
                     'form': form,
                 }
                 return render(request, self.template_name, ctx)
-            
+
             elif request.user.role == "TEACHER":
                 # O'qituvchi faqat o'z kurslarini ko'radi
-                
+
                 teacher_id = Teacher.objects.get(user=request.user.id)
                 course_data = Course.objects.filter(teacher=teacher_id)
                 form = CourseCreateForm()
@@ -85,7 +82,22 @@ class CoursesView(LoginRequiredMixin,View):
                     'form': form,
                 }
                 return render(request, self.template_name, ctx)
-            
+
+            elif request.user.role == "STUDENT":
+                student = request.user
+                print(student.id)
+                course_data = Course.objects.all()
+                form = CourseCreateForm()
+
+                is_join_request = JoinRequest.objects.filter(student=student.id).exists()
+
+                ctx = {
+                    'course_data': course_data,
+                    'form': form,
+                    'is_join_request': is_join_request
+                }
+                return render(request, self.template_name, ctx)
+
             else:
                 # Boshqa foydalanuvchilar uchun bu sahifani ko'rsatmaslik
                 messages.error(request, "Sizda kurslar ro'yxatini ko'rish yoki yaratish huquqi yo'q.")
@@ -93,16 +105,16 @@ class CoursesView(LoginRequiredMixin,View):
         else:
             course_data = Course.objects.all()
             form = CourseCreateForm()
-            is_join_request = JoinRequest.objects.get(student=student).exists()
-            
+            # is_join_request = JoinRequest.objects.get(student=student).exists()
+
             ctx = {
                 'course_data': course_data,
                 'form': form,
-                'is_join_request': is_join_request
+                # 'is_join_request': is_join_request
 
             }
             return render(request, self.template_name, ctx)
-            
+
     def post(self, request):
         # Foydalanuvchi tizimga kirganmi?
         if not request.user.is_authenticated:
@@ -139,11 +151,12 @@ class CoursesView(LoginRequiredMixin,View):
         }
         return render(request, self.template_name, ctx)
 
-def course_update_view(request,pk):
-    course = get_object_or_404(Course,pk=pk)
 
-    form = CourseUpdateForm(request.POST,instance=course)
-    
+def course_update_view(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+
+    form = CourseUpdateForm(request.POST, instance=course)
+
     if request.method == "POST":
         form = CourseUpdateForm(request.POST, instance=course)
         if form.is_valid():
@@ -154,7 +167,6 @@ def course_update_view(request,pk):
     else:
         form = CourseUpdateForm(instance=course)
 
-
     ctx = {
         'course': course,
         'form': form,
@@ -162,8 +174,9 @@ def course_update_view(request,pk):
 
     return render(request, 'course/course_edit.html', ctx)
 
-def course_delete_view(request,pk):
-    course = get_object_or_404(Course,pk=pk)
+
+def course_delete_view(request, pk):
+    course = get_object_or_404(Course, pk=pk)
 
     if request.method == "POST":
         course.delete()
@@ -173,7 +186,6 @@ def course_delete_view(request,pk):
         'course': course
     }
     return render(request, 'course/course_delete.html', ctx)
-
 
 
 def course_student_view(request, course_id):
@@ -196,9 +208,9 @@ def course_student_add_view(request, course_id):
             teacher = Teacher.objects.get(user=request.user.id)
             if form.is_valid():
                 course_student = form.save(commit=False)
-                course_student.course = course  # Kursni belgilash
-                course_student.teacher = teacher  # O'qituvchini belgilash
-                course_student.save()  # Saqlash
+                course_student.course = course
+                course_student.teacher = teacher
+                course_student.save()
                 return redirect('course_students', course_id=course.id)
             else:
                 return HttpResponse(f"Forma validatsiyadan o'tmadi! Xatoliklar: {form.errors}")
@@ -206,8 +218,6 @@ def course_student_add_view(request, course_id):
             return HttpResponse("Guruhga talaba qo'shish uchun siz teacher bo'lishingiz kerak!")
     else:
         form = CourseStudentCreateForm()
-
-
 
     ctx = {
         'form': form,
@@ -223,6 +233,7 @@ def gallery_view(request):
 def single_view(request):
     return render(request, 'main/single.html')
 
+
 def blogs_view(request):
     return render(request, 'main/blog.html')
 
@@ -231,8 +242,7 @@ def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.role = 'STUDENT'  # Default rolni belgilash
+            user = form.save()
             user.save()
 
             # filter yordamida faqat bitta studentni olish
@@ -251,8 +261,6 @@ def signup_view(request):
         form = CustomUserCreationForm()
 
     return render(request, 'registrations/sign_up.html', {'form': form})
-
-
 
 
 def sign_in_view(request):
@@ -280,17 +288,6 @@ def logout_view(request):
     return redirect('index')
 
 
-def student_detail_view(request,course_id,student_id):
-        
-    course_student = CourseStudent.objects.get(course=course_id,student=student_id)
-    student = course_student.student.user
-
-    ctx = {
-        'course_student': course_student,
-        'student': student
-    }
-    return render(request, 'main/student_detail.html',ctx)
-
 
 def student_edit_view(request, course_id, student_id):
     course_student = CourseStudent.objects.get(course=course_id, student=student_id)
@@ -310,7 +307,7 @@ def student_edit_view(request, course_id, student_id):
         'course_student': course_student,
         'student': student,
     }
-    return render(request, 'main/student_edit.html', ctx)
+    return render(request, 'student/student_edit.html', ctx)
 
 
 def student_delete_view(request, course_id, student_id):
@@ -328,12 +325,73 @@ def student_delete_view(request, course_id, student_id):
     ctx = {
         'course_student': course_student,
         'student': student,
-    }   
+    }
 
-    return render(request, 'main/student_delete.html',ctx)
+    return render(request, 'student/student_delete.html', ctx)
 
 
-def group_tasks_view(request,course_id):
+#Student Task
+class StudentTaskTakeView(View):
+    def post(self,request, course_id, student_id):
+        today = timezone.now().date()
+        course_student = CourseStudent.objects.get(course=course_id, student=student_id)
+        if request.method == 'POST':
+            # if form.is_valid():
+            name = request.POST.get('name')
+            description = request.POST.get('description')
+            until_date = request.POST.get('until_date')
+            print(until_date)
+            is_done = request.POST.get('is_done') == "on"
+
+            StudentTask.objects.create(
+                course=course_student.course,
+                student=course_student.student,
+                name=name,
+                description=description,
+                given_date=today,
+                until_date=until_date,
+                is_done=is_done,
+            )
+            return redirect("student_detail", course_id=course_id, student_id=student_id)
+        else:
+            pass
+
+        ctx = {
+            'course_student': course_student,
+            'today': today,
+            'course_id': course_id,
+            'student_id': student_id
+        }
+        return render(request, 'student/student_task_take.html', ctx)
+
+    def get(self,request, course_id, student_id):
+        today = timezone.now().date()
+        course_student = CourseStudent.objects.get(course=course_id, student=student_id)
+
+        ctx = {
+            'course_student': course_student,
+            'today': today,
+            'course_id': course_id,
+            'student_id': student_id
+        }
+        return render(request, 'student/student_task_take.html', ctx)
+
+
+def student_detail_view(request, course_id, student_id):
+    course_student = CourseStudent.objects.get(course=course_id, student=student_id)
+    student = course_student.student
+    student_tasks = StudentTask.objects.filter(student=student)
+
+
+
+    ctx = {
+        'course_student': course_student,
+        'student': student,
+        'student_tasks': student_tasks
+    }
+    return render(request, 'student/student_detail.html', ctx)
+
+def group_tasks_view(request, course_id):
     # course_stundent = get_object_or_404(CourseStudent,pk=course_id)
     # course_student = CourseStudent.objects.get(course=course_id)
     course = course_id
@@ -344,7 +402,7 @@ def group_tasks_view(request,course_id):
         'course': course,
         'course_tasks': course_tasks
     }
-    return render(request, 'course/group_tasks.html',ctx)
+    return render(request, 'course/group_tasks.html', ctx)
 
 
 def create_group_task_view(request, course_id):
@@ -371,8 +429,7 @@ def create_group_task_view(request, course_id):
     return render(request, 'course/create_group_task.html', ctx)
 
 
-
-def attendances_view(request,course_id):
+def attendances_view(request, course_id):
     today = timezone.now().date()
     course = get_object_or_404(Course, id=course_id)
     course_students = CourseStudent.objects.filter(course=course_id)
@@ -380,7 +437,7 @@ def attendances_view(request,course_id):
     # attendance  = Attendance.objects.filter(course=course_id).first()
     marks = Mark.objects.filter(attendance__in=attendances)
 
-    is_att_taken = Attendance.objects.filter(date=today,course=course_id).exists()
+    is_att_taken = Attendance.objects.filter(date=today, course=course_id).exists()
     date_list = Attendance.objects.filter(course=course_id).order_by('date')
     date_paginator = Paginator(date_list, 2)  # Show 5 dates per page
     date_page = request.GET.get('date_page')
@@ -394,9 +451,8 @@ def attendances_view(request,course_id):
 
     paginated_dates = attendances_paginated.object_list
 
-
     students_with_marks = []
-    
+
     for course_student in course_students:
         for attendance in attendances:
             print(attendance)
@@ -411,8 +467,7 @@ def attendances_view(request,course_id):
             })
         except:
             pass
-                
-        
+
     # return HttpResponse(students_with_marks)
     # print(students_with_marks)
 
@@ -424,7 +479,7 @@ def attendances_view(request,course_id):
         students_with_marks_paginated = paginator.page(1)
     except EmptyPage:
         students_with_marks_paginated = paginator.page(paginator.num_pages)
-        
+
     ctx = {
         'course': course,
         'course_students': course_students,
@@ -439,13 +494,12 @@ def attendances_view(request,course_id):
         'is_att_taken': is_att_taken,
     }
 
-    return render(request, 'attendances/attendances.html',ctx)
-
+    return render(request, 'attendances/attendances.html', ctx)
 
 
 # attendance
 class AttendanceTakeView(View):
-    def post(self,request,course_id):
+    def post(self, request, course_id):
         today = timezone.now().date()
         course = get_object_or_404(Course, id=course_id)
         course_students = CourseStudent.objects.filter(course=course)
@@ -454,21 +508,20 @@ class AttendanceTakeView(View):
             today = timezone.now().date()
             course = get_object_or_404(Course, id=course_id)
             course_students = CourseStudent.objects.filter(course=course)
-            print(request.method)
+            # print(request.method)
 
-            attendance = Attendance.objects.create(course=course, date=today) 
+            attendance = Attendance.objects.create(course=course, date=today)
             for course_student in course_students:
-                print(course_student.student.id)
-                print(course_student.student.user.username)
+                # print(course_student.student.id)
+                # print(course_student.student.user.username)
                 attendance_key = f"attended_{course_student.student.id}"
                 is_attended = request.POST.get(attendance_key) == 'on'
-                print(f"Attendance key: {attendance_key}, Is attended: {is_attended}")
-
+                # print(f"Attendance key: {attendance_key}, Is attended: {is_attended}")
 
                 mark = Mark.objects.create(
-                    student = course_student.student,
-                    attendance = attendance,
-                    is_attended = is_attended
+                    student=course_student.student,
+                    attendance=attendance,
+                    is_attended=is_attended
                 )
                 print(f"Mark created: {mark}")
             return redirect('attendances', course.id)
@@ -481,16 +534,13 @@ class AttendanceTakeView(View):
 
         }
 
+        return render(request, 'attendances/attendance_take.html', ctx)
 
-        return render(request, 'attendances/attendance_take.html',ctx)
-
-    def get(self,request,course_id):
+    def get(self, request, course_id):
         today = timezone.now().date()
         course = get_object_or_404(Course, id=course_id)
         course_students = CourseStudent.objects.filter(course=course)
         print(request.method)
-
-        
 
         ctx = {
             'course': course,
@@ -499,11 +549,11 @@ class AttendanceTakeView(View):
 
         }
 
+        return render(request, 'attendances/attendance_take.html', ctx)
 
-        return render(request, 'attendances/attendance_take.html',ctx)
 
 class AttendanceUpdateView(View):
-    def get(self,request,course_id,attendance_id):
+    def get(self, request, course_id, attendance_id):
         course_id = course_id
         attendance = Attendance.objects.get(id=attendance_id)
         today = datetime.now().date()
@@ -515,10 +565,9 @@ class AttendanceUpdateView(View):
             'course_id': course_id
         }
 
-        return render(request, 'attendances/attendance_update.html',ctx)
+        return render(request, 'attendances/attendance_update.html', ctx)
 
-
-    def post(self,request,course_id,attendance_id):
+    def post(self, request, course_id, attendance_id):
         course_id = course_id
         attendance = Attendance.objects.get(id=attendance_id)
         marks = Mark.objects.filter(attendance=attendance)
@@ -529,36 +578,33 @@ class AttendanceUpdateView(View):
                 for mark in marks:
                     is_attended_input = request.POST.get(f"is_attended_{mark.id}")
                     mark.is_attended = is_attended_input == 'on'
-                Mark.objects.bulk_update(marks,['is_attended'])
-                return redirect('attendances' ,course_id=course_id)
+                Mark.objects.bulk_update(marks, ['is_attended'])
+                return redirect('attendances', course_id=course_id)
 
-
-            
             ctx = {
                 'attendance': attendance,
                 'marks': marks,
                 'course_id': course_id
             }
 
-            return render(request, 'attendances/attendance_update.html',ctx)
+            return render(request, 'attendances/attendance_update.html', ctx)
         else:
             return HttpResponse("Faqat bugungi sanadagi davomaladlarni yangilash mumkin")
 
 
-
-
 #Teacher
 def teacher_edit_view(request):
-    return render(request,'teacher/teacher_edit.html')
+    return render(request, 'teacher/teacher_edit.html')
+
 
 @login_required
 def teachers_view(request):
     # only_admin = request.user.role == 'ADMIN'
     user = request.user
     if user.role == "ADMIN" or user.role == "STUDENT":
-        
+
         teachers = Teacher.objects.all()
-        
+
         teacher_courses = []
         for teacher in teachers:
             course = Course.objects.filter(teacher=teacher)
@@ -570,22 +616,16 @@ def teachers_view(request):
             )
         # print(teacher_courses)
 
-        
-
-
         ctx = {
-        'teachers': teachers,
-        # 'course': courses,
-        'teacher_courses': teacher_courses
+            'teachers': teachers,
+            # 'course': courses,
+            'teacher_courses': teacher_courses
         }
 
-        return render(request, 'teacher/teachers.html',ctx)
+        return render(request, 'teacher/teachers.html', ctx)
     elif user.role == "TEACHER":
         teacher = Teacher.objects.get(user=user.id)
         courses = Course.objects.filter(teacher=teacher)
-        
-
-
 
         # teachers = Teacher.objects.all()
         ctx = {
@@ -593,15 +633,11 @@ def teachers_view(request):
             'courses': courses
         }
 
-        return render(request, 'teacher/teachers.html',ctx)
-
-   
+        return render(request, 'teacher/teachers.html', ctx)
 
 
-
-
-def teacher_detail_view(request,teacher_id):
-    teacher = get_object_or_404(Teacher,id=teacher_id)
+def teacher_detail_view(request, teacher_id):
+    teacher = get_object_or_404(Teacher, id=teacher_id)
 
     courses = Course.objects.filter(teacher=teacher)
 
@@ -609,21 +645,25 @@ def teacher_detail_view(request,teacher_id):
         'teacher': teacher,
         'courses': courses
     }
-    return render(request,'teacher/teacher_detail.html',ctx)
+    return render(request, 'teacher/teacher_detail.html', ctx)
+
 
 @login_required
 def profile_view(request):
-    join_requests = JoinRequest.objects.all()
+    join_requests = JoinRequest.objects.filter(joinded=False)
     user = request.user
-    
+
     if user.role == "TEACHER":
         teacher = Teacher.objects.get(user=user)
         courses = Course.objects.filter(teacher=teacher)
         course_students = CourseStudent.objects.filter(teacher=teacher)
+
+        # student = JoinRequest.objects.all()
         number = 0
         for course_student in course_students:
-            number+=1
-        print(number)
+            JoinRequest.objects.filter(student=course_student.student).update(joinded=True)
+            number += 1
+        # print(number)
         ctx = {
             'join_requests': join_requests,
             'user': user,
@@ -631,18 +671,17 @@ def profile_view(request):
             'course_students': course_students,
             'number': number
         }
-        return render(request, 'main/profile.html',ctx)
+        return render(request, 'main/profile.html', ctx)
 
     else:
         ctx = {
             'join_requests': join_requests,
             'user': user
         }
-        return render(request, 'main/profile.html',ctx)
+        return render(request, 'main/profile.html', ctx)
 
 
-
-def user_edit_view(request,user_id):
+def user_edit_view(request, user_id):
     user = CustomUser.objects.get(id=user_id)
 
     if request.method == "POST":
@@ -653,48 +692,155 @@ def user_edit_view(request,user_id):
     else:
         form = StudentEditForm(instance=user)
 
-
     ctx = {
         'form': form,
     }
-    return render(request,'main/user_edit.html',ctx)
-
-    
+    return render(request, 'main/user_edit.html', ctx)
 
 
 def error_404_view(request):
-    return render(request,'404.html')
+    return render(request, '404.html')
 
-def join_request_view(request,course_id):
 
+def join_request_view(request, course_id):
     course = Course.objects.get(id=course_id)
     user = request.user
     student = Student.objects.get(id=user.id)
-    
+
     # print(is_join_request)
     # if is_join_request:
     join_request = JoinRequest.objects.create(
-        student = student,
-        course = course,
-        is_sent = True
-    ) 
+        student=student,
+        course=course,
+        is_sent=True
+    )
     # is_join_request = JoinRequest.objects.get(student=student).exists()
 
     ctx = {
         "course": course,
     }
-    return render(request,'course/join_request.html',ctx)
+    return render(request, 'course/join_request.html', ctx)
     # else:
     #     return HttpResponse("Siz course ga so'rov yuborgansiz iltimos kuting")
+
+
+#Payemnts
+
+
+class CoursePaymentTakeView(View):
+    def get(self, request, course_id):
+        today = timezone.now().date()
+        course = Course.objects.get(id=course_id)
+        students = CourseStudent.objects.filter(course=course_id)
+
+
+        ctx = {
+            'students': students,
+
+
+        }
+
+        return render(request, 'payments/course_pay_take.html', ctx)
+        # else:
+        #
+        #     return HttpResponse("Post method emas")
+
+    def post(self, request, course_id):
+        today = timezone.now().date()
+        # print(today)
+        course = CourseStudent.objects.get(id=course_id)
+        students = CourseStudent.objects.filter(course=course_id)
+
+        student = request.POST.get('student')
+        price = request.POST.get('price')
+        payment_method = request.POST.get('payment_method')
+        is_paid = request.POST.get('is_paid') == "on"
+
+        student = get_object_or_404(Student, id=student)
+        if request.POST:
+            # CoursePayment yaratish
+            CoursePayment.objects.create(
+                course=course.course,
+                student=student,
+                price=float(price),
+                pay_date=today,
+                payment_method=payment_method,
+                is_paid=is_paid,
+            )
+
+            return redirect('course_payments', course_id)
+
+        ctx = {
+            'students': students,
+            'course_id': course_id,
+            'today': today
+
+        }
+
+        return render(request, 'payments/course_pay_take.html', ctx)
+    # else:
+    #
+    #     return HttpResponse("Post method emas")
+
+
+class CoursePaymentsView(View):
+    def get(self,request, course_id):
+        course_payments = CoursePayment.objects.filter(course=course_id)
+
+        ctx = {
+            'course_payments': course_payments,
+            'course_id': course_id
+        }
+
+
+        return render(request, 'payments/course_payments.html', ctx)
+    def post(self,request, course_id):
+
+        course_payments = CoursePayment.objects.filter(course=course_id)
+
+        if request.method == 'POST':
+            # JSON ma'lumotlarini olish
+            try:
+                json_data = json.loads(request.body)
+                id = json_data.get('id')
+                username = json_data.get('username')
+            except json.JSONDecodeError:
+                return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+            # ID va username bo'yicha CoursePayment obyektini qidirish
+            user_payment = CoursePayment.objects.filter(student_id=id).first()
+            print(user_payment)
+
+            if user_payment:
+                # O'chirish yoki boshqa operatsiyalar
+                user_payment.delete()
+                return JsonResponse({'message': 'Foydalanuvchi o\'chirildi.'})
+            else:
+                return JsonResponse({'message': 'Foydalanuvchi topilmadi.'}, status=404)
+
+        return JsonResponse({'message': 'Bunday metod qo\'llanilmaydi.'}, status=405)
+
+        ctx = {
+            'course_payments': course_payments,
+            'course_id': course_id
+        }
+
+        return render(request, 'payments/course_payments.html', ctx)
+
+
+def course_payme_detail_view(request, course_id, student_id):
+    course_student = get_object_or_404(CourseStudent, course=course_id)
+    course_payment = CoursePayment.objects.filter(student=student_id).first()
+    ctx = {
+        'course_payment': course_payment,
+        'course_student': course_student
+    }
+
+    return render(request, 'payments/course_payme_detail.html', ctx)
 
 
 def change_user_role(request, user_id, new_role):
     user = get_object_or_404(CustomUser, id=user_id)
     user.role = new_role
     user.save()  # Signal avtomatik ravishda ishlaydi
-    return redirect('user_list') 
-
-
-
-
-
+    return redirect('user_list')

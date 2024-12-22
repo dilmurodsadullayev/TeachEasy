@@ -4,39 +4,40 @@
 {% block content %}
 
 <div class="container mt-5">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white">
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Courses</a></li>
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Attendances</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Create Attendance</li>
-    </ol>
-  </nav>
-  <div class="d-flex justify-content-center mb-3">
-    <h1>{{ course.name }} - Create Attendance</h1>
-  </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Courses</a></li>
+            <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Attendances</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create Attendance</li>
+        </ol>
+    </nav>
+    <div class="d-flex justify-content-center mb-3">
+        <h1>{{ course.name }} - Create Attendance</h1>
+    </div>
 
-  <form method="POST" action="{% url 'attendance_take' course.id %}"> {% csrf_token %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Full Name</th>
-          <th scope="col">{{ today }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for course_student in course_students %}
-        <tr>
-          <th scope="row">{{ forloop.counter }}</th>
-          <td>{{ course_student.student.user.first_name }} {{ course_student.student.user.last_name }}</td>
-          <td><input type="checkbox" class="ml-4 form-check-input" name="attended_{{ course_student.student.id }}"></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <form method="POST" action="{% url 'attendance_take' course.id %}"> {% csrf_token %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">{{ today }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for course_student in course_students %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ course_student.student.user.first_name }} {{ course_student.student.user.last_name }}</td>
+                <td><input type="checkbox" class="ml-4 form-check-input"
+                           name="attended_{{ course_student.student.id }}"></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <button type="submit" class="btn btn-outline-success">Save</button>
-  </form>
+        <button type="submit" class="btn btn-outline-success">Save</button>
+    </form>
 </div>
 
 {% endblock content %}

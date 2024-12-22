@@ -1,0 +1,37 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Course Payment take{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <form method="post">{% csrf_token %}
+       <div class="mb-3">
+            <label class="form-label">Student</label>
+            <select name="student" class="form-select" aria-label="Default select example">
+                <option selected>Choose a student</option>
+                {% for student in students %}
+                    <option value="{{ student.student.id }}">
+                        {{ student.student.user.username }} {{ student.student.id }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Prise</label>
+            <input type="number" class="form-control" name="price">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Payment Method</label>
+            <input type="text" class="form-control" name="payment_method">
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="is_paid">
+          <label class="form-check-label" for="flexCheckDefault">
+            Status
+          </label>
+        </div>
+        <button type="submit" class="btn btn-outline-success text-right">Save</button>
+    </form>
+</div>
+{% endblock content %}

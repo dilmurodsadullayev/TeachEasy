@@ -32,7 +32,7 @@
                     <div class="mb-3">
                         <label for="courseName" class="form-label">Name</label>
                         <input type="text" class="form-control" id="courseName" placeholder="Course name" name="name"
-                            required>
+                               required>
                     </div>
                     <div class="input-group mb-3">
                         <input type="file" class="form-control" id="inputGroupFile01" name="image" required>
@@ -53,13 +53,13 @@
                     <div class="input-group mb-3">
                         <span class="input-group-text">Sum</span>
                         <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
-                            name="price" required>
+                               name="price" required>
                         <span class="input-group-text">.00</span>
                     </div>
                     <div class="mb-3">
                         <label for="scheduleDays" class="form-label">Available Days</label>
                         <input type="text" class="form-control" id="scheduleDays" placeholder="Example: Odd days"
-                            name="schedule_days" required>
+                               name="schedule_days" required>
                     </div>
                 </div>
 
@@ -74,9 +74,6 @@
 </div>
 
 <!-- Modal -->
-
-
-
 
 
 <!-- Class Start -->
@@ -101,57 +98,91 @@
                 <div class="card border-0 bg-light shadow-sm pb-2">
                     {% if course.image.url %}
                     <img class="card-img-top mb-2" style="width: 349px; height: 233px;" src="{{ course.image.url }}"
-                        alt="coruse ni rasimi yo'q">
+                         alt="coruse ni rasimi yo'q">
                     {% else %}
                     <img class="card-img-top mb-2" src="{% static 'img/class-1.jpg' %}" alt="">
                     {% endif %}
                     <div class="card-body text-center">
                         <h4 class="card-title">{{ course.name }}</h4>
-                        <h4 class="card-title">{{ course.id }}</h4>
                         <p class="card-text">{{ course.description }}</p>
 
                     </div>
-                    <div class="card-footer bg-transparent py-4 px-5 border-bottom">
-                        <div class="row border-bottom">
-                            <div class="col-6 py-1 text-right border-right"><strong>Avilable days</strong></div>
-                            <div class="col-6 py-1">{{ course.schedule_days }}</div>
+
+
+                    <!--                    <div class="card-footer bg-transparent py-4 px-5 border-bottom">-->
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne"
+                                        aria-controls="collapseOne">
+                                    Course's data
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse"
+                                 data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="row border-bottom">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Avilable
+                                            days</strong></div>
+                                        <div class="col-6 py-1">{{ course.schedule_days }}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Class Time</strong>
+                                        </div>
+                                        <div class="col-6 py-1">{{ course.start_time }} {{ course.end_time }}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Tution Fee</strong>
+                                        </div>
+                                        <div class="col-6 py-1">{{ course.price }}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Tasks</strong></div>
+                                        <div class="col-6 py-1"><a href="{% url 'group_tasks' course.id %}">See
+                                            task</a></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Attendances</strong>
+                                        </div>
+                                        <div class="col-6 py-1"><a href="{% url 'attendances' course.id %}">See
+                                            attendance</a></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Course
+                                            payments</strong></div>
+                                        <div class="col-6 py-1"><a href="{% url 'course_payments' course.id %}">Se
+                                            Payments</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="row border-bottom">
-                            <div class="col-6 py-1 text-right border-right"><strong>Class Time</strong></div>
-                            <div class="col-6 py-1">{{ course.start_time }} {{ course.end_time }}</div>
-                        </div>
-                        <div class="row border-bottom">
-                            <div class="col-6 py-1 text-right border-right"><strong>Tution Fee</strong></div>
-                            <div class="col-6 py-1">{{ course.price }}</div>
-                        </div>
-                        <div class="row border-bottom">
-                            <div class="col-6 py-1 text-right border-right"><strong>Tasks</strong></div>
-                            <div class="col-6 py-1"><a href="{% url 'group_tasks' course.id %}">See task</a></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 py-1 text-right border-right"><strong>Attendances</strong></div>
-                            <div class="col-6 py-1"><a href="{% url 'attendances' course.id %}">See attendance</a></div>
-                        </div>
+
                     </div>
+                    <!--                    </div>-->
                     <div class="row mt-3 mb-3">
                         <div class="col-6 text-right"><strong>Course Student</strong></div>
                         <div class="col-6"><a href="{% url 'course_students' course.pk %}">Show</a></div>
                     </div>
                     <div class="row border-bottom">
+                        {% if request.user.role == "TEACHER" or request.user.role == "ADMIN" %}
+                        {% else %}
                         {% if is_join_request %}
+                        {% else %}
                         <div class="col-6 py-1 text-right border-right"><strong>Join request:</strong></div>
                         <div class="col-6 py-1">
                             <a href="{% url 'join_request' course.id %}">
                                 <img style="width: 25px; height: 25px;" src="{% static 'img/join_request.png' %}"
-                                    alt="join request"></a>
+                                     alt="join request"></a>
                         </div>
-                        {% else %}
+                        {% endif %}
                         {% endif %}
                     </div>
                     <div class="d-flex">
                         <a href="{% url 'course_edit' course.pk %}" class="btn btn-primary px-4 mx-auto mb-4">Edit</a>
                         <a href="{% url 'course_delete' course.pk %}"
-                            class="btn btn-warning px-4 mx-auto mb-4">Delete</a>
+                           class="btn btn-warning px-4 mx-auto mb-4">Delete</a>
                     </div>
 
                 </div>
@@ -169,7 +200,7 @@
 
 <!-- Modal to show after clicking the "Join request" -->
 <div class="modal fade" id="exampleModal{{ course.id }}" tabindex="-1"
-    aria-labelledby="exampleModalLabel{{ course.id }}" aria-hidden="true">
+     aria-labelledby="exampleModalLabel{{ course.id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -207,7 +238,6 @@
         });
     });
 </script>
-
 
 
 {% endblock content %}
