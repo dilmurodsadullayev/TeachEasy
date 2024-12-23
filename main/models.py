@@ -98,8 +98,37 @@ class Owner(models.Model):
         return self.user.username
 
 
-# class OwnerCourse(models.Model):
-#     own = models.ForeignKey()
+class Feedback(models.Model):
+    FEEDBACK_TYPES = [
+        ('bug', 'Bug'),
+        ('suggestion', 'Suggestion'),
+        ('general', 'General comment'),
+    ]
+
+    FEEDBACK_STATUS = [
+        ('new', "New"),
+        ('progress', "In Progress"),
+        ('resolved', "Resolved"),
+    ]
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    title = models.CharField(max_length=150)
+    description = models.TextField()
+    type = models.CharField(max_length=50,choices=FEEDBACK_TYPES,default='general')
+    page_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, choices=FEEDBACK_STATUS, default='new')
+    resolved_at = models.DateTimeField(auto_now=True)
+    is_send = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} {self.title}"
+
+    def save(self, *args, **kwargs):
+        if not self.id:  # Yangi obyekt yaratilganda
+            self.status = 'new'
+        super().save(*args, **kwargs)
+
 
 
 
