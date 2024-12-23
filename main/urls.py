@@ -39,6 +39,8 @@ from .views import (
     #profile
     profile_view,
     user_edit_view,
+    #feedbacks
+    FeedbacksView,
     #404
     error_404_view
 
@@ -84,6 +86,8 @@ urlpatterns = [
     #profile
     path('profile',profile_view,name='profile'),
     path('profile/<int:user_id>/edit',user_edit_view,name='user_edit'),
+    #Feedbacks
+    path('feedbacks',FeedbacksView.as_view(),name='feedbacks'),
     #404
     path('404',error_404_view,name='error'),
 

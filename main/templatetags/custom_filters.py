@@ -10,3 +10,14 @@ def format_timestamp(value):
         locale.setlocale(locale.LC_TIME, 'uz_UZ.UTF-8')  # Adjust this based on your system's locale settings
         return value.strftime('%Y-yil %d-%B')  
     return value
+
+
+
+
+
+@register.filter  # filterni ro'yxatdan o'tkazish
+def feedback_timestamp(value):
+    if isinstance(value, datetime):
+        locale.setlocale(locale.LC_TIME, 'uz_UZ.UTF-8')  # Locale o'rnatish
+        return value.strftime('%Y-%m-%d %H:%M:%S')  # Yil-oy-kun soat:dakika:sekund formatida
+    return value
