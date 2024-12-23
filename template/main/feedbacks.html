@@ -1,0 +1,102 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} feedbacks {% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Request for Information Form</h1>
+    <p class="text-center">Please fill out this form completely to help us process your request efficiently. Your
+        detailed input will allow us to provide a faster and more accurate response.</p>
+    <p class="text-center">If you have any additional questions or comments, please feel free to let us know. Your
+        feedback is highly valuable to us.</p>
+
+    {% if is_sended %}
+    {% else %}
+    <form method="post">
+        {% csrf_token %}
+        <!-- Title -->
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" placeholder="Type a placeholder" name="title">
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" rows="3" placeholder="Type a placeholder"
+                      name="description"></textarea>
+        </div>
+
+        <!-- Type -->
+        <div class="mb-3">
+            <label for="type" class="form-label">Type</label>
+            <select name="type" id="type" class="form-select">
+                {% for value, label in type_feedbacks %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <!-- Page Name -->
+        <div class="mb-3">
+            <label for="pageName1" class="form-label">Page Name</label>
+            <input type="text" class="form-control" id="pageName1" placeholder="Type a placeholder" name="page_name">
+        </div>
+
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+    </form>
+    {% endif %}
+
+
+   <!-- Testimonial Start -->
+<div class="container-fluid py-5">
+    <div class="container p-0">
+        <div class="text-center pb-2">
+            <p class="section-title px-5"><span class="px-2">Feedbacks</span></p>
+            <h1 class="mb-4">What Users Say!</h1>
+        </div>
+        {% if feedbacks %}
+        <div class="owl-carousel testimonial-carousel">
+            {% for feedback in feedbacks %}
+
+            <div class="testimonial-item px-3">
+                <div class="bg-light shadow-sm rounded mb-4 p-4">
+                    <h3 class="fas fa-quote-left text-primary mr-3"></h3>
+                    {{ feedback.description }}
+                </div>
+                <div class="d-flex align-items-center">
+                   {% if feedback.user.image %}
+                        <img class="rounded-circle" src="{{ feedback.user.image.url }}"
+                             style="width: 70px; height: 70px;" alt="Image">
+                        {% else %}
+                        <img class="rounded-circle" src="{% static 'img/user.png' %}"
+                             style="width: 70px; height: 70px;" alt="Image">
+                        {% endif %}
+                        <div class="pl-3">
+
+                            <i>{{ feedback.title }}</i>
+                        </div>
+
+                    <div class="pl-3">
+                        <h5>{{ feedback.user.username }}</h5>
+                        <i>{{ feedback.created_at | feedback_timestamp }}</i>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <h4 class="text-center">There are no news items</h4>
+        {% endif %}
+    </div>
+</div>
+<!-- Testimonial End -->
+</div>
+{% endblock content %}

@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Course, UserSay, CustomUser, Student, Teacher, CourseStudent, CourseTask, Attendance, Mark, \
-    JoinRequest, CoursePayment,StudentTask
+    JoinRequest, CoursePayment,StudentTask,Feedback
 from .forms import CourseCreateForm, UserSayForm, CustomUserCreationForm, CourseUpdateForm, CourseStudentCreateForm, \
-    StudentEditForm, GroupTaskForm,StudentTakeTask
+    StudentEditForm, GroupTaskForm, StudentTakeTask, FeedbackForm
 from django.views.generic import View
 from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
@@ -818,7 +818,7 @@ class CoursePaymentsView(View):
             else:
                 return JsonResponse({'message': 'Foydalanuvchi topilmadi.'}, status=404)
 
-        return JsonResponse({'message': 'Bunday metod qo\'llanilmaydi.'}, status=405)
+        # return JsonResponse({'message': 'Bunday metod qo\'llanilmaydi.'}, status=405)
 
         ctx = {
             'course_payments': course_payments,
@@ -844,3 +844,68 @@ def change_user_role(request, user_id, new_role):
     user.role = new_role
     user.save()  # Signal avtomatik ravishda ishlaydi
     return redirect('user_list')
+
+
+class FeedbacksView(LoginRequiredMixin,View):
+    def get(self,request):
+        user = get_object_or_404(CustomUser,pk=request.user.id)
+        is_sended = Feedback.objects.filter(user=user).first()
+        type_feedbacks = Feedback.FEEDBACK_TYPES
+
+        feedbacks = Feedback.objects.all()
+
+        ctx = {
+
+            'feedbacks': feedbacks,
+            'user': user,
+            'type_feedbacks': type_feedbacks,
+            'is_sended':is_sended
+        }
+        return render(request,'main/feedbacks.html',ctx)
+
+    def post(self, request):
+        # Foydalanuvchini olish
+        user = get_object_or_404(CustomUser, pk=request.user.id)
+        print(user)
+        feedbacks = Feedback.objects.all()
+        # POST ma'lumotlarini olish
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        type = request.POST.get('type')
+        page_name = request.POST.get('page_name', 'Default Page')  # Default qiymat
+
+
+        if request.method == "POST":
+
+
+            valid_types = [choice[0] for choice in Feedback.FEEDBACK_TYPES]  # TYPE_CHOICES dan qiymatlar
+            if type not in valid_types:
+                return JsonResponse({"error": "Invalid type value"}, status=400)
+
+
+            try:
+                Feedback.objects.create(
+                    user=user,
+                    title=title,
+                    description=description,
+                    type=type,
+                    page_name=page_name,
+                    is_send=True
+                )
+                # return JsonResponse({"success": "Feedback created successfully"})
+                return redirect('feedbacks')
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=500)
+
+
+
+        ctx = {
+
+            'user': user,
+            'feedbacks': feedbacks,
+        }
+
+
+
+
+        return render(request,'main/feedbacks.html',ctx)

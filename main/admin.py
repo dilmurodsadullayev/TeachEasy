@@ -13,7 +13,8 @@ from .models import (
     Teacher,
     Student,
     Owner,
-    JoinRequest
+    JoinRequest,
+    Feedback
 
 )
 # Register your models here.
@@ -46,6 +47,7 @@ admin.site.register(Teacher)
 admin.site.register(Student)
 admin.site.register(Owner)
 admin.site.register(JoinRequest)
+admin.site.register(Feedback)
 
 
 
