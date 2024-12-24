@@ -24,7 +24,8 @@ env/
 # PyCharm settings
 .idea/
 
-
+db.sqlite3
+sqlite3
 
 
 # Environment variable files
