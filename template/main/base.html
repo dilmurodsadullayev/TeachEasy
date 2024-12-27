@@ -160,12 +160,22 @@
                 <span class="get-in-touch"><span></span></span>
             </h3>
             <div class="d-flex flex-column justify-content-start">
-                <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                <a class="text-white mb-2" href="/about.html"><i class="fa fa-angle-right mr-2"></i>About Us</a>
-                <a class="text-white mb-2" href="/class.html"><i class="fa fa-angle-right mr-2"></i>Our Classes</a>
-                <a class="text-white mb-2" href="/team.html"><i class="fa fa-angle-right mr-2"></i>Our Teachers</a>
-                <a class="text-white mb-2" href="/blog.html"><i class="fa fa-angle-right mr-2"></i>Our Blog</a>
-                <a class="text-white" href="/contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                {% if request.user.is_authenticated %}
+                <a class="text-white mb-2" href="{% url 'index' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                <a class="text-white mb-2" href="{% url 'about' %}"><i class="fa fa-angle-right mr-2"></i>About</a>
+                <a class="text-white mb-2" href="{% url 'courses' %}"><i class="fa fa-angle-right mr-2"></i>Courses</a>
+                <a class="text-white mb-2" href="{% url 'teachers' %}"><i class="fa fa-angle-right mr-2"></i>Teachers</a>
+                <a class="text-white mb-2" href="{% url 'contact' %}"><i class="fa fa-angle-right mr-2"></i>Contact</a>
+                <a class="text-white mb-2" href="{% url 'feedbacks' %}"><i class="fa fa-angle-right mr-2"></i>Feedbacks</a>
+                <a class="text-white mb-2" href="{% url 'profile' %}"><i class="fa fa-angle-right mr-2"></i>Profile</a>
+                {% else %}
+                <a class="text-white mb-2" href="{% url 'index' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                <a class="text-white mb-2" href="{% url 'about' %}"><i class="fa fa-angle-right mr-2"></i>About</a>
+                <a class="text-white mb-2" href="{% url 'courses' %}"><i class="fa fa-angle-right mr-2"></i>Courses</a>
+                <a class="text-white mb-2" href="{% url 'teachers' %}"><i class="fa fa-angle-right mr-2"></i>Teachers</a>
+                <a class="text-white mb-2" href="{% url 'contact' %}"><i class="fa fa-angle-right mr-2"></i>Contact</a>
+                {% endif %}
+
             </div>
         </div>
 

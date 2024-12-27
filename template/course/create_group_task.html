@@ -21,7 +21,7 @@
   <form method="post">{% csrf_token %}
 
     <div class="mb-3">
-      <label class="form-label" for="task-name">Task Name</label>
+      <label class="form-label" for="task-name">Topshiriq nomi</label>
       <input type="text" class="form-control" name="task_name" id="task-name">
       {% if form.name.errors %}
       <div class="text-danger">
@@ -34,7 +34,7 @@
     <input type="hidden" id="custId" name="course" value="{{ course }}">
 
     <div class="mb-3">
-      <label class="form-label" for="definition">Definition</label>
+      <label class="form-label" for="definition">Tasnif</label>
       <textarea class="form-control" rows="3" name="definition" id="definition"></textarea>
       {% if form.description.errors %}
       <div class="text-danger">
@@ -46,8 +46,8 @@
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="given-date">Start Date</label>
-      <input type="date" class="form-control" name="given_date" id="given-date">
+
+      <input type="hidden" class="form-control" name="given_date" id="given-date" value="{{ today|date:"Y-m-d" }}">
       {% if form.given_date.errors %}
       <div class="text-danger">
         {% for error in form.given_date.errors %}
@@ -58,7 +58,7 @@
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="until-date">End Date</label>
+      <label class="form-label" for="until-date">Topshiradigan sana</label>
       <input type="date" class="form-control" name="until_date" id="until-date">
       {% if form.until_date.errors %}
       <div class="text-danger">
@@ -69,20 +69,8 @@
       {% endif %}
     </div>
 
-    <div class="mb-3">
-      <label class="form-check-label mb-4" for="btncheck3">Completed</label>
-      <input type="checkbox" class="form-check-input" name="is_done" id="btncheck3"
-             {% if form.is_done.value%}checked{%endif %}>
-      {% if form.is_done.errors %}
-      <div class="text-danger">
-        {% for error in form.is_done.errors %}
-        <p>{{ error }}</p>
-        {% endfor %}
-      </div>
-      {% endif %}
-    </div>
 
-    <input type="submit" value="Create" class="btn btn-outline-success">
+    <input type="submit" value="Yaratish" class="btn btn-outline-success">
   </form>
 
 </div>

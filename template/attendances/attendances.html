@@ -4,12 +4,19 @@
 {% block content %}
 
 <div class="container mt-5">
-
+   <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white">
+      <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Attendances</li>
+    </ol>
+  </nav>
+ {% if marks %}
   <div class="d-flex justify-content-center">
 
-    <h2 class="mb-3">Matematika guruhi Davomadi</h2>
+    <h2 class="mb-3">{{ course.name }} guruhi Davomadi</h2>
 
   </div>
+
   <div class="pagination d-flex justify-content-center">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
@@ -52,7 +59,6 @@
     </nav>
   </div>
 
-  {% if marks %}
   <table class="table">
     <thead>
       <tr>
@@ -60,7 +66,7 @@
         <th scope="col">Full Name</th>
         {% for attendance in paginated_dates %}
         <th scope="col">
-          {% if attendance.date == today %}
+          {% if attendance.date == today and request.user.role == "TEACHER" %}
           <a href="{% url 'attendance_update' course_id=course.id attendance_id=attendance.id %}">
             {{ attendance.date}}</a>
           {% else %}
@@ -74,7 +80,11 @@
       {% for student_with_mark in students_with_marks %}
       <tr>
         <th scope="row">{{ forloop.counter }}</th>
+        {% if student_with_mark.student.user.first_name or student_with_mark.student.user.last_name %}
         <td>{{ student_with_mark.student.user.first_name }} {{ student_with_mark.student.user.last_name }}</td>
+        {% else %}
+        <td>{{ student_with_mark.student.user.username }}</td>
+        {% endif %}
         {% for mark in student_with_mark.marks %}
         {% if mark.is_attended %}
         <td><button class="btn btn-success">yes</button></td>
@@ -90,6 +100,7 @@
   {% else %}
   <h2 class="text-center">Davomadlar mavjud emas</h2>
   {% endif %}
+  {% if request.user.role == "TEACHER" %}
   <div class="d-flex justify-content-start mt-3">
     {% if is_att_taken %}
       <a><button type="button" class="btn btn-outline-danger mr-1">Not Attendance take</button></a>
@@ -98,6 +109,8 @@
           class="btn btn-outline-primary mr-1">Attendance take</button></a>
     {% endif %}
   </div>
+  {% else %}
+  {% endif %}
 
 </div>
 

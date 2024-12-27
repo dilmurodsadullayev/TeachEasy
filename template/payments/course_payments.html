@@ -3,7 +3,23 @@
 {% block title %} Course Payments {% endblock title %}
 {% block content %}
 <div class="container mt-5">
-    <a class="btn btn-outline-primary text-right" href="{% url 'course_pay_take' course_id %}">Payment</a>
+     <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white">
+      <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Payments</li>
+    </ol>
+  </nav>
+    {% if course_payments %}
+    <div class="d-flex justify-content-center">
+
+        <h2 class="mb-3">{{ course.name }} guruhi To'lovlar ro'yxati</h2>
+
+    </div>
+
+    {% if request.user.role == "TEACHER" %}
+    <a class="btn btn-outline-primary text-right" href="{% url 'course_pay_take' course.id %}">Payment</a>
+    {% else %}
+    {% endif %}
     <table class="table">
         <thead>
         <tr>
@@ -57,6 +73,7 @@
 
 <!-- Modal dialogs: har bir talabaga mos -->
 {% for course_payment in course_payments %}
+
 <div
         class="modal fade"
         id="modal{{ forloop.counter }}"
@@ -73,26 +90,6 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <!--                    <div class="col-md-6">-->
-                    <!--                        <label for="inputEmail4" class="form-label">ID:</label>-->
-                    <!--                        <input type="number" class="form-control" id="inputEmail4"-->
-                    <!--                               value="{{ course_payment.student.user.id }}">-->
-                    <!--                    </div>-->
-                    <!--                    <div class="col-md-6">-->
-                    <!--                        <label for="inputPassword4" class="form-label">Ism:</label>-->
-                    <!--                        <input type="text" class="form-control" id="inputPassword4"-->
-                    <!--                               value="{{ course_payment.student.user.first_name }}">-->
-                    <!--                    </div>-->
-                    <!--                    <div class="col-md-6">-->
-                    <!--                        <label for="inputSecondName4" class="form-label">Familiya:</label>-->
-                    <!--                        <input type="text" class="form-control" id="inputSecondName4"-->
-                    <!--                               value="{{ course_payment.student.user.last_name }}">-->
-                    <!--                    </div>-->
-                    <!--                    <div class="col-md-6">-->
-                    <!--                        <label for="inputEmail5" class="form-label">Email:</label>-->
-                    <!--                        <input type="text" class="form-control" id="inputEmail5"-->
-                    <!--                               value="{{ course_payment.student.user.email }}">-->
-                    <!--                    </div>-->
                     <div class="col-md-6">
                         <label for="inputPrice4" class="form-label">Price:</label>
                         <input type="number" class="form-control" id="inputPrice4"
@@ -129,7 +126,12 @@
 
         </div>
     </div>
+    {% endfor %}
+    {% else %}
+    <h2 class="text-center">To'lovlar mavjud emas</h2>
+    {% endif %}
 </div>
-{% endfor %}
+
+
 <script src="{% static 'js/course_payment.js' %}"></script>
 {% endblock content %}

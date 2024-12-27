@@ -7,47 +7,51 @@
 <!-- Modal -->
 
 
-
-
-
-
-<div class="text-center mt-5">
-    <h1>Add student</h1>
-</div>
-
 <!-- Button trigger modal -->
 
-<div class="container">
+<div class="container mt-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Course Students</li>
+        </ol>
+    </nav>
+    <div class="text-center">
+        <h1> {{ course.name }} guruh studentlari ro'yxati</h1>
+    </div>
     <div class="text-end mb-3">
+        {% if request.user.role == "TEACHER" %}
         <a class="btn btn-primary" href="{% url 'course_student_add' course.id %}">Add student</a>
+        {% else %}
+        {% endif %}
 
     </div>
     {% if course_students %}
     <table class="table">
         <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Full Name</th>
-                <th scope="col">Started Date</th>
-                <th scope="col">Details</th>
-            </tr>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Started Date</th>
+            <th scope="col">Details</th>
+        </tr>
         </thead>
         <tbody>
 
-            {% for cs in course_students %}
-            <tr>
-                <!-- <th scope="row">{{ forloop.counter }}</th> -->
-                <th scope="row">{{ cs.student.id }}</th>
-                {% if cs.student.user.first_name or cs.student.user.last_name %}
-                <td>{{ cs.student.user.first_name }} {{ cs.student.user.last_name }}</td>
-                {% else %}
-                <td>{{ cs.student.user.username }}</td>
-                {% endif %}
-                <td>{{ cs.start_date }}</td>
-                <td><a href="{% url 'student_detail' course_id=course.id student_id=cs.student.id %}">more</a>
-                </td>
-            </tr>
-            {% endfor %}
+        {% for cs in course_students %}
+        <tr>
+            <!-- <th scope="row">{{ forloop.counter }}</th> -->
+            <th scope="row">{{ forloop.counter }}</th>
+            {% if cs.student.user.first_name or cs.student.user.last_name %}
+            <td>{{ cs.student.user.first_name }} {{ cs.student.user.last_name }}</td>
+            {% else %}
+            <td>{{ cs.student.user.username }}</td>
+            {% endif %}
+            <td>{{ cs.start_date }}</td>
+            <td><a href="{% url 'student_detail' course_id=course.id student_id=cs.student.id %}">more</a>
+            </td>
+        </tr>
+        {% endfor %}
 
         </tbody>
     </table>

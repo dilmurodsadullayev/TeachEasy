@@ -17,36 +17,6 @@
 </div>
 <!-- Header End -->
 
-<!-- Modals  -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Create teacher</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <input type="text" class="name-of-teacher form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Image</label>
-                    <input type="text" class="img-url form-control" placeholder="URL">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Name of job</label>
-                    <input type="text" class="name-of-job form-control">
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="create()">Create</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -87,11 +57,7 @@
             <p class="section-title px-5"><span class="px-2">Our Teachers</span></p>
             <h1 class="mb-4">Meet Our Teachers</h1>
         </div>
-        <div class="d-flex justify-content-end mb-4">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Create course
-            </button>
-        </div>
+
         <div class="row list-of-teacher">
 
             <!-- User teacher ekanligini tekshirish sharti ochilgan -->
@@ -101,7 +67,7 @@
                     <!-- teacherni rasmi boligini tekshirish ochilgan -->
                     {% if teacher.user.image %}
                         <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
-                            <img class="img-fluid" style="width: 100px;" src="{{ teacher.user.image.url }}" alt="">
+                            <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{{ teacher.user.image.url }}" alt="">
                         </a>
                     {% else %}
                         <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
@@ -145,7 +111,7 @@
                             <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
                                 {% if teacher.teacher.user.image %}
                                 <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
-                                    <img class="img-fluid" style="width: 100px;" src="{{ teacher.teacher.user.image.url }}" alt="">
+                                    <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{{ teacher.teacher.user.image.url }}" alt="">
                                 </a>
                                 {% else %}
                                 <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
@@ -177,10 +143,48 @@
 
                 {% endif %}
 
+            {% elif request.user.role == "STUDENT" %}
+                  {% if teacher_courses %}
+                    {% for teacher in teacher_courses %}
+                        <div class="col-md-6 col-lg-3 text-center team mb-5">
+                            <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
+                                {% if teacher.teacher.user.image %}
+                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                    <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{{ teacher.teacher.user.image.url }}" alt="">
+                                </a>
+                                {% else %}
+                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                    <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
+                                </a>
+                                {% endif %}
+                                <div
+                                    class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
+                                    <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                        href="#"><i class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                        href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-outline-light text-center px-0" style="width: 38px; height: 38px;" href="#"><i
+                                            class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                            {% if teacher.teacher.user.first_name or teacher.teacher.user.last_name %}
+                            <h4>{{ teacher.teacher.user.first_name }} {{ teacher.teacher.user.last_name }}</h4>
+                            {% else %}
+                            <h4>{{ teacher.teacher.user.username }}</h4>
+                            {% endif %}
+
+                            {% for course in teacher.course %}
+                            {{ course }}<button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i
+                                    class="bi bi-pencil-fill"></i></button>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                {% endif %}
             {% else %}
 
                 <h2 class="text-center">
-                    Teacher lar ro'yxati va course lari yo'q
+                    Teacher lar ni ko'rish uchun saytga registratsiya qiling
                 </h2>
 
             {% endif %}

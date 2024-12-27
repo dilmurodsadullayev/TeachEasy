@@ -28,7 +28,11 @@
             {% for course_student in course_students %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
+                {% if course_student.student.user.first_name or course_student.student.user.last_name %}
                 <td>{{ course_student.student.user.first_name }} {{ course_student.student.user.last_name }}</td>
+                {% else %}
+                <td>{{ course_student.student.user.username }}</td>
+                {% endif %}
                 <td><input type="checkbox" class="ml-4 form-check-input"
                            name="attended_{{ course_student.student.id }}"></td>
             </tr>

@@ -137,6 +137,7 @@
                                         </div>
                                         <div class="col-6 py-1">{{ course.price }}</div>
                                     </div>
+                                    {% if course_student %}
                                     <div class="row border-bottom">
                                         <div class="col-6 py-1 text-right border-right"><strong>Tasks</strong></div>
                                         <div class="col-6 py-1"><a href="{% url 'group_tasks' course.id %}">See
@@ -155,34 +156,75 @@
                                             Payments</a>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-6 text-right"><strong>Course Student</strong></div>
+                                        <div class="col-6"><a href="{% url 'course_students' course.pk %}">Show</a></div>
+                                    </div>
+
+                                    {% else %}
+                                    {% endif %}
+                                    {% if request.user.role == "ADMIN" or request.user.role == "TEACHER" %}
+                                     <div class="row border-bottom">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Tasks</strong></div>
+                                        <div class="col-6 py-1"><a href="{% url 'group_tasks' course.id %}">See
+                                            task</a></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Attendances</strong>
+                                        </div>
+                                        <div class="col-6 py-1"><a href="{% url 'attendances' course.id %}">See
+                                            attendance</a></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Course
+                                            payments</strong></div>
+                                        <div class="col-6 py-1"><a href="{% url 'course_payments' course.id %}">Se
+                                            Payments</a>
+                                        </div>
+                                    </div>
+
+                                     <div class="row">
+                                        <div class="col-6 text-right"><strong>Course Student</strong></div>
+                                        <div class="col-6"><a href="{% url 'course_students' course.pk %}">Show</a></div>
+                                    </div>
+                                    {% else %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
 
                     </div>
                     <!--                    </div>-->
-                    <div class="row mt-3 mb-3">
-                        <div class="col-6 text-right"><strong>Course Student</strong></div>
-                        <div class="col-6"><a href="{% url 'course_students' course.pk %}">Show</a></div>
-                    </div>
-                    <div class="row border-bottom">
-                        {% if request.user.role == "TEACHER" or request.user.role == "ADMIN" %}
+
+
+                    <div class="row mb-3">
+                        {% if request.user.is_authenticated %}
+                            {% if request.user.role == "STUDENT" %}
+
+                                {% if is_join_request %}
+                                    <p>Siz kursga qo'shilish uchun so'rov yuborgansiz</p>
+                                {% else %}
+                                    <div class="col-6 py-1 text-right border-right"><strong>Join request:</strong></div>
+                                    <div class="col-6 py-1">
+                                        <a href="{% url 'join_request' course.id %}">
+                                            <img style="width: 25px; height: 25px;" src="{% static 'img/join_request.png' %}"
+                                                 alt="join request"></a>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+
+                            {% endif %}
                         {% else %}
-                        {% if is_join_request %}
-                        {% else %}
-                        <div class="col-6 py-1 text-right border-right"><strong>Join request:</strong></div>
-                        <div class="col-6 py-1">
-                            <a href="{% url 'join_request' course.id %}">
-                                <img style="width: 25px; height: 25px;" src="{% static 'img/join_request.png' %}"
-                                     alt="join request"></a>
-                        </div>
-                        {% endif %}
+
                         {% endif %}
                     </div>
                     <div class="d-flex">
+                        {% if request.user.role == "ADMIN" or request.user.role == "TEACHER" %}
                         <a href="{% url 'course_edit' course.pk %}" class="btn btn-primary px-4 mx-auto mb-4">Edit</a>
                         <a href="{% url 'course_delete' course.pk %}"
                            class="btn btn-warning px-4 mx-auto mb-4">Delete</a>
+                        {% else %}
+                        {% endif %}
                     </div>
 
                 </div>

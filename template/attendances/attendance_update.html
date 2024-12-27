@@ -33,7 +33,11 @@
         <tr>
           <th scope="row">{{ mark.student.id }}</th>
           <td>
+            {% if mark.student.user.first_name or mark.student.user.last_name %}
             {{ mark.student.user.first_name }} {{ mark.student.user.last_name }}
+            {% else %}
+            {{ mark.student.user.username }}
+            {% endif %}
           </td>
           <td>
             <input name="is_attended_{{ mark.id }}" type="checkbox" class="ml-4 form-check-input"
@@ -44,9 +48,12 @@
       </tbody>
     </table>
 
-    <input type="submit" class="btn btn-outline-success" value="save">
+    <input type="submit" class="btn btn-outline-success" value="Saqlash">
+
 
   </form>
+
+    <a href="{% url 'attendances' course_id=course_id %}" class="btn btn-outline-secondary">Qaytish</a>
 
 </div>
 

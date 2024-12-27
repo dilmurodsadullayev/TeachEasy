@@ -5,10 +5,15 @@
 
 <div class="container mt-5">
     <form method="post" enctype="multipart/form-data">{% csrf_token %}
-        <div class="mb-3">
-            <label for="{{ form.student.id_for_label }}" class="form-label">Students</label>
-            {{ form.student }}
+       <div class="mb-3">
+           <select id="student" class="form-select" name="student">
+                <option value="" disabled selected>Studentni tanlang</option>
+                {% for student in students %}
+                    <option value="{{ student.student.id }}">{{ student.student.user.username }} {{ student.student.id }}</option>
+                {% endfor %}
+            </select>
         </div>
+
         <div class="mb-3">
             <label class="form-label">Start date</label>
             <input type="date" name="start_date" class="form-control">

@@ -13,14 +13,16 @@
       <li class="breadcrumb-item active" aria-current="page">Group tasks</li>
     </ol>
   </nav>
+  {% if request.user.role == "TEACHER" %}
   <div class="d-flex justify-content-end">
     <a href="{% url 'create_group_task' course_id=course %}" class="btn btn-primary">Create task</a>
   </div>
+  {% else %}
+  {% endif %}
+  {% if course_tasks %}
   <div class="d-flex justify-content-center mb-3">
     <h1>Group tasks</h1>
   </div>
-
-  {% if course_tasks %}
   {% for course_task in course_tasks %}
   <div class="d-flex mt-4 justify-content-center">
     <div class="d-flex">

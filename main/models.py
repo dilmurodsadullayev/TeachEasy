@@ -148,14 +148,14 @@ class Course(models.Model):
 
 
 class JoinRequest(models.Model):
-    student = models.ForeignKey(Student,on_delete=models.SET_NULL,null=True)
+    student = models.ForeignKey(Student,on_delete=models.CASCADE)
     course = models.ForeignKey(Course,on_delete=models.CASCADE)
     is_sent = models.BooleanField(default=False)
     joinded = models.BooleanField(default=False)
 
 
     def __str__(self):
-        return f"(Sent: {self.is_sent})"
+        return f"Student {self.student} (Sent: {self.is_sent})"
 
 
 class CourseStudent(models.Model):

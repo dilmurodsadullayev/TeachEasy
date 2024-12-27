@@ -14,7 +14,7 @@ from .views import (
     course_update_view,
     course_delete_view,
     course_student_view,
-    course_student_add_view,
+    CourseStudentAddView,
     join_request_view,
 #payments
     CoursePaymentsView,
@@ -58,7 +58,7 @@ urlpatterns = [
     path('course/<int:pk>/edit',course_update_view,name='course_edit'),
     path('course/<int:pk>/delete',course_delete_view,name='course_delete'),
     path('course/<int:course_id>/students',course_student_view,name='course_students'),
-    path('course/<int:course_id>/student/add',course_student_add_view,name='course_student_add'),
+    path('course/<int:course_id>/student/add',CourseStudentAddView.as_view(),name='course_student_add'),
     path('course/<int:course_id>/join-request',join_request_view,name='join_request'),
 #Payments
     path('course/<int:course_id>/payments',CoursePaymentsView.as_view(),name='course_payments'),
