@@ -9,7 +9,15 @@
   <div class="card border-0 bg-light shadow-sm pb-2" style="border-radius: 20px;">
 
     <div class="d-flex justify-content-center mt-4">
-      <img class="w-50 mb-2" style="border-radius: 20px;" src="{% static 'img/team-4.jpg' %}" alt="">
+       <span class="position-absolute"
+                    style="margin: 1% 4%; border-radius: 10px; background-color: grey; color: white;"><i
+                        class="bi bi-person" style="color: white;"></i>
+                    {{ teacher.user.username }}</span>
+      {% if teacher.user.image %}
+      <img class="w-50 mb-2" style="border-radius: 20px; width: 200px !important; height: 200px;" src="{{ teacher.user.image.url }}" alt="not_teacher_img">
+      {% else %}
+      <img class="w-50 mb-2" style="border-radius: 20px; width: 200px !important; height: 200px;" src="{% static 'img/user.png' %}" alt="not_teacher_img">
+      {% endif %}
     </div>
     <div class="card-body text-center">
       <h4 class="card-title">{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h4>
