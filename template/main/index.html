@@ -1,7 +1,8 @@
 {% extends "main/base.html" %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
-{% block title %} home {% endblock title %}
+{% block title %} {{ base_translations.home }} {% endblock title %}
 {% block content %}
 
 <link href="{% static 'css/index.css' %}" rel="stylesheet">
@@ -13,19 +14,18 @@
         <div class="mb-2 mt-5 d-flex justify-content-center">
             <h1 class="text-white" style="font-size: 50px; letter-spacing: 2px;">
                 {% if request.user.is_authenticated %}
-                Welcome to,
+                {{ translations.welcome }},
                 {{request.user.username}} <br>
-                Stay with TeachEasy</h1>
+                {{ translations.stay_with }}</h1>
             {% else %}
             {% endif %}
         </div>
 
         <div class="col-lg-6 text-lg-left">
-            <h4 class="text-white mb-4 mt-5 mt-lg-0">Welcome to our website that makes learning easy!</h4>
-            <h1 class="display-3 font-weight-bold text-white">Automate the course</h1>
-            <p class="text-white mb-4">This is where you can do your coursework at the training center or at home.
-you can automate</p>
-            <a href="{% url 'about' %}" class="btn btn-secondary mt-1 py-3 px-5">Learn More</a>
+            <h4 class="text-white mb-4 mt-5 mt-lg-0">{{ translations.title2 }}</h4>
+            <h1 class="display-3 font-weight-bold text-white">{{ translations.automate }}</h1>
+            <p class="text-white mb-4">{{ translations.coursework }}</p>
+            <a href="{% url 'about' %}" class="btn btn-secondary mt-1 py-3 px-5">{{ translations.learn_more }}</a>
         </div>
     </div>
 </div>
@@ -35,8 +35,8 @@ you can automate</p>
 <div class="container-fluid py-5">
     <div class="container p-0">
         <div class="text-center pb-2">
-            <p class="section-title px-5"><span class="px-2">Testimonial</span></p>
-            <h1 class="mb-4">What Parents Say!</h1>
+            <p class="section-title px-5"><span class="px-2">{{ translations.testimonial }}</span></p>
+            <h1 class="mb-4">{{ translations.what_parent }}</h1>
         </div>
         {% if user_says %}
         <div class="owl-carousel testimonial-carousel">
@@ -67,7 +67,7 @@ you can automate</p>
             {% endfor %}
         </div>
         {% else %}
-        <h4 class="text-center">There are no news items</h4>
+        <h4 class="text-center">{{ translations.no_items }}</h4>
         {% endif %}
     </div>
 </div>
@@ -79,10 +79,10 @@ you can automate</p>
         {% csrf_token %}
         <div class="mb-3">
             <h1>
-                <label for="commentTextarea" class="form-label">Comment</label>
+                <label for="commentTextarea" class="form-label">{{ translations.comment }}</label>
             </h1>
             <textarea class="form-control" id="commentTextarea" rows="3" name="message"
-                placeholder="Typing comment..."></textarea>
+                placeholder="{{ translations.typing_comment }}"></textarea>
         </div>
         {% if form.errors.message %}
         <div class="text-danger">
@@ -90,7 +90,7 @@ you can automate</p>
         </div>
         {% endif %}
         <div class="d-flex justify-content-end">
-            <input type="submit" value="Submit" class="btn btn-success">
+            <input type="submit" value="{{ translations.save }}" class="btn btn-success">
         </div>
     </form>
 </div>

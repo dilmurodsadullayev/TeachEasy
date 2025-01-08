@@ -42,10 +42,12 @@ from .views import (
     #feedbacks
     FeedbacksView,
     #404
-    error_404_view
+    error_404_view,
+set_language
 
 )
 urlpatterns = [
+    path('set_language/<str:language_code>/',set_language, name='set_language'),
     path('',IndexView.as_view(),name='index'),
     path('about',about_view,name='about'),
     path('contact',contact_view,name='contact'),

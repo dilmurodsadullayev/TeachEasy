@@ -1,31 +1,18 @@
-"""
-URL configuration for config project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 
+# Asosiy URL'lar
 urlpatterns = [
     path("teachhub/", admin.site.urls),
-    path('',include('main.urls')),
+    path('', include('main.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
-# if settings.DEBUG:
-#     urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
-#     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
-
+# Tilni almashtirish uchun URL yo'nalishlari (i18n_patterns ichida)
+urlpatterns += i18n_patterns(
+    # Tilni o'zgartirish uchun URL'ni qo'shadi
+    path('set_language/', include('django.conf.urls.i18n')),  # Django tomonidan taqdim etilgan tilni o'zgartirish
+    # Agar boshqa URL'lar bo'lsa, ularni shu yerga qo'shish mumkin
+)

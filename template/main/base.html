@@ -13,7 +13,7 @@
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/pngpng" <!-- Google Web Fonts -->
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/pngpng" >
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet">
 
@@ -45,7 +45,7 @@
 <body>
 <!-- Navbar Start -->
 <div class="header-center">
-    <h5 class="text-center" style="color:red; background:yellow; padding:5px 0">Site is running in test mode</h5>
+    <h5 class="text-center" style="color:red; background:yellow; padding:5px 0">{{ base_translations.site_title }}</h5>
 </div>
 <div class="container-fluid bg-light position-relative shadow">
 
@@ -62,10 +62,10 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
 
             <div class="navbar-nav font-weight-bold mx-auto py-0">
-                <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
-                <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
-                <a href="{% url 'courses' %}" class="nav-link">Courses</a>
-                <a href="{% url 'teachers' %}" class="nav-item nav-link">Teachers</a>
+                <a href="{% url 'index' %}" class="nav-item nav-link active">{{ base_translations.home }}</a>
+                <a href="{% url 'about' %}" class="nav-item nav-link">{{ base_translations.about }}</a>
+                <a href="{% url 'courses' %}" class="nav-link">{{ base_translations.courses }}</a>
+                <a href="{% url 'teachers' %}" class="nav-item nav-link">{{ base_translations.teachers }}</a>
                 <!--                    <a href="{% url 'gallery' %}" class="nav-item nav-link">Gallery</a>-->
                 <!--                    <div class="nav-item dropdown">-->
                 <!--                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>-->
@@ -74,26 +74,45 @@
                 <!--                            <a href="{% url 'single' %}" class="dropdown-item">Blog Detail</a>-->
                 <!--                        </div>-->
                 <!--                    </div>-->
-                <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
-                <a href="{% url 'feedbacks' %}" class="nav-item nav-link">Feedbacks</a>
+                <a href="{% url 'contact' %}" class="nav-item nav-link">{{ base_translations.contact }}</a>
+                <a href="{% url 'feedbacks' %}" class="nav-item nav-link">{{ base_translations.feedbacks }}</a>
                 {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" class="nav-item nav-link">Profile</a>
+                <a href="{% url 'profile' %}" class="nav-item nav-link">{{ base_translations.profile }}</a>
                 {% else %}
                 {% endif %}
 
             </div>
+
+            <div class="dropdown mr-1">
+    <button class="btn " type="button" id="dropdownMenuButton"
+            data-bs-toggle="dropdown" aria-expanded="false">
+        🌐 Select Language
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li>
+            <a class="dropdown-item" href="{% url 'set_language' language_code='en' %}" onclick="setLanguage('en')">
+                <span class="flag-icon flag-icon-us"></span> <img style="width: 30px;height: 30px;margin-right: 5px" src="https://flagicons.lipis.dev/flags/4x3/us.svg" alt=""> English
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="{% url 'set_language' language_code='uz' %}" onclick="setLanguage('uz')">
+                <span class="flag-icon flag-icon-uz"></span>  <img style="width: 30px;height: 30px;margin-right: 5px" src="https://flagicons.lipis.dev/flags/4x3/uz.svg" alt=""> O'zbekcha
+            </a>
+        </li>
+    </ul>
+</div>
             <div class="btn-group" role="group" aria-label="Basic example">
                 {% if user.is_authenticated %}
                 <form method="post" action="{% url 'logout' %}" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Logout</button>
+                    <button type="submit" class="btn btn-primary">{{ base_translations.logout }}</button>
                 </form>
                 {% else %}
                 <a href="{% url 'login' %}">
-                    <button type="button" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-primary">{{ base_translations.login }}</button>
                 </a>
                 <a href="{% url 'signup' %}">
-                    <button type="button" class="btn btn-primary">Registration</button>
+                    <button type="button" class="btn btn-primary">{{ base_translations.registration }}</button>
                 </a>
                 {% endif %}
             </div>
@@ -112,8 +131,7 @@
                 <img style="width: 60px; height: 60px;" src="{% static 'img/logo.png' %}" alt="logo yo'q">
                 <span class="text-white">TeachEasy</span>
             </a>
-            <p>"Through our website, you can join educational courses, collaborate with instructors, and manage your
-                learning process. We strive to provide the best services, keeping your needs in mind."</p>
+            <p>{{ base_translations.site_about2 }}</p>
             <div class="d-flex justify-content-start mt-4">
                 <a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
                    style="width: 38px; height: 38px;" href="#"><i class="fab fa-twitter"></i></a>
@@ -126,51 +144,53 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-6 mb-5">
-            <h3 class="text-primary mb-4">Get In Touch
+            <h3 class="text-primary mb-4">{{ base_translations.get_in_touch }}
                 <span class="get-in-touch"><span></span></span>
                 2
             </h3>
             <div class="d-flex">
                 <h4 class="fa fa-map-marker-alt text-primary"></h4>
                 <div class="pl-3">
-                    <h5 class="text-white">Address</h5>
+                    <h5 class="text-white">{{ base_translations.address }}</h5>
                     <p>Xonqa tuman</p>
                 </div>
             </div>
             <div class="d-flex">
                 <h4 class="fa fa-envelope text-primary"></h4>
                 <div class="pl-3">
-                    <h5 class="text-white">Email</h5>
+                    <h5 class="text-white">{{ base_translations.email }}</h5>
                     <p>dsadullayev346@gmail.com</p>
                 </div>
             </div>
             <div class="d-flex">
                 <h4 class="fa fa-phone-alt text-primary"></h4>
                 <div class="pl-3">
-                    <h5 class="text-white">Phone</h5>
+                    <h5 class="text-white">{{ base_translations.phone }}</h5>
                     <p>+998932330437</p>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 mb-5">
-            <h3 class="text-primary mb-4">Quick Links
+            <h3 class="text-primary mb-4">{{ base_translations.quick_links }}
                 <span class="get-in-touch"><span></span></span>
             </h3>
             <div class="d-flex flex-column justify-content-start">
                 {% if request.user.is_authenticated %}
-                <a class="text-white mb-2" href="{% url 'index' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                <a class="text-white mb-2" href="{% url 'about' %}"><i class="fa fa-angle-right mr-2"></i>About</a>
-                <a class="text-white mb-2" href="{% url 'courses' %}"><i class="fa fa-angle-right mr-2"></i>Courses</a>
-                <a class="text-white mb-2" href="{% url 'teachers' %}"><i class="fa fa-angle-right mr-2"></i>Teachers</a>
-                <a class="text-white mb-2" href="{% url 'contact' %}"><i class="fa fa-angle-right mr-2"></i>Contact</a>
-                <a class="text-white mb-2" href="{% url 'feedbacks' %}"><i class="fa fa-angle-right mr-2"></i>Feedbacks</a>
-                <a class="text-white mb-2" href="{% url 'profile' %}"><i class="fa fa-angle-right mr-2"></i>Profile</a>
+                <a class="text-white mb-2" href="{% url 'index' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.home }}</a>
+                <a class="text-white mb-2" href="{% url 'about' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.about }}</a>
+                <a class="text-white mb-2" href="{% url 'courses' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.courses }}</a>
+                <a class="text-white mb-2" href="{% url 'teachers' %}"><i
+                        class="fa fa-angle-right mr-2"></i>{{ base_translations.teachers }}</a>
+                <a class="text-white mb-2" href="{% url 'contact' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.contact }}</a>
+                <a class="text-white mb-2" href="{% url 'feedbacks' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.feedbacks }}</a>
+                <a class="text-white mb-2" href="{% url 'profile' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.profile }}</a>
                 {% else %}
-                <a class="text-white mb-2" href="{% url 'index' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                <a class="text-white mb-2" href="{% url 'about' %}"><i class="fa fa-angle-right mr-2"></i>About</a>
-                <a class="text-white mb-2" href="{% url 'courses' %}"><i class="fa fa-angle-right mr-2"></i>Courses</a>
-                <a class="text-white mb-2" href="{% url 'teachers' %}"><i class="fa fa-angle-right mr-2"></i>Teachers</a>
-                <a class="text-white mb-2" href="{% url 'contact' %}"><i class="fa fa-angle-right mr-2"></i>Contact</a>
+                <a class="text-white mb-2" href="{% url 'index' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.home }}</a>
+                <a class="text-white mb-2" href="{% url 'about' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.about }}</a>
+                <a class="text-white mb-2" href="{% url 'courses' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.courses }}</a>
+                <a class="text-white mb-2" href="{% url 'teachers' %}"><i
+                        class="fa fa-angle-right mr-2"></i>{{ base_translations.teachers }}</a>
+                <a class="text-white mb-2" href="{% url 'contact' %}"><i class="fa fa-angle-right mr-2"></i>{{ base_translations.contact }}</a>
                 {% endif %}
 
             </div>
@@ -179,7 +199,7 @@
     </div>
     <div class="container-fluid pt-5" style="border-top: 1px solid rgba(23, 162, 184, .2);;">
         <p class="m-0 text-center text-white">
-            &copy; <a class="text-primary font-weight-bold" href="{% url 'index' %}">TeachEasy</a>. Developer
+            &copy; <a class="text-primary font-weight-bold" href="{% url 'index' %}">TeachEasy</a>. {{ base_translations.developer }}
             <a class="text-primary font-weight-bold text-decoration-none">Simple Dev</a>
         </p>
     </div>
@@ -207,6 +227,34 @@
 <script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/teacher.js' %}"></script>
 <script src="{% static 'js/attendances.js' %}"></script>
+<script>
+        // Check if a language is stored in localStorage on page load
+    window.onload = function() {
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            // Update the dropdown button text based on the saved language
+            const button = document.getElementById('dropdownMenuButton');
+            if (savedLanguage === 'en') {
+                button.textContent = '🌐 Language (English)';
+            } else if (savedLanguage === 'uz') {
+                button.textContent = '🌐 Language (O\'zbekcha)';
+            }
+        }
+    };
+
+    // Function to store the selected language in localStorage
+    function setLanguage(language) {
+        // Save the selected language in localStorage
+        localStorage.setItem('language', language);
+        // Optionally, update the dropdown button text
+        const button = document.getElementById('dropdownMenuButton');
+        if (language === 'en') {
+            button.textContent = '🌐 Select Language (English)';
+        } else if (language === 'uz') {
+            button.textContent = '🌐 Select Language (O\'zbekcha)';
+        }
+    }
+</script>
 </body>
 
 </html>

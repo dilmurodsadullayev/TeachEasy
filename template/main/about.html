@@ -1,6 +1,6 @@
 {% extends "main/base.html" %}
 {% load static %}
-{% block title %} about {% endblock title %}
+{% block title %} {{ base_translations.about_page }}  {% endblock title %}
 
 {% block content %}
 
@@ -8,11 +8,11 @@
 <!-- Header Start -->
 <div class="container-fluid bg-primary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-        <h3 class="display-3 font-weight-bold text-white">About Us</h3>
+        <h3 class="display-3 font-weight-bold text-white">{{ translations.about_us }}</h3>
         <div class="d-inline-flex text-white">
-            <p class="m-0"><a class="text-white" href="{% url 'index' %}">Home</a></p>
+            <p class="m-0"><a class="text-white" href="{% url 'index' %}">{{ translations.home }}</a></p>
             <p class="m-0 px-2">/</p>
-            <p class="m-0">About Us</p>
+            <p class="m-0">{{ translations.about_us }}</p>
         </div>
     </div>
 </div>
@@ -20,21 +20,17 @@
 
 <div class="card ml-5 mr-5">
     <div class="card-header">
-        About site
+        {{ translations.about1 }}
     </div>
     <div class="card-body">
         <blockquote class="blockquote mb-0">
-            <p>Bu saytda siz kursni ishlarini avtomatlashitirshingiz mumkin. Ya'ni Kursdagi
-                davomatlar,to'lovlar,topshiriqlar,kurslarini reklama qilishi mumkin
-
-            </p>
-            <footer class="blockquote-footer">Teacher roliga o'tmoqchi bo'lsangiz manashu botga murojat qilishingiz
-                mumkin 👉<cite title="Source Title"><a style="text-decoration: none;" href="#aaa">TeachEasy</a></cite>
+            <p>{{ translations.about2 }}</p>
+            <footer class="blockquote-footer">{{ translations.about3 }} 👉<cite title="Source Title"><a style="text-decoration: none;" href="#aaa">TeachEasy</a></cite>
             </footer>
         </blockquote>
     </div>
 </div>
-<h1 class="h1 ml-5 mr-5 mt-3" id="aaa">About our Roles</h1>
+<h1 class="h1 ml-5 mr-5 mt-3" id="aaa">{{ translations.about_roles }}</h1>
 <div class="row" style="overflow-x: hidden;width: 100%;">
     <div class="col-sm-6 mb-3 mb-sm-0">
          <div class="card m-5">
@@ -43,13 +39,13 @@
                     <div class="img-circle">
                         <img src="{% static 'img/admin.jpg' %}" alt="img teacher">
                     </div>
-                    <span class="p-2 h3">Admin</span>
+                    <span class="p-2 h3">{{ translations.admin }}</span>
                 </div>
                 <span class="text-info">12 Dec, 2024</span>
             </div>
             <div class="card-body">
                 <blockquote class="blockquote mb-0 text-justify">
-                    <p>Student role dagi foydalanuvchilarga teacher role beradi</p>
+                    <p>{{ translations.admin_about }}</p>
                 </blockquote>
             </div>
 
@@ -60,13 +56,13 @@
                     <div class="img-circle">
                         <img src="{% static 'img/teacher_image.jpg' %}" alt="img teacher">
                     </div>
-                    <span class="p-2 h3">Teacher</span>
+                    <span class="p-2 h3">{{ translations.teacher }}</span>
                 </div>
                 <span class="text-info">12 Dec, 2024</span>
             </div>
             <div class="card-body">
                 <blockquote class="blockquote mb-0 text-justify">
-                    <p>Bunda guruh yaratish va guruhga talabalarni qo'shilshi mumkin. .</p>
+                    <p>{{ translations.teacher_about }}</p>
                 </blockquote>
             </div>
 
@@ -79,13 +75,13 @@
                     <div class="img-circle">
                         <img src="{% static 'img/student_image.jpg' %}" alt="img teacher">
                     </div>
-                    <span class="p-2 h3">Student</span>
+                    <span class="p-2 h3">{{ translations.student }}</span>
                 </div>
                 <span class="text-info">12 Dec, 2024</span>
             </div>
             <div class="card-body">
                 <blockquote class="blockquote mb-0 text-justify">
-                    <p>Student kursga qo'shilishi mumkin..</p>
+                    <p>{{ translations.student_about }}</p>
                 </blockquote>
             </div>
         </div>

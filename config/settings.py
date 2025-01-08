@@ -70,6 +70,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    'django.middleware.locale.LocaleMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -90,7 +91,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # "main.context_processors.about_site",
+                "main.context_processors.base_translations",
             ],
         },
     },
@@ -136,11 +137,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LANGUAGES = [
+    ('en', 'English'),
+    ('uz', 'O\'zbekcha'),
+
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',  # Tarjimalar uchun papka
+]
+
+
+USE_I18N = True
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "uz"
+LANGUAGE_CODE = "en"
 
 TIME_ZONE = "Asia/Tashkent"
 

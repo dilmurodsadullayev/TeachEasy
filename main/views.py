@@ -16,33 +16,74 @@ from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .decorators import teacher_required
 
+#
+from languages import en
+from languages import uz
+
+
 import json
+
+
+
+def set_language(request, language_code):
+    # Tilni sessiyada saqlash
+    request.session['language'] = language_code
+    # Foydalanuvchini avvalgi sahifaga yoki asosiy sahifaga qaytarish
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 # Create your views here
 
 class IndexView(View):
     @method_decorator(login_required)
     def post(self, request):
         form = UserSayForm(request.POST)
+        language = request.session.get('language', 'en')
+
+        # Tarjimalarni tanlash
+        if language == 'uz':
+            translations = uz.index.translations
+        else:
+            translations = en.index.translations
+
         if form.is_valid():
-            user_say = form.save(user=request.user)  # Foydalanuvchini avtomatik qo'shish
+            form.save(user=request.user)
             return redirect('index')
         else:
-            ctx = {'form': form}
+            ctx = {
+                'form': form,
+                'translations': translations
+            }
 
         return render(request, 'main/index.html', ctx)
 
     def get(self, request):
         user_says = UserSay.objects.all()
+        language = request.session.get('language', 'en')
+
+        # Tarjimalarni tanlash
+        if language == 'uz':
+            translations = uz.index.translations
+        else:
+            translations = en.index.translations
 
         ctx = {
-            'user_says': user_says
+            'user_says': user_says,
+            'translations': translations
         }
         return render(request, 'main/index.html', ctx)
 
 
-def about_view(request):
-    ctx = {
 
+def about_view(request):
+    language = request.session.get('language', 'en')
+
+    # Tarjimalarni tanlash
+    if language == 'uz':
+        translations = uz.about.translations
+    else:
+        translations = en.about.translations
+
+    ctx = {
+        'translations': translations
     }
     return render(request, 'main/about.html', ctx)
 

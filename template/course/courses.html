@@ -207,8 +207,12 @@
                                     <div class="col-6 py-1 text-right border-right"><strong>Join request:</strong></div>
                                     <div class="col-6 py-1">
                                         <a href="{% url 'join_request' course.id %}">
-                                            <img style="width: 25px; height: 25px;" src="{% static 'img/join_request.png' %}"
-                                                 alt="join request"></a>
+                                            <img
+                                                src="{% static 'img/join_request.png' %}"
+                                                alt="Join Request"
+                                                style="width: 25px; height: 25px;"
+                                            />
+                                        </a>
                                     </div>
                                 {% endif %}
                             {% else %}
