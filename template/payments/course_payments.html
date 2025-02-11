@@ -9,6 +9,14 @@
       <li class="breadcrumb-item active" aria-current="page">Payments</li>
     </ol>
   </nav>
+
+    {% if request.user.role == "TEACHER" %}
+    <div class="text-right">
+        <a class="btn btn-outline-primary" href="{% url 'course_pay_take' course.id %}">Payment</a>
+    </div>
+    {% else %}
+    {% endif %}
+
     {% if course_payments %}
     <div class="d-flex justify-content-center">
 
@@ -16,10 +24,6 @@
 
     </div>
 
-    {% if request.user.role == "TEACHER" %}
-    <a class="btn btn-outline-primary text-right" href="{% url 'course_pay_take' course.id %}">Payment</a>
-    {% else %}
-    {% endif %}
     <table class="table">
         <thead>
         <tr>
@@ -27,7 +31,10 @@
             <th scope="col">Username</th>
             <th scope="col">FullName</th>
             <th scope="col">Status</th>
+            {% if request.user.role == "TEACHER" %}
             <th scope="col">Edit</th>
+            {% else %}
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -52,8 +59,33 @@
             </td>
             {% endif %}
             <td>
-                <button
-                        style="
+            {% if request.user.id == course_payment.course.teacher.user.id %}
+          <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton{{ forloop.counter }}" data-bs-toggle="dropdown" aria-expanded="false">
+                    ⋮
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ forloop.counter }}">
+                    <li class="dropdown-item">
+                        <a class="dropdown-item" href="{% url 'course_payment_edit' course_id=course_payment.course.id student_id=course_payment.student.id %}">
+                            <div class="d-flex align-items-center">
+                                <img src="{% static 'img/edit.svg' %}" alt="Edit" class="me-2" style="width: 20px; height: 20px;">
+                                <span>Tahrirlash</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="dropdown-item">
+                        <button class="btn btn-outline-dark btn-sm btn-delete"
+                            data-student-id="{{ course_payment.student.id }}"
+                            data-course-id="{{ course.id }}">
+                            <div class="d-flex align-items-center">
+                                <img src="{% static 'img/trash-2.svg' %}" alt="Delete" class="me-2" style="width: 20px; height: 20px;">
+                                <span>Delete</span>
+                            </div>
+                        </button>
+                    </li>
+                    <li class="dropdown-item">
+                        <button style="
                     border: none; /* Chegarani olib tashlaydi */
                         background: none; /* Tugma fonini olib tashlaydi */
                         padding: 0; /* Tugmaning ichki bo'sh joylarini olib tashlaydi */
@@ -61,77 +93,125 @@
                         type="button"
                         data-bs-toggle="modal"
                         data-bs-target="#modal{{ forloop.counter }}">
-                    <img width="50" height="50" src="https://img.icons8.com/clouds/100/create-new.png"
-                         alt="create-new"/>
-                </button>
-            </td>
+                            <div class="d-flex align-items-center">
+                                <img src="{% static 'img/eye.svg' %}" alt="eye" class="me-2" style="width: 20px; height: 20px;">
+                                <span>See</span>
+                            </div>
+
+                        </button>
+                    </li>
+
+                </ul>
+            </div>
+            {% else %}
+            {% endif %}
+        </td>
+
         </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
-
 <!-- Modal dialogs: har bir talabaga mos -->
 {% for course_payment in course_payments %}
 
 <div
-        class="modal fade"
-        id="modal{{ forloop.counter }}"
-        tabindex="-1"
-        aria-labelledby="modalLabel{{ forloop.counter }}"
-        aria-hidden="true">
+    class="modal fade"
+    id="modal{{ forloop.counter }}"
+    tabindex="-1"
+    aria-labelledby="modalLabel{{ forloop.counter }}"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel{{ forloop.counter }}">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title text-center" id="modalLabel{{ forloop.counter }}">
                     {{ course_payment.student.user.username }} haqida ma'lumot
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6">
-                        <label for="inputPrice4" class="form-label">Price:</label>
-                        <input type="number" class="form-control" id="inputPrice4"
-                               value="">
+                    <div class="col-md-6 mb-3">
+                        <div class="border p-3 rounded">
+                            <strong>Price:</strong>
+                            <div class="fw-bold">{{ course_payment.price }} so'm</div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="inputPayDate4" class="form-label">Pay date:</label>
-                        <input type="date" class="form-control" id="inputPayDate4"
-                               value="">
+                    <div class="col-md-6 mb-3">
+                        <div class="border p-3 rounded">
+                            <strong>Pay Date:</strong>
+                            <div class="fw-bold">{{ course_payment.pay_date|date:"Y-m-d" }}</div>
+                        </div>
                     </div>
-                    <div class="mt-2">
-                        <label for="inputSecondName4" class="form-label">Payment method:</label>
-                        <input type="text" class="form-control" id="inputSecondName4"
-                               value="">
+                    <div class="col-md-12 mb-3">
+                        <div class="border p-3 rounded">
+                            <strong>Payment Method:</strong>
+                            <div class="fw-bold">{{ course_payment.payment_method }}</div>
+                        </div>
                     </div>
-                    <div class="mt-2">
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Paid
-                        </label>
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <div class="col-md-12 mb-3">
+                        <div class="border p-3 rounded">
+                            <strong>Status:</strong>
+                            {% if course_payment.is_paid %}
+                                <span class="badge bg-success">To'langan</span>
+                            {% else %}
+                                <span class="badge bg-danger">To'lanmagan</span>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-danger" onclick="deleteUser({{ course_payment.student.user.id }})"
-                        data-bs-dismiss="modal">O'chirish
-                </button>
                 <div>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
-                    <button type="button" class="btn btn-primary" onclick="updateUser()">Yangilash</button>
                 </div>
             </div>
 
         </div>
     </div>
     {% endfor %}
-    {% else %}
+{% else %}
     <h2 class="text-center">To'lovlar mavjud emas</h2>
-    {% endif %}
+{% endif %}
+
 </div>
 
 
-<script src="{% static 'js/course_payment.js' %}"></script>
+
+
+
+
+<script>
+ document.querySelectorAll('.btn-delete').forEach(button => {
+    button.addEventListener('click', function() {
+        const studentId = this.getAttribute('data-student-id');
+        const courseId = this.getAttribute('data-course-id');
+        const row = this.closest('tr');  // Yoki boshqa elementni tanlang, bu yerda tr elementni olayapmiz
+
+        if (confirm("Are you sure you want to delete this task?")) {
+            fetch(`/course/${courseId}/payment/${studentId}/delete/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({studentId: studentId, course_id: courseId})
+            })
+            .then(response => {
+                if (response.ok) {
+                    // DOMni yangilash: o'chirilgan elementni sahifadan olib tashlash
+                    row.remove();  // Yoki o'zingizning DOM elementini olib tashlang
+                } else {
+                    alert("Failed to delete the task.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+});
+
+</script>
 {% endblock content %}

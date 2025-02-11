@@ -1,17 +1,17 @@
 {% extends "main/base.html" %}
 {% load static %}
-{% block title %} courses {% endblock title %}
+{% block title %} {{ base_translations.courses }} {% endblock title %}
 {% block content %}
 
 
 <!-- Header Start -->
 <div class="container-fluid bg-primary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-        <h3 class="display-3 font-weight-bold text-white">Our Classes</h3>
+        <h3 class="display-3 font-weight-bold text-white">{{ translations.our_courses }}</h3>
         <div class="d-inline-flex text-white">
-            <p class="m-0"><a class="text-white" href="">Home</a></p>
+            <p class="m-0"><a class="text-white" href="{% url 'index' %}">{{ translations.home }}</a></p>
             <p class="m-0 px-2">/</p>
-            <p class="m-0">Our Classes</p>
+            <p class="m-0">{{ translations.our_courses }}</p>
         </div>
     </div>
 </div>
@@ -80,12 +80,12 @@
 <div class="container-fluid pt-5">
     <div class="container">
         <div class="text-center pb-2">
-            <p class="section-title px-5"><span class="px-2">Popular Classes</span></p>
-            <h1 class="mb-4">Classes for Your Kids</h1>
+            <p class="section-title px-5"><span class="px-2">{{ translations.popular_courses }}</span></p>
+            <h1 class="mb-4">{{ translations.course_for_you }}</h1>
             <div class="d-flex justify-content-end mb-3">
                 {% if request.user.role == "ADMIN" or request.user.role == "TEACHER" %}
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Create course
+                    {{ translations.create_course }}
                 </button>
                 {% endif %}
 
@@ -114,78 +114,74 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseOne"
-                                        aria-controls="collapseOne">
-                                    Course's data
+                                        data-bs-target="#collapseOne{{ course.id }}"
+                                        aria-controls="collapseOne{{ course.id }}">
+                                    {{ translations.course_data }}
                                 </button>
                             </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse"
+                            <div id="collapseOne{{ course.id }}" class="accordion-collapse collapse"
                                  data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row border-bottom">
-                                        <div class="col-6 py-1 text-right border-right"><strong>Avilable
-                                            days</strong></div>
+                                        <div class="col-6 py-1 text-right border-right"><strong>{{ translations.days }}</strong></div>
                                         <div class="col-6 py-1">{{ course.schedule_days }}</div>
                                     </div>
                                     <div class="row border-bottom">
-                                        <div class="col-6 py-1 text-right border-right"><strong>Class Time</strong>
+                                        <div class="col-6 py-1 text-right border-right"><strong>{{ translations.course_time }}</strong>
                                         </div>
                                         <div class="col-6 py-1">{{ course.start_time }} {{ course.end_time }}</div>
                                     </div>
                                     <div class="row border-bottom">
-                                        <div class="col-6 py-1 text-right border-right"><strong>Tution Fee</strong>
+                                        <div class="col-6 py-1 text-right border-right"><strong>{{ translations.course_fee }}</strong>
                                         </div>
                                         <div class="col-6 py-1">{{ course.price }}</div>
                                     </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-6 py-1 text-right border-right"><strong>Teacher Name</strong>
+                                        </div>
+                                        <div class="col-6 py-1"><a href="{% url 'teacher_detail' teacher_id=course.teacher.id %}">{{ course.teacher.user.username }}</a></div>
+                                    </div>
                                     {% if course_student %}
                                     <div class="row border-bottom">
-                                        <div class="col-6 py-1 text-right border-right"><strong>Tasks</strong></div>
-                                        <div class="col-6 py-1"><a href="{% url 'group_tasks' course.id %}">See
-                                            task</a></div>
+                                        <div class="col-6 py-1 text-right border-right"><strong>{{ translations.tasks }}</strong></div>
+                                        <div class="col-6 py-1"><a href="{% url 'group_tasks' course.id %}">{{ translations.see_tasks }}</a></div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6 py-1 text-right border-right"><strong>Attendances</strong>
+                                        <div class="col-6 py-1 text-right border-right"><strong>{{ translations.attendances }}</strong>
                                         </div>
-                                        <div class="col-6 py-1"><a href="{% url 'attendances' course.id %}">See
-                                            attendance</a></div>
+                                        <div class="col-6 py-1"><a href="{% url 'attendances' course.id %}">{{ translations.see_attendances }}</a></div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6 py-1 text-right border-right"><strong>Course
-                                            payments</strong></div>
-                                        <div class="col-6 py-1"><a href="{% url 'course_payments' course.id %}">Se
-                                            Payments</a>
+                                        <div class="col-6 py-1 text-right border-right"><strong>{{ translations.course_payments }}</strong></div>
+                                        <div class="col-6 py-1"><a href="{% url 'course_payments' course.id %}">{{ translations.see_payments }}</a>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6 text-right"><strong>Course Student</strong></div>
-                                        <div class="col-6"><a href="{% url 'course_students' course.pk %}">Show</a></div>
+                                        <div class="col-6 text-right"><strong>{{ translations.course_student }}</strong></div>
+                                        <div class="col-6"><a href="{% url 'course_students' course.pk %}">{{ translations.see_students }}</a></div>
                                     </div>
 
                                     {% else %}
                                     {% endif %}
                                     {% if request.user.role == "ADMIN" or request.user.role == "TEACHER" %}
                                      <div class="row border-bottom">
-                                        <div class="col-6 py-1 text-right border-right"><strong>Tasks</strong></div>
-                                        <div class="col-6 py-1"><a href="{% url 'group_tasks' course.id %}">See
-                                            task</a></div>
+                                        <div class="col-6 py-1 text-right border-right"><strong>{{ translations.tasks }}</strong></div>
+                                        <div class="col-6 py-1"><a href="{% url 'group_tasks' course.id %}">{{ translations.see_tasks }}</a></div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6 py-1 text-right border-right"><strong>Attendances</strong>
+                                        <div class="col-6 py-1 text-right border-right"><strong>{{ translations.attendances }}</strong>
                                         </div>
-                                        <div class="col-6 py-1"><a href="{% url 'attendances' course.id %}">See
-                                            attendance</a></div>
+                                        <div class="col-6 py-1"><a href="{% url 'attendances' course.id %}">{{ translations.see_attendances }}</a></div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6 py-1 text-right border-right"><strong>Course
-                                            payments</strong></div>
-                                        <div class="col-6 py-1"><a href="{% url 'course_payments' course.id %}">Se
-                                            Payments</a>
+                                        <div class="col-6 py-1 text-right border-right"><strong>{{ translations.course_payments }}</strong></div>
+                                        <div class="col-6 py-1"><a href="{% url 'course_payments' course.id %}">{{ translations.see_payments }}</a>
                                         </div>
                                     </div>
 
                                      <div class="row">
-                                        <div class="col-6 text-right"><strong>Course Student</strong></div>
-                                        <div class="col-6"><a href="{% url 'course_students' course.pk %}">Show</a></div>
+                                        <div class="col-6 text-right"><strong>{{ translations.course_student }}</strong></div>
+                                        <div class="col-6"><a href="{% url 'course_students' course.pk %}">{{ translations.see_students }}</a></div>
                                     </div>
                                     {% else %}
                                     {% endif %}
@@ -201,10 +197,10 @@
                         {% if request.user.is_authenticated %}
                             {% if request.user.role == "STUDENT" %}
 
-                                {% if is_join_request %}
-                                    <p>Siz kursga qo'shilish uchun so'rov yuborgansiz</p>
+                                {% if course_student %}
+                                    <p style="font-size: 15px; text-align: center;">{{ translations.you_have_submit }}</p>
                                 {% else %}
-                                    <div class="col-6 py-1 text-right border-right"><strong>Join request:</strong></div>
+                                    <div class="col-6 py-1 text-right border-right"><strong>{{ translations.join_request }}:</strong></div>
                                     <div class="col-6 py-1">
                                         <a href="{% url 'join_request' course.id %}">
                                             <img
@@ -224,9 +220,14 @@
                     </div>
                     <div class="d-flex">
                         {% if request.user.role == "ADMIN" or request.user.role == "TEACHER" %}
-                        <a href="{% url 'course_edit' course.pk %}" class="btn btn-primary px-4 mx-auto mb-4">Edit</a>
-                        <a href="{% url 'course_delete' course.pk %}"
-                           class="btn btn-warning px-4 mx-auto mb-4">Delete</a>
+                        <a href="{% url 'course_edit' course.pk %}" class="btn btn-primary px-4 mx-auto mb-4">{{ translations.edit }}</a>
+<!--                        <a href="{% url 'course_delete' course.pk %}"-->
+<!--                           class="btn btn-warning px-4 mx-auto mb-4 delete-course">-->
+<!--                            {{ translations.delete }}</a>-->
+                        <button class="btn btn-warning px-4 mx-auto mb-4 delete-course"
+                        data-course-id="{{ course.id }}">
+                            Delete
+                        </button>
                         {% else %}
                         {% endif %}
                     </div>
@@ -235,7 +236,7 @@
             </div>
             {% endfor %}
             {% else %}
-            <h4 class="text-center">Course lar mavjud emas</h4>
+            <h4 class="text-center">Not Course</h4>
             {% endif %}
 
 
@@ -283,6 +284,35 @@
             myModal.hide(); // Modalni yashirish
         });
     });
+
+
+    document.querySelectorAll('.delete-course').forEach(button => {
+    button.addEventListener('click', function() {
+        const courseId = this.getAttribute('data-course-id');
+
+        if (confirm("Siz bu Kursni o'chirmoqchimisiz?")) {
+            fetch(`/course/${courseId}/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({course_id: courseId })
+            })
+            .then(response => response.json())  // JSON javobni o'qish
+            .then(data => {
+                if (data.redirect_url) {
+                    window.location.href = data.redirect_url;  // Yangi sahifaga yo‘naltirish
+                } else {
+                    alert("Xatolik.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+});
 </script>
 
 

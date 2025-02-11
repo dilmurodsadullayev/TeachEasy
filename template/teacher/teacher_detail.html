@@ -4,75 +4,69 @@
 {% block content %}
 
 <div class="container mt-4">
-
-  <h2 class="text-center mb-4">Teacher {{ teacher.user.username }} haqida to'liq malumotlar</h2>
-  <div class="card border-0 bg-light shadow-sm pb-2" style="border-radius: 20px;">
-
-    <div class="d-flex justify-content-center mt-4">
-       <span class="position-absolute"
-                    style="margin: 1% 4%; border-radius: 10px; background-color: grey; color: white;"><i
-                        class="bi bi-person" style="color: white;"></i>
-                    {{ teacher.user.username }}</span>
-      {% if teacher.user.image %}
-      <img class="w-50 mb-2" style="border-radius: 20px; width: 200px !important; height: 200px;" src="{{ teacher.user.image.url }}" alt="not_teacher_img">
-      {% else %}
-      <img class="w-50 mb-2" style="border-radius: 20px; width: 200px !important; height: 200px;" src="{% static 'img/user.png' %}" alt="not_teacher_img">
-      {% endif %}
+ <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="{% url 'teachers' %}" class="text-decoration-none">Teachers</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ teacher.user.username }} - Detail
+            </li>
+        </ol>
+    </nav>
+    <div class="d-flex justify-content-center">
+        <h1>Teacher {{ teacher.user.username }} - Detail</h1>
     </div>
-    <div class="card-body text-center">
-      <h4 class="card-title">{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h4>
-      <p class="card-text">Justo ea diam stet diam ipsum no sit, ipsum vero et et diam ipsum duo
-        et no et, ipsum ipsum erat duo amet clita duo</p>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .courses-list li {
+            background: #e9ecef;
+            border-radius: 5px;
+            padding: 8px;
+            margin-bottom: 5px;
+        }
+    </style>
 
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card text-center p-4">
+              {% if teacher.user.image.url %}
+                <img src="{{ teacher.user.image.url }}" alt="Profile Picture" class="profile-pic mx-auto">
+              {% else %}
+                <img src="{% static 'img/user.png' %}" alt="Profile Picture" class="profile-pic mx-auto">
+              {% endif %}
+                <h3 class="mt-3">{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h3>
+                <p class="text-muted">{{ teacher.email }}</p>
+                <p><strong>Telefon:</strong> {{ teacher.user.phone_number }}</p>
+                <p><strong>Tug'ulgan sana:</strong> {{ teacher.user.birth_date }}</p>
+                <p><strong>Address</strong> {{ teacher.user.address }}</p>
+
+                <h5 class="mt-2">📚 O'rgatayotgan kurslari</h5>
+                <ul class="list-unstyled courses-list">
+                    {% for course in courses %}
+                        <li><b>{{ course.name }}</b></li>
+                    {% empty %}
+                        <li class="text-muted">Hali kurs yo‘q</li>
+                    {% endfor %}
+                </ul>
+
+                <a href="{% url 'teachers' %}" class="btn btn-primary mt-3">🔙 Ortga</a>
+            </div>
+        </div>
     </div>
-    <div class="card-footer bg-transparent py-4 px-5 border-bottom">
-      <div class="row border-bottom">
-        <div class="col-6 py-1 text-right border-right"><strong>Courses</strong></div>
-        <div class="col-6 py-1">
-          {% for course in courses %}
-          {{ course.name }}&nbsp;
-          {% endfor %}
-        </div>
-      </div>
-      <div class="row border-bottom">
-        <div class="col-6 py-1 text-right border-right"><strong>Birth day</strong></div>
-        {% if techer.user.birth_date %}
-        <div class="col-6 py-1">{{ techer.user.birth_date }}</div>
-        {% else %}
-        <div class="col-6 py-1">Tug'ulgan sana kiritilmagan</div>
-        {% endif %}
-      </div>
-      <div class="row border-bottom">
-        <div class="col-6 py-1 text-right border-right"><strong>Address</strong></div>
-        <div class="col-6 py-1">
-          {% if teacher.user.address %}
-          {{ teacher.user.address }}
-          {% else %}
-          Address yo'q!
-          {% endif %}
-        </div>
-      </div>
-      <div class="row border-bottom">
-        <div class="col-6 py-1 text-right border-right"><strong>Phone number</strong></div>
-        <div class="col-6 py-1">
-          {% if teacher.user.phone_number %}
-          {{ teacher.user.phone_number }}
-          {% else %}
-          Telefon raqam yo'q
-          {% endif %}
-        </div>
-      </div>
-      <div class="d-flex mt-4">
-        <a href="{% url 'teacher_edit' %}" class="btn btn-primary px-4 mx-auto mb-4">Edit</a>
-        {% if request.user.role == "ADMIN" %}
-        <a href="" class="btn btn-warning px-4 mx-auto mb-4">Delete</a>
-        {% endif %}
-      </div>
-
-    </div>
-
-
-  </div>
 </div>
-
+</div>
 {% endblock content %}

@@ -1,6 +1,6 @@
 {% extends "main/base.html" %}
 {% load static %}
-{% block title %} {{ base_translations.about_page }}  {% endblock title %}
+{% block title %} {{ base_translations.about_page }} {% endblock title %}
 
 {% block content %}
 
@@ -18,74 +18,118 @@
 </div>
 <!-- Header End -->
 
-<div class="card ml-5 mr-5">
-    <div class="card-header">
-        {{ translations.about1 }}
-    </div>
-    <div class="card-body">
-        <blockquote class="blockquote mb-0">
-            <p>{{ translations.about2 }}</p>
-            <footer class="blockquote-footer">{{ translations.about3 }} 👉<cite title="Source Title"><a style="text-decoration: none;" href="#aaa">TeachEasy</a></cite>
-            </footer>
-        </blockquote>
-    </div>
-</div>
-<h1 class="h1 ml-5 mr-5 mt-3" id="aaa">{{ translations.about_roles }}</h1>
-<div class="row" style="overflow-x: hidden;width: 100%;">
-    <div class="col-sm-6 mb-3 mb-sm-0">
-         <div class="card m-5">
-            <div class="card-header d-flex justify-content-between">
-                <div class="img-circle-conatiner">
-                    <div class="img-circle">
-                        <img src="{% static 'img/admin.jpg' %}" alt="img teacher">
-                    </div>
-                    <span class="p-2 h3">{{ translations.admin }}</span>
+<div class="container">
+
+    <h1 class="text-center" id="bbb">Sayt Haqida</h1>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <div class="img-circle-conatiner">
+                <div class="img-circle">
+                    <img src="{% static 'img/logo.png' %}" alt="img admin">
                 </div>
-                <span class="text-info">12 Dec, 2024</span>
-            </div>
-            <div class="card-body">
-                <blockquote class="blockquote mb-0 text-justify">
-                    <p>{{ translations.admin_about }}</p>
-                </blockquote>
+                <span class="p-2 h3">TeachEasy Platforma <b>1.0.0</b> versiya Haqida </span>
             </div>
 
         </div>
-        <div class="card m-5">
-            <div class="card-header d-flex justify-content-between">
-                <div class="img-circle-conatiner">
-                    <div class="img-circle">
-                        <img src="{% static 'img/teacher_image.jpg' %}" alt="img teacher">
-                    </div>
-                    <span class="p-2 h3">{{ translations.teacher }}</span>
-                </div>
-                <span class="text-info">12 Dec, 2024</span>
-            </div>
-            <div class="card-body">
-                <blockquote class="blockquote mb-0 text-justify">
-                    <p>{{ translations.teacher_about }}</p>
-                </blockquote>
-            </div>
+        <div class="card-body">
+            <h5 class="card-title">TeachEasy: Platforma Haqida</h5>
+            <p class="card-text">
+                TeachEasy — ta'lim jarayonini boshqarish va o‘tkazishni soddalashtirish uchun mo‘ljallangan zamonaviy platforma bo‘lib, o‘qituvchilar va talabalar uchun qulay, samarali va interaktiv ish imkoniyatlarini taqdim etadi. Ushbu platforma onlayn va oflayn ta'limni boshqarish, kurslarni tashkil qilish va talabalar bilan samarali muloqot o‘rnatishda yordam beradi. Quyida saytning asosiy funksiyalari keltirilgan:
+            </p>
 
+            <ol>
+                <li>
+                    <strong>Ro‘yxatdan o‘tish va Rol Boshqaruvi:</strong>
+                    <p>Saytga ro‘yxatdan o‘tgan har bir foydalanuvchi avtomatik ravishda <strong>Student</strong> roliga
+                        tayinlanadi. Agar foydalanuvchi <strong>Teacher</strong> rolini olishni xohlasa, ular adminga
+                        murojaat qilishlari kerak. Buning uchun foydalanuvchilar <strong>Contact</strong> sahifasida
+                        murojaat qilishi mumkin. Agar admin foydalanuvchiga <strong>Teacher</strong>
+                        rolini berishga qaror qilsa, foydalanuvchi profile sahifasida bildirishnoma (notification)
+                        orqali xabar oladi. Bu bildirishnomada foydalanuvchiga "Sizning rolingiz Teacher bo‘ldi" yoki
+                        "Teacher roli berilmadi" deb ko‘rsatiladi.</p>
+                </li>
+                <li>
+                    <strong>Kurslar va Talabalar Bilan Muloqot:</strong>
+                    <p>O‘qituvchilar avval <strong>Teacher</strong> sifatida o‘z guruhlarini yaratadilar. Keyin,
+                        <strong>Student</strong> rolidagi foydalanuvchilar kursga qo‘shilish uchun so‘rov yuboradilar.
+                        Bu so‘rovni o‘qituvchi ko‘rib chiqib, talabalarni kursga qo‘shadi. So‘rovlar orqali kursga
+                        yozilish jarayoni soddalashadi va o‘qituvchilarga talabalarni boshqarish imkoniyatini beradi.
+                    </p>
+                </li>
+                <li>
+                    <strong>Davomatlar Bo‘limi:</strong>
+                    <p>Saytda davomatni nazorat qilish bo‘limi mavjud bo‘lib, bu orqali o‘qituvchilar va talabalar
+                        o‘zlarining mavjudliklarini kuzatishlari mumkin. Bu funksional ta'lim jarayonini samarali
+                        boshqarish va nazorat qilishda yordam beradi.</p>
+                </li>
+                <li>
+                    <strong>Topshiriqlar:</strong>
+                    <p>O‘qituvchilar guruhga topshiriqlar berishadi, shuningdek, <strong>Student</strong>larga o‘ziga
+                        xos topshiriqlar ham taqdim etiladi. Talabalar o‘z topshiriqlarini ko‘rib chiqib, bajarishlari
+                        mumkin. Bu jarayon o‘qituvchilar va talabalar uchun ta'limni interaktiv va samarali tarzda olib
+                        borishni ta'minlaydi.</p>
+                </li>
+                <li>
+                    <strong>To‘lovlar:</strong>
+                    <p><strong>Student</strong>lar kurslarga yozilishdan oldin, o‘zlarining kurs to‘lovlarini ko‘rib
+                        chiqishlari mumkin. Platformada kursning pulini to‘laganmi yoki hali to‘lamaganmi degan
+                        ma'lumotlar mavjud bo‘lib, talaba o‘z to‘lov statusini har doim kuzatib borish imkoniyatiga ega
+                        bo‘ladi.</p>
+                </li>
+                <li>
+                    <strong>Talabalar Ma'lumotlari:</strong>
+                    <p>Har bir <strong>Student</strong> guruhdagi boshqa talabalar haqidagi ma'lumotlarni ko‘rishlari
+                        mumkin. Bu talabalarga guruhdagi boshqa ishtirokchilarni o‘rganish va ta'lim jarayonini yanada
+                        samarali qilish imkonini beradi.</p>
+                </li>
+                <li>
+                    <strong>Feedbacks (Fikrlar):</strong>
+                    <p>Saytda <strong>feedback</strong> bo‘limi ham mavjud. Bu bo‘lim orqali foydalanuvchilar bir-biriga
+                        fikr yoki tavsiyalar qoldirishlari mumkin. Bu interaktiv imkoniyat talabalarga va
+                        o‘qituvchilarga o‘zaro muloqot va fikr almashish imkonini yaratadi.</p>
+                </li>
+            </ol>
+        </div>
+
+    </div>
+
+<h1 class="text-center mt-5" id="aaa">{{ translations.about_roles }}</h1>
+<div class="card-group">
+    <div class="card">
+        <img style="width:369px; height: 210px;" src="{% static 'img/admin.jpg' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{ translations.admin }}</h5>
+            <p class="card-text">{{ translations.admin_about }}</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago</small>
         </div>
     </div>
-    <div class="col-sm-6">
-        <div class="card m-5">
-            <div class="card-header d-flex justify-content-between">
-                <div class="img-circle-conatiner">
-                    <div class="img-circle">
-                        <img src="{% static 'img/student_image.jpg' %}" alt="img teacher">
-                    </div>
-                    <span class="p-2 h3">{{ translations.student }}</span>
-                </div>
-                <span class="text-info">12 Dec, 2024</span>
-            </div>
-            <div class="card-body">
-                <blockquote class="blockquote mb-0 text-justify">
-                    <p>{{ translations.student_about }}</p>
-                </blockquote>
-            </div>
+    <div class="card">
+        <img style="width:369px; height: 210px;" src="{% static 'img/teacher_image.jpg' %}" class="card-img-top"
+             alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{ translations.teacher }}</h5>
+            <p class="card-text">{{ translations.teacher_about }}</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago</small>
+        </div>
+    </div>
+    <div class="card">
+        <img style="width:369px; height: 210px;" src="{% static 'img/student_role.jpg' %}" class="card-img-top"
+             alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{ translations.student }}</h5>
+            <p class="card-text">{{ translations.student_about }}</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago</small>
         </div>
     </div>
 </div>
+
+</div>
+
 
 {% endblock content %}

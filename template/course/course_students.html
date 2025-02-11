@@ -33,7 +33,6 @@
             <th scope="col">ID</th>
             <th scope="col">Full Name</th>
             <th scope="col">Started Date</th>
-            <th scope="col">Details</th>
         </tr>
         </thead>
         <tbody>
@@ -43,13 +42,19 @@
             <!-- <th scope="row">{{ forloop.counter }}</th> -->
             <th scope="row">{{ forloop.counter }}</th>
             {% if cs.student.user.first_name or cs.student.user.last_name %}
-            <td>{{ cs.student.user.first_name }} {{ cs.student.user.last_name }}</td>
+            <td>
+                <a href="{% url 'student_detail' course_id=course.id student_id=cs.student.id %}">
+                    {{ cs.student.user.first_name }} {{ cs.student.user.last_name }}
+                </a>
+            </td>
             {% else %}
-            <td>{{ cs.student.user.username }}</td>
+            <td>
+                <a href="{% url 'student_detail' course_id=course.id student_id=cs.student.id %}">
+                  {{ cs.student.user.username }}
+                </a>
+            </td>
             {% endif %}
             <td>{{ cs.start_date }}</td>
-            <td><a href="{% url 'student_detail' course_id=course.id student_id=cs.student.id %}">more</a>
-            </td>
         </tr>
         {% endfor %}
 

@@ -7,7 +7,7 @@ from enum import Enum
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 import os
-
+from django.core.validators import MinValueValidator,MaxValueValidator
 
 
 class UserRoleEnum(Enum):
@@ -118,7 +118,7 @@ class Feedback(models.Model):
     page_name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, choices=FEEDBACK_STATUS, default='new')
-    resolved_at = models.DateTimeField(auto_now=True)
+    resolved_at = models.DateTimeField(null=True, blank=True)
     is_send = models.BooleanField(default=False)
 
     def __str__(self):
@@ -179,7 +179,8 @@ class Attendance(models.Model):
 class Mark(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='marks')
     attendance = models.ForeignKey(Attendance, on_delete=models.CASCADE)
-    is_attended = models.BooleanField(default=False)  # is_attendent o'rniga is_attended
+    is_attended = models.SmallIntegerField(default=0,
+       validators=[MinValueValidator(-1), MaxValueValidator(1)])
 
     def __str__(self):
 
@@ -197,7 +198,7 @@ class CourseTask(models.Model):
     is_done = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.course.name} - {self.name}"
+        return f"{self.course.name} - {self.task_name}"
 
 
 class StudentTask(models.Model):
@@ -237,4 +238,11 @@ class TeacherPayment(models.Model):
         return f"{self.teacher.name} - {self.price}"
 
 
+class Contact(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    subject = models.CharField(max_length=150)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.user.email}"

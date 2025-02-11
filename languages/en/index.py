@@ -6,7 +6,7 @@ translations = {
     'automate': "Automate the course",
     'coursework': "This is where you can do your coursework at the training center or at home. you can automate",
     'learn_more': "Learn More",
-    'testimonial': "Testimonial",
+    'testimonial': "Comments",
     'what_parent': "What User Say!",
     'no_items': "There are no news items",
     'comment': "Comment",

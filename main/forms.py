@@ -51,8 +51,8 @@ class CourseStudentCreateForm(forms.ModelForm):
         fields = ['student','start_date']
 
     student = forms.ModelChoiceField(
-        queryset=Student.objects.all(),  # Bu yerda talabalar ro'yxatini ko'rsatadi
-        required=False,  # Talabani majburiy qilmaslik
+        queryset=Student.objects.all(),
+        required=False,
         widget=forms.Select(attrs={'class': 'form-select', 'aria-label': 'Student select menu'})
     )
 
@@ -62,7 +62,9 @@ class StudentEditForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'birth_date', 'address', 'phone_number', 'image','email']
-        
+        widgets = {
+            'image': forms.ClearableFileInput(attrs={'class': 'custom-file-input'}),
+        }
             
 
 

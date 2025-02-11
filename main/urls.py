@@ -9,41 +9,44 @@ from .views import (
     gallery_view,
     single_view,
     blogs_view,
-# course
+    # course
     CoursesView,
     course_update_view,
     course_delete_view,
     course_student_view,
     CourseStudentAddView,
     join_request_view,
-#payments
+    # payments
     CoursePaymentsView,
     CoursePaymentTakeView,
-    course_payme_detail_view,
-# registrations
+    CoursePaymentEditView,
+    delete_payment,
+    # registrations
     signup_view,
     sign_in_view,
-#students
+    # students
     student_detail_view,
-    student_edit_view,
+    StudentEditView,
     student_delete_view,
-    group_tasks_view,
+    GroupTasksView,
     attendances_view,
     AttendanceTakeView,
     AttendanceUpdateView,
-    create_group_task_view,
+    GroupTaskEdit,
     StudentTaskTakeView,
-#teachers
+    StudentTaskEdit,
+    student_delete_task,
+    # teachers
     teacher_detail_view,
     teacher_edit_view,
-    #profile
+    # profile
     profile_view,
     user_edit_view,
-    #feedbacks
+    # feedbacks
     FeedbacksView,
-    #404
+    # 404
     error_404_view,
-set_language
+    set_language, delete_task
 
 )
 urlpatterns = [
@@ -58,14 +61,15 @@ urlpatterns = [
     #course
     path('courses',CoursesView.as_view(),name='courses'),
     path('course/<int:pk>/edit',course_update_view,name='course_edit'),
-    path('course/<int:pk>/delete',course_delete_view,name='course_delete'),
+    path('course/<int:course_id>/delete',course_delete_view,name='course_delete'),
     path('course/<int:course_id>/students',course_student_view,name='course_students'),
     path('course/<int:course_id>/student/add',CourseStudentAddView.as_view(),name='course_student_add'),
     path('course/<int:course_id>/join-request',join_request_view,name='join_request'),
 #Payments
     path('course/<int:course_id>/payments',CoursePaymentsView.as_view(),name='course_payments'),
     path('course/<int:course_id>/payment-take',CoursePaymentTakeView.as_view(),name='course_pay_take'),
-    path('course/<int:course_id>/payment/<int:student_id>/student-detail',course_payme_detail_view,name='payment_detail'),
+    path('course/<int:course_id>/payment/<int:student_id>/edit',CoursePaymentEditView.as_view(),name='course_payment_edit'),
+    path('course/<int:course_id>/payment/<int:student_id>/delete/',delete_payment, name='delete_payment'),
 # registration
     path('signup',signup_view,name='signup'),
     path('login/',sign_in_view,name='login'),
@@ -73,10 +77,13 @@ urlpatterns = [
     
     #course students
     path('course/<int:course_id>/student/<int:student_id>/detail',student_detail_view,name='student_detail'),
-    path('course/<int:course_id>/student/<int:student_id>/edit',student_edit_view,name='student_edit'),
-    path('course/<int:course_id>/student/<int:student_id>/delete',student_delete_view,name='student_delete'),
-    path('course/<int:course_id>/tasks',group_tasks_view,name='group_tasks'),
-    path('course/<int:course_id>/create-task',create_group_task_view,name="create_group_task"),
+    path('course/<int:course_id>/student/<int:student_id>/task/<int:task_id>/edit',StudentTaskEdit.as_view(),name='student_task_edit'),
+    path('course/<int:course_id>/student/<int:student_id>/task/<int:task_id>/delete',student_delete_task,name='student_task_delete'),
+    path('course/<int:course_id>/student/<int:student_id>/edit',StudentEditView.as_view(),name='student_edit'),
+    path('course/<int:course_id>/student/<int:student_id>/exit',student_delete_view,name='student_delete'),
+    path('course/<int:course_id>/tasks',GroupTasksView.as_view(),name='group_tasks'),
+    path('course/<int:course_id>/task/<int:task_id>/edit',GroupTaskEdit.as_view(),name="task_edit_delete"),
+    path('delete-task/<int:course_id>/<int:task_id>/', delete_task, name='delete_task'),
     path('course/<int:course_id>/student/<int:student_id>/create-task',StudentTaskTakeView.as_view(),name="student_task_take"),
     #attendance
     path('course/<int:course_id>/attendances',attendances_view,name='attendances'),

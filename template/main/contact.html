@@ -28,29 +28,17 @@
             <div class="col-lg-7 mb-5">
                 <div class="contact-form">
                     <div id="success"></div>
-                    <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                    <form method="post"> {% csrf_token %}
                         <div class="control-group">
-                            <input type="text" class="form-control" id="name" placeholder="Your Name"
-                                required="required" data-validation-required-message="Please enter your name" />
-                            <p class="help-block text-danger"></p>
+                            <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject">
+
                         </div>
-                        <div class="control-group">
-                            <input type="email" class="form-control" id="email" placeholder="Your Email"
-                                required="required" data-validation-required-message="Please enter your email" />
-                            <p class="help-block text-danger"></p>
-                        </div>
-                        <div class="control-group">
-                            <input type="text" class="form-control" id="subject" placeholder="Subject"
-                                required="required" data-validation-required-message="Please enter a subject" />
-                            <p class="help-block text-danger"></p>
-                        </div>
-                        <div class="control-group">
+                        <div class="control-group mt-1">
                             <textarea class="form-control" rows="6" id="message" placeholder="Message"
-                                required="required"
-                                data-validation-required-message="Please enter your message"></textarea>
-                            <p class="help-block text-danger"></p>
+                               name="message"></textarea>
+
                         </div>
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-start mt-2">
                             <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Send
                                 Message</button>
                         </div>
@@ -62,26 +50,5 @@
 </div>
 <!-- Contact End -->
 
-<div class="container w-50">
 
-    <h1>New massages</h1>
-
-
-    <div class="card">
-        <div class="card-body d-inline">
-            <div class="d-flex justify-content-between">
-                <h3>Full name</h3>
-                <div class="d-inline">
-                    <img style="width: 50px; border-radius: 50px;" src="/static/img/team-4.jpg" alt="">
-                </div>
-            </div>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos a placeat nam nesciunt nostrum sed
-                accusamus fugit fugiat quam atque?
-            </p>
-        </div>
-    </div>
-
-
-</div>
 {% endblock content %}

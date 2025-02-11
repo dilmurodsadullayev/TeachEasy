@@ -5,14 +5,22 @@
 {% block content %}
 
 <div class="container mt-5">
-    <h2 class="text-center mb-3">{{ course.name }} kursini tahirlash</h2>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ course.name }} - kursni yangilash
+            </li>
+        </ol>
+    </nav>
+    <div class="d-flex justify-content-center mb-3">
+        <h1>{{ course.name }} - kursni yangilash</h1>
+    </div>
     <form method="post"> {% csrf_token %}
         {{ form|crispy }}
         <button class="btn btn-outline-secondary">Save</button>
-    </form>
-    <div style="text-align: end;">
         <a href="{% url 'courses' %}" class="btn btn-outline-primary">Orqaga</a>
-    </div>
+    </form>
+
 
 
 </div>

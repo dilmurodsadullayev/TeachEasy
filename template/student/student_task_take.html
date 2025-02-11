@@ -1,8 +1,20 @@
 {% extends "main/base.html" %}
 {% load static %}
-{% block title %} join request {% endblock title %}
+{% block title %} Student Task {% endblock title %}
 {% block content %}
 <div class="container mt-5">
+  <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'course_students' course_student.course.id  %}" class="text-decoration-none">Course Students</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'student_detail' course_id=course_student.course.id student_id=course_student.student.id %}">{{ course_student.student.user.username }} detail</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ course_student.student.user.username }} ga topshiriq berish</li>
+        </ol>
+    </nav>
+  <div class="d-flex justify-content-center mb-3">
+        <h1>{{ course_student.student.user.username }} ga topshiriq berish</h1>
+    </div>
+
     <form method="post">{% csrf_token %}
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
@@ -16,7 +28,7 @@
         <label for="until_date" class="form-label">Until Date</label>
         <input name="until_date" type="date" class="form-control" id="until_date" aria-describedby="until_date">
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Save</button>
     </form>
 
 </div>

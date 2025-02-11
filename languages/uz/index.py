@@ -6,7 +6,7 @@ translations = {
     'automate': "Kursni avtomatlashtiring",
     'coursework': "Bu yerda siz trening markazida yoki uyda o'z kurs ishlaringizni bajarasiz. Siz avtomatlashtira olasiz",
     'learn_more': "Batafsil o'qing",
-    'testimonial': "Izoh",
+    'testimonial': "Izohlar",
     'what_parent': "Foydalanuvchilar nima deydi!",
     'no_items': "Yangi xabarlar yo'q",
     'comment': "Izoh",

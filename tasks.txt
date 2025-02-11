@@ -1,5 +1,0 @@
-1. login background (done)
-2. task modal qoshish update, delete, read
-3. student edit qilganda avalgi rasimlarini chiqmayapti
-4. student detail responsivlik yo'q
-5. techer detail ko'rish kerak

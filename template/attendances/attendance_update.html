@@ -1,19 +1,19 @@
 {% extends "main/base.html" %}
 {% load static %}
-{% block title %} attendance update {% endblock title %}
+{% block title %} {{ base_translations.attendance_update }} {% endblock title %}
 {% block content %}
 
 <div class="container mt-5">
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-white">
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Courses</a></li>
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Attendances</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Update attendance</li>
+      <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'attendances' course_id=attendance.course.id %}" class="text-decoration-none">{{ translations.attendances }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ translations.renew_attendance }}</li>
     </ol>
   </nav>
   <div class="d-flex justify-content-center mb-3">
-    <h1>Update attendance</h1>
+    <h1>{{ translations.renew_attendance }} {{ attendance.course.name }} </h1>
   </div>
 
   <form action="{% url 'attendance_update' course_id=course_id attendance_id=attendance.id %}" method="post">
@@ -49,11 +49,11 @@
     </table>
 
     <input type="submit" class="btn btn-outline-success" value="Saqlash">
-
+  <a href="{% url 'attendances' course_id=course_id %}" class="btn btn-outline-secondary">Qaytish</a>
 
   </form>
 
-    <a href="{% url 'attendances' course_id=course_id %}" class="btn btn-outline-secondary">Qaytish</a>
+
 
 </div>
 

@@ -16,13 +16,33 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 </head>
 
-<body style="background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,1) 2%, rgba(0,212,255,1) 100%); height: 48vw">
+<style>
+body {
+    background-image: url("{% static 'img/header.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh; /* Ekranning to‘liq balandligini qoplaydi */
+}
 
 
-    <div class="container d-flex justify-content-center mt-5">
+@media (max-width: 768px) { /* Mobil versiya */
+    body {
+        background-size: contain; /* Rasm to‘liq ko‘rinadi */
+        background-position: top;
+    }
+}
+
+</style>
+
+
+<body style="height: 48vw">
+
+
+    <div class="container d-flex justify-content-center" style="margin-top: 8rem!important;">
         <div class="form-container">
             <p class="title">Registration</p>
             <form class="form" method="POST" enctype="multipart/form-data">
@@ -59,6 +79,9 @@ background: linear-gradient(0deg, rgba(255,255,255,1) 2%, rgba(0,212,255,1) 100%
             </p>
             <a href="{% url 'index' %}" class="text-info text-decoration-none"><i class="bi bi-arrow-left"
                     style="padding-right: 7px;"></i>Main page</a>
+            <div class="text-center mt-2">
+                <p class="text-info">1.0.0 Version</p>
+            </div>
         </div>
 
     </div>

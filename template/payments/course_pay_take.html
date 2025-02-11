@@ -3,7 +3,102 @@
 {% load crispy_forms_tags %}
 {% block title %} Course Payment take{% endblock title %}
 {% block content %}
+
+<style>
+    /* From Uiverse.io by vishnupprajapat */
+.checkbox-wrapper-46 input[type="checkbox"] {
+  display: none;
+  visibility: hidden;
+}
+
+.checkbox-wrapper-46 .cbx {
+  margin: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+.checkbox-wrapper-46 .cbx span {
+  display: inline-block;
+  vertical-align: middle;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-46 .cbx span:first-child {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  transform: scale(1);
+  vertical-align: middle;
+  border: 1px solid #9098a9;
+  transition: all 0.2s ease;
+}
+.checkbox-wrapper-46 .cbx span:first-child svg {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16px;
+  stroke-dashoffset: 16px;
+  transition: all 0.3s ease;
+  transition-delay: 0.1s;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-46 .cbx span:first-child:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #506eec;
+  display: block;
+  transform: scale(0);
+  opacity: 1;
+  border-radius: 50%;
+}
+.checkbox-wrapper-46 .cbx span:last-child {
+  padding-left: 8px;
+}
+.checkbox-wrapper-46 .cbx:hover span:first-child {
+  border-color: #506eec;
+}
+
+.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child {
+  background: #506eec;
+  border-color: #506eec;
+  animation: wave-46 0.4s ease;
+}
+.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child svg {
+  stroke-dashoffset: 0;
+}
+.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child:before {
+  transform: scale(3.5);
+  opacity: 0;
+  transition: all 0.6s ease;
+}
+
+@keyframes wave-46 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+
+</style>
+
 <div class="container mt-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'course_payments' course_id=course.id %}" class="text-decoration-none">Course Payments</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ course.name }} - Kurs uchun to'lov olish
+            </li>
+        </ol>
+    </nav>
+    <div class="d-flex justify-content-center mb-3">
+        <h1>{{ course.name }} - Kurs uchun to'lov olish</h1>
+    </div>
+
     <form method="post">{% csrf_token %}
        <div class="mb-3">
             <label class="form-label">Student</label>
@@ -11,7 +106,7 @@
                 <option selected>Choose a student</option>
                 {% for student in students %}
                     <option value="{{ student.student.id }}">
-                        {{ student.student.user.username }} {{ student.student.id }}
+                        {{ student.student.user.username }}
                     </option>
                 {% endfor %}
             </select>
@@ -26,12 +121,20 @@
             <input type="text" class="form-control" name="payment_method">
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="is_paid">
-          <label class="form-check-label" for="flexCheckDefault">
-            Status
-          </label>
+            <div class="checkbox-wrapper-46">
+              <input type="checkbox" id="cbx-46" class="inp-cbx" name="is_paid"/>
+              <label for="cbx-46" class="cbx"
+                ><span>
+                  <svg viewBox="0 0 12 10" height="10px" width="12px">
+                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+                ><span>Status</span>
+              </label>
+            </div>
         </div>
-        <button type="submit" class="btn btn-outline-success text-right">Save</button>
+        <div class="pt-3">
+            <a class="btn btn-outline-secondary" href="{% url 'course_payments' course_id=course.id %}" >Back</a>
+            <button type="submit" class="btn btn-outline-success text-right">Save</button>
+        </div>
     </form>
 </div>
 {% endblock content %}

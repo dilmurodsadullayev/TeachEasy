@@ -18,36 +18,7 @@
 <!-- Header End -->
 
 
-<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel1">Update teacher</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <input type="text" class="name-of-teacher form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Image</label>
-                    <input type="text" class="img-url form-control" placeholder="URL">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Name of job</label>
-                    <input type="text" class="name-of-job form-control">
-                </div>
-            </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Update</button>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 
 <!-- Team Start -->
@@ -85,20 +56,19 @@
                                 class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <!-- teacherni ism va familyasi bormi sharti ochilgan -->
+
                 {% if teacher.user.first_name or teacher.user.last_name %}
                     <h4>{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h4>
                 {% else %}
                     <h4>{{ teacher.user.username }}</h4>
                 {% endif %}
-                <!-- teacherni ism va familyasi bormi sharti yopilgan -->
+
                 <i>
-                    <!-- course larni chiqarish sikl ochilgan ochilgan -->
+
                     {% for course in courses %}
-                        {{ course.name }}<button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i
-                             class="bi bi-pencil-fill"></i></button>
+                        {{ course.name }}
                     {% endfor %}
-                    <!-- course larni chiqarish sikl ochilgan yopilgan -->
+
                 </i>
 
             </div>

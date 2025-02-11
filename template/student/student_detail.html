@@ -1,10 +1,8 @@
 {% extends "main/base.html" %}
 {% load static %}
+{% load custom_filters %}
 {% block title %} student detail {% endblock title %}
 {% block content %}
-
-
-
 
 <div class="container mt-2">
   <nav aria-label="breadcrumb">
@@ -16,7 +14,7 @@
     </nav>
   {% if request.user.role == "TEACHER" %}
   <div class="text-right">
-      <a href="{% url 'student_task_take' course_id=course_student.course.id student_id=student.id %}">Topshiriq berish</a>
+      <a class="btn btn-outline-primary" href="{% url 'student_task_take' course_id=course_student.course.id student_id=student.id %}">Topshiriq berish</a>
   </div>
   {% else %}
   {% endif %}
@@ -41,8 +39,13 @@
         {% if request.user == course_student.student.user or request.user.role == "TEACHER" %}
         <a class="btn mb-2 ml-2 btn-primary"
           href="{% url 'student_edit' course_id=course_student.course.id student_id=course_student.student.id %}">Edit</a>
-        <a class="btn mb-2 ml-2 btn-danger"
-          href="{% url 'student_delete' course_id=course_student.course.id student_id=course_student.student.id %}">Courseni tark etish</a>
+
+        <button class="btn btn-outline-danger btn-exit"
+                            data-student-id="{{ course_student.student.id }}"
+                            data-course-id="{{ course_student.course.id }}">
+                              <span>Exit</span>
+
+                </button>
         {% else %}
         {% endif %}
         <div class="mt-3">
@@ -95,6 +98,7 @@
           {% for student_task in student_tasks %}
           <div class="accordion-item">
             <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+
               <button
                 class="accordion-button collapsed"
                 type="button"
@@ -102,8 +106,18 @@
                 data-bs-target="#collapse{{ forloop.counter }}"
                 aria-expanded="false"
                 aria-controls="collapse{{ forloop.counter }}">
-                {{ student_task.name }}
+                  {{ student_task.name }}
+                <div >
+                {% with student_task.until_date|days_left as remaining_days %}
+                   <b {% if remaining_days <= 2 %}style="color: red;"{% endif %}>
+                          Tugashiga {{ remaining_days }} kun qoldi.
+                      </b>
+
+                  {% endwith %}
+                  </div>
               </button>
+
+
             </h2>
             <div
               id="collapse{{ forloop.counter }}"
@@ -111,7 +125,24 @@
               aria-labelledby="heading{{ forloop.counter }}"
               data-bs-parent="#accordionExample">
               <div class="accordion-body">
-                {{ student_task.description }}
+                {% if request.user.role == "TEACHER" %}
+                  {% if student_task.is_done %}
+                  <a href="{% url 'student_task_edit' course_id=course_student.course.id student_id=course_student.student.id task_id=student_task.id %}">
+                      <span class="text-decoration-line-through">{{ student_task.description }}</span>
+                  </a>
+                  {% else %}
+                   <a href="{% url 'student_task_edit' course_id=course_student.course.id student_id=course_student.student.id task_id=student_task.id %}">
+                        <span >{{ student_task.description }}</span>
+                    </a>
+                  {% endif %}
+                {% else %}
+                  {% if student_task.is_done %}
+                      <span class="text-decoration-line-through">{{ student_task.description }}</span>
+                  {% else %}
+                        <span >{{ student_task.description }}</span>
+                  {% endif %}
+                {% endif %}
+
               </div>
             </div>
           </div>
@@ -126,4 +157,39 @@
 </div>
 
 
+<script>
+document.querySelectorAll('.btn-exit').forEach(button => {
+    button.addEventListener('click', function() {
+        const studentId = this.getAttribute('data-student-id');
+        const courseId = this.getAttribute('data-course-id');
+
+        if (confirm("Siz bu kursdan chiqmoqchisiz?")) {
+            fetch(`/course/${courseId}/student/${studentId}/exit`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({ studentId: studentId, course_id: courseId })
+            })
+            .then(response => response.json())  // JSON javobni o'qish
+            .then(data => {
+                if (data.redirect_url) {
+                    window.location.href = data.redirect_url;  // Yangi sahifaga yo‘naltirish
+                } else {
+                    alert("Xatolik.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+});
+
+
+</script>
+
 {% endblock content %}
+ <a class="btn mb-2 ml-2 btn-danger"
+          href="{% url 'student_delete' course_id=course_student.course.id student_id=course_student.student.id %}">Courseni tark etish</a>

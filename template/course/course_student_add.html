@@ -4,12 +4,19 @@
 {% block content %}
 
 <div class="container mt-5">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'course_students' course.id  %}" class="text-decoration-none">Course Students</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ course.name }} kursga student qo'shish</li>
+        </ol>
+    </nav>
     <form method="post" enctype="multipart/form-data">{% csrf_token %}
        <div class="mb-3">
            <select id="student" class="form-select" name="student">
                 <option value="" disabled selected>Studentni tanlang</option>
                 {% for student in students %}
-                    <option value="{{ student.student.id }}">{{ student.student.user.username }} {{ student.student.id }}</option>
+                    <option value="{{ student.student.id }}">{{ student.student.user.username }}</option>
                 {% endfor %}
             </select>
         </div>
