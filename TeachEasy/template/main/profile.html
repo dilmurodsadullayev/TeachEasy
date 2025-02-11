@@ -1,0 +1,271 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} profile {% endblock title %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="container mt-5">
+
+        <h2 class="text-center">Profile</h2>
+        {% if request.user.role == "TEACHER" %}
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'user_edit' user.id %}" class="btn btn-primary">edit</a>
+        </div>
+        <div class="d-flex justify-content-center text-center">
+            <div>
+                <span class="position-absolute"
+                    style="margin: 1% 4%; border-radius: 10px; background-color: grey; color: white;"><i
+                        class="bi bi-person" style="color: white;"></i>
+                    {{ user.username }}</span>
+                <div style=" width:300px; height: 300px; border-radius: 50%; overflow: hidden; object-fit: cover;">
+                    {% if user.image %}
+                    <img style="width: 100%;" src="{{ user.image.url }}" alt="no image">
+                    {% else %}
+                    <img style="width: 100%;" src="{% static 'img/user.png' %}" alt="no image">
+                    {% endif %}
+                </div>
+                <div>
+                    {% if user.first_name or user.last_name %}
+                    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+                    {% else %}
+                    <h1>No Name</h1>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <form class="row g-3">
+            <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Full name</label>
+                {% if user.first_name or user.last_name %}
+                <input type="text" class="form-control" id="inputEmail14"
+                    value="{{ user.first_name }} {{ user.last_name }}">
+                {% else %}
+                <input type="text" class="form-control" id="inputEmail4" value="No Name">
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <label for="inputPassword42" class="form-label">Birth date</label>
+                {% if user.birth_date %}
+                <input type="date" class="form-control" id="inputPassword42" value="{{ user.birth_date|date:'Y-m-d'  }}">
+                {% else %}
+                <input type="date" class="form-control" id="inputPassword4" value="2023-05-28">
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <label for="inputAddress1" class="form-label">Email</label>
+                {% if user.email %}
+                <input type="email" class="form-control" id="inputAddress1" value="{{ user.email }}">
+                {% else %}
+                <input type="email" class="form-control" id="inputAddress" value="No email">
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <label for="inputAddress3" class="form-label">Address</label>
+                {% if user.address %}
+                <input type="text" class="form-control" id="inputAddress3" value="{{ user.address }}">
+                {% else %}
+                <input type="text" class="form-control" id="inputAddress2" value="No address">
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <label for="inputCity" class="form-label">Phone number</label>
+                {% if user.phone_number %}
+                <input type="tel" class="form-control" id="inputCity" value="{{ user.phone_number }}">
+                {% else %}
+                <input type="tel" class="form-control" id="inputCity1" value="+9989999999">
+                {% endif %}
+            </div>
+        </form>
+        <div class="list-group mt-5">
+            <h1 class="text-center">Course lists</h1>
+            {% for course in courses %}
+            <div class="list-group-item list-group-item-action d-flex justify-content-between">
+                <p>{{ course.name }}</p>
+                {% if number %}
+                <p style="color: lightseagreen;">
+                    {{ number }}
+                </p>
+                {% else %}
+                <p style="color: rgb(178, 32, 32);">
+                    0
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-5">
+            <h3 class="text-center">Requests to join </h3>
+            <div class="accordion" id="accordionExample">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Student lists
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Course</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for join_request in join_requests %}
+                                    <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>{{ join_request.student.user.username }}</td>
+                                        <td>{{ join_request.course.name }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% else %}
+
+              <div class="d-flex mt-4 justify-content-center">
+            <div class="d-flex">
+              <div class="img-of-teacher">
+                <span class="position-absolute"><i class="bi bi-person" style="color: white;"></i>
+                  {{ student.user.username }}</span>
+                {% if student.student.user.image %}
+                <img src="{{ student.user.image.url }}" style="width: 300px; height: 300px;"
+                  alt="Userni rasmi yo'q">
+                {% else %}
+                <img src="/static/img/user.png" style="width: 200px; height: 200px;" alt="Userni rasmi yo'q">
+                {% endif %}
+              </div>
+              <div class="detial-of-teacher">
+                {% if student.user.first_name or student.user.last_name %}
+                <h1 class="d-inline">{{ student.user.first_name }} {{ student.user.last_name }}</h1>
+                {% else %}
+                <h1 class="d-inline">No name </h1>
+                {% endif %}
+                {% if request.user == student.user or request.user.role == "TEACHER" %}
+                <a class="btn mb-2 ml-2 btn-primary"
+                  href="{% url 'user_edit' user_id=student.id %}">Edit</a>
+
+
+                    {% else %}
+                    {% endif %}
+                    <div class="mt-3">
+                      <strong>Address:</strong>
+                      {% if student.user.address %}
+                      <p>{{ student.user.address }}</p>
+                      {% else %}
+                      <p>address yo'q</p>
+                      {% endif %}
+                      <strong>Email:</strong>
+                      {% if student.user.email %}
+                      <p>{{ student.user.email }}</p>
+                      {% else %}
+                      <p>Email yo'q</p>
+                      {% endif %}
+                      <strong>Birth day:</strong>
+                      {% if student.user.birth_date %}
+                      <p>{{ student.user.birth_date }}</p>
+                      {% else %}
+                      <p>Tug'ulgan sana yo'q</p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            {% if course %}
+              <div class="mt-3">
+                <h1>Course payemnts</h1>
+              </div>
+              <div class="tasks">
+                <div>
+                  <div class="d-flex justify-content-between">
+                      {% for course_payment in course_payments %}
+                        <div class="btn btn-primary ml-3 mr-3">
+                          <strong>Course:</strong> {{ course_payment.course.name }}
+                        </div>
+                        <div class="d-flex">
+                            {% if course_payment.is_paid %}
+                                <div class="btn btn-success ml-2 mr-2">paid</div>
+                            {% else %}
+                               <div class="btn btn-danger ml-2 mr-2">not paid</div>
+                            {% endif %}
+                        </div>
+                  </div>
+                      {% endfor %}
+                  </div>
+
+                  <hr>
+
+                  <div>
+                    <h3>Tasks</h3>
+                    <div class="accordion" id="accordionExample">
+                      {% for student_task in student_tasks %}
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ forloop.counter }}"
+                            aria-expanded="false"
+                            aria-controls="collapse{{ forloop.counter }}">
+                              {{ student_task.name }}
+                            <div >
+                            {% with student_task.until_date|days_left as remaining_days %}
+                               <b {% if remaining_days <= 2 %}style="color: red;"{% endif %}>
+                                      Tugashiga {{ remaining_days }} kun qoldi.
+                                  </b>
+
+                              {% endwith %}
+                              </div>
+                          </button>
+
+
+                        </h2>
+                        <div
+                          id="collapse{{ forloop.counter }}"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="heading{{ forloop.counter }}"
+                          data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                              {% if student_task.is_done %}
+                                  <span class="text-decoration-line-through">{{ student_task.description }}</span>
+                              {% else %}
+                                    <span >{{ student_task.description }}</span>
+                              {% endif %}
+
+
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            {% else %}
+            {% endif %}
+
+        {% endif %}
+    </div>
+
+
+
+</div>
+
+{% endblock content %}

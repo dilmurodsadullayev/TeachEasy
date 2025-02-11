@@ -1,0 +1,233 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} {{ base_translations.group_tasks }} {% endblock title %}
+
+
+{% block content %}
+<style>
+    .detail-card {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        max-width: 400px;
+        margin: 20px auto;
+        border-left: 6px solid #007BFF;
+    }
+
+    .task-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .task-desc {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 15px;
+    }
+
+    .task-dates span {
+        display: block;
+        font-size: 13px;
+        color: #777;
+        margin-bottom: 5px;
+    }
+
+    .status {
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 10px;
+        display: inline-block;
+        margin: 10px 0;
+    }
+
+    .done {
+        background-color: #28a745;
+    }
+
+    .not-done {
+        background-color: #dc3545;
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+
+    .btn-edit, .btn-delete, .btn-back {
+        padding: 10px 15px;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .btn-edit {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-back {
+        background-color: #6c757d;
+        color: white;
+        margin-top: 10px;
+        display: block;
+        text-align: center;
+    }
+
+    .btn-edit:hover, .btn-delete:hover, .btn-back:hover {
+        opacity: 0.85;
+    }
+
+/* From Uiverse.io by vishnupprajapat */
+.checkbox-wrapper-46 input[type="checkbox"] {
+  display: none;
+  visibility: hidden;
+}
+
+.checkbox-wrapper-46 .cbx {
+  margin: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+.checkbox-wrapper-46 .cbx span {
+  display: inline-block;
+  vertical-align: middle;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-46 .cbx span:first-child {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  transform: scale(1);
+  vertical-align: middle;
+  border: 1px solid #9098a9;
+  transition: all 0.2s ease;
+}
+.checkbox-wrapper-46 .cbx span:first-child svg {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16px;
+  stroke-dashoffset: 16px;
+  transition: all 0.3s ease;
+  transition-delay: 0.1s;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-46 .cbx span:first-child:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #506eec;
+  display: block;
+  transform: scale(0);
+  opacity: 1;
+  border-radius: 50%;
+}
+.checkbox-wrapper-46 .cbx span:last-child {
+  padding-left: 8px;
+}
+.checkbox-wrapper-46 .cbx:hover span:first-child {
+  border-color: #506eec;
+}
+
+.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child {
+  background: #506eec;
+  border-color: #506eec;
+  animation: wave-46 0.4s ease;
+}
+.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child svg {
+  stroke-dashoffset: 0;
+}
+.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child:before {
+  transform: scale(3.5);
+  opacity: 0;
+  transition: all 0.6s ease;
+}
+
+@keyframes wave-46 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+
+
+</style>
+<div class="container pt-5">
+
+   <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'group_tasks' course_id=course.id %}" class="text-decoration-none">Course Tasks</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ task.task_name }} - tahrirlash
+            </li>
+        </ol>
+    </nav>
+    <div class="detail-card">
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ task.task_name }} - tahrirlash</h1>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="courseName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="courseName" placeholder="Course name" name="task_name"
+                           value="{{ task.task_name }}" required>
+                </div>
+                <input type="hidden" class="form-control" id="given_date" name="given_date"
+                       value="{{ task.given_date | date:'Y-m-d' }}" required>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" rows="3" name="definition" required>{{ task.definition }}</textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="endTime">End Time</label>
+                    <input type="date" class="form-control" id="endTime" name="until_date"
+                           value="{{ task.until_date | date:'Y-m-d' }}" required>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="checkbox-wrapper-46">
+                        <input type="checkbox" id="cbx-46" class="inp-cbx" name="is_done" {% if task.is_done %}checked{% endif %}/>
+                        <label for="cbx-46" class="cbx"
+                        ><span>
+                      <svg viewBox="0 0 12 10" height="10px" width="12px">
+                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+                        ><span>Bajarildi yoki bajarilmadi</span>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a href="{% url 'group_tasks' course_id=task.course.id %}" class="btn btn-secondary">⬅️ Orqaga</a>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock content %}
+
+

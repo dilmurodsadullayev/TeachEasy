@@ -1,0 +1,33 @@
+.img-of-teacher img{
+  border-radius: 20px;
+}
+
+.img-of-teacher span{
+  color: white;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 10px 20px;
+  padding-inline: 10px;
+  border-radius: 40px;
+  background: #9e9e9e;
+}
+
+.detial-of-teacher {
+  margin-left: 20px;
+}
+
+.detial-of-teacher h1{
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.detial-of-teacher div{
+  border-left: 2px solid black;
+  padding-left: 10px;
+}
+
+.tasks {
+  border-radius: 10px;
+  border: 2px solid #9e9e9e;
+  padding: 5px;
+}

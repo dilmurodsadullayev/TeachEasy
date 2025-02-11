@@ -1,0 +1,61 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} {{ base_translations.attendance_update }} {% endblock title %}
+{% block content %}
+
+<div class="container mt-5">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white">
+      <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'attendances' course_id=attendance.course.id %}" class="text-decoration-none">{{ translations.attendances }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ translations.renew_attendance }}</li>
+    </ol>
+  </nav>
+  <div class="d-flex justify-content-center mb-3">
+    <h1>{{ translations.renew_attendance }} {{ attendance.course.name }} </h1>
+  </div>
+
+  <form action="{% url 'attendance_update' course_id=course_id attendance_id=attendance.id %}" method="post">
+    {% csrf_token %}
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">{{ attendance.date }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ mark }}
+        {% for mark in marks %}
+        <tr>
+          <th scope="row">{{ mark.student.id }}</th>
+          <td>
+            {% if mark.student.user.first_name or mark.student.user.last_name %}
+            {{ mark.student.user.first_name }} {{ mark.student.user.last_name }}
+            {% else %}
+            {{ mark.student.user.username }}
+            {% endif %}
+          </td>
+          <td>
+            <input name="is_attended_{{ mark.id }}" type="checkbox" class="ml-4 form-check-input"
+                   {% if mark.is_attended%} checked {% endif %}>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <input type="submit" class="btn btn-outline-success" value="Saqlash">
+  <a href="{% url 'attendances' course_id=course_id %}" class="btn btn-outline-secondary">Qaytish</a>
+
+  </form>
+
+
+
+</div>
+
+
+{% endblock content %}

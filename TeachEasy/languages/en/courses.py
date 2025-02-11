@@ -1,0 +1,23 @@
+translations = {
+    'our_courses': "Our courses",
+    'home': "Home",
+    'popular_courses': "Popular courses",
+    'course_for_you': "Courses for You",
+    'course_data': "Course's data",
+    'create_course': 'Create course',
+    'days': "Days",
+    'course_time': "Course Time",
+    'course_fee': "Course fee",
+    'tasks': "Tasks",
+    'see_tasks': "See tasks",
+    'attendances': 'Attendances',
+    'see_attendances': "See attendances",
+    'course_payments': "Course payments",
+    'see_payments': "See payments",
+    'course_student':"Course Student",
+    'see_students': "See students",
+    'you_have_submit': "You have submitted a request to join the course",
+    'join_request': "Join request",
+    'edit': "Edit",
+    'delete': "Delete"
+}

@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} course delete {% endblock title %}
+{% block content %}
+
+<div class="container mt-5">
+
+
+    <h1 class="text-center">Kursni o'chirish</h1>
+    <div class="card">
+        <div class="card-body">
+        <h2 class="text-center">Kursni o'chirishni tasdiqlang</h2>
+        <h4><strong>Kurs nomi:</strong> {{ course.name }}</h4>
+        <h4><strong>Tavsifi:</strong> {{ course.description }}</h4>
+        <p>Rostan ham ushbu kursni o'chirmoqchimisiz?</p>
+        <form method="POST">
+            {% csrf_token %}
+            <button class="btn btn-outline-danger" type="submit">Ha</button>
+            <a class="btn btn-outline-secondary" href="{% url 'courses' %}">Bekor qilish</a>
+        </form>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+

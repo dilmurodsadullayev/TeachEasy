@@ -1,0 +1,173 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} teachers {% endblock title %}
+
+{% block content %}
+
+<!-- Header Start -->
+<div class="container-fluid bg-primary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+        <h3 class="display-3 font-weight-bold text-white">Our Teachers</h3>
+        <div class="d-inline-flex text-white">
+            <p class="m-0"><a class="text-white" href="">Home</a></p>
+            <p class="m-0 px-2">/</p>
+            <p class="m-0">Our Teachers</p>
+        </div>
+    </div>
+</div>
+<!-- Header End -->
+
+
+
+
+
+<!-- Team Start -->
+<div class="container-fluid pt-5">
+    <div class="container">
+        <div class="text-center pb-2">
+            <p class="section-title px-5"><span class="px-2">Our Teachers</span></p>
+            <h1 class="mb-4">Meet Our Teachers</h1>
+        </div>
+
+        <div class="row list-of-teacher">
+
+            <!-- User teacher ekanligini tekshirish sharti ochilgan -->
+            {% if request.user.id == teacher.user.id %}
+            <div class="col-md-6 col-lg-3 text-center team mb-5">
+                <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
+                    <!-- teacherni rasmi boligini tekshirish ochilgan -->
+                    {% if teacher.user.image %}
+                        <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
+                            <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{{ teacher.user.image.url }}" alt="">
+                        </a>
+                    {% else %}
+                        <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
+                            <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
+                        </a>
+                    {% endif %}
+                    <!-- teacherni rasmi boligini tekshirish yopilgan -->
+                    <div
+                        class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
+                        <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                            href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                            href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light text-center px-0" style="width: 38px; height: 38px;" href="#"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                {% if teacher.user.first_name or teacher.user.last_name %}
+                    <h4>{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h4>
+                {% else %}
+                    <h4>{{ teacher.user.username }}</h4>
+                {% endif %}
+
+                <i>
+
+                    {% for course in courses %}
+                        {{ course.name }}
+                    {% endfor %}
+
+                </i>
+
+            </div>
+            <!-- User role admin ekanligini tekshirish sharti ochilgan -->
+            {% elif request.user.role == "ADMIN" %}
+<!--            teacher va course lar mavjud bo'lsa uchun shart ochilgan -->
+                {% if teacher_courses %}
+                    {% for teacher in teacher_courses %}
+                        <div class="col-md-6 col-lg-3 text-center team mb-5">
+                            <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
+                                {% if teacher.teacher.user.image %}
+                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                    <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{{ teacher.teacher.user.image.url }}" alt="">
+                                </a>
+                                {% else %}
+                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                    <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
+                                </a>
+                                {% endif %}
+                                <div
+                                    class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
+                                    <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                        href="#"><i class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                        href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-outline-light text-center px-0" style="width: 38px; height: 38px;" href="#"><i
+                                            class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                            {% if teacher.teacher.user.first_name or teacher.teacher.user.last_name %}
+                            <h4>{{ teacher.teacher.user.first_name }} {{ teacher.teacher.user.last_name }}</h4>
+                            {% else %}
+                            <h4>{{ teacher.teacher.user.username }}</h4>
+                            {% endif %}
+
+                            {% for course in teacher.course %}
+                            {{ course }}<button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i
+                                    class="bi bi-pencil-fill"></i></button>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                {% endif %}
+
+            {% elif request.user.role == "STUDENT" %}
+                  {% if teacher_courses %}
+                    {% for teacher in teacher_courses %}
+                        <div class="col-md-6 col-lg-3 text-center team mb-5">
+                            <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
+                                {% if teacher.teacher.user.image %}
+                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                    <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{{ teacher.teacher.user.image.url }}" alt="">
+                                </a>
+                                {% else %}
+                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                    <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
+                                </a>
+                                {% endif %}
+                                <div
+                                    class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
+                                    <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                        href="#"><i class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                        href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-outline-light text-center px-0" style="width: 38px; height: 38px;" href="#"><i
+                                            class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                            {% if teacher.teacher.user.first_name or teacher.teacher.user.last_name %}
+                            <h4>{{ teacher.teacher.user.first_name }} {{ teacher.teacher.user.last_name }}</h4>
+                            {% else %}
+                            <h4>{{ teacher.teacher.user.username }}</h4>
+                            {% endif %}
+
+                            {% for course in teacher.course %}
+                            {{ course }}<button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i
+                                    class="bi bi-pencil-fill"></i></button>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                {% endif %}
+            {% else %}
+
+                <h2 class="text-center">
+                    Teacher lar ni ko'rish uchun saytga registratsiya qiling
+                </h2>
+
+            {% endif %}
+
+
+
+
+        </div>
+    </div>
+</div>
+<!-- Team End -->
+
+
+
+
+{% endblock content %}

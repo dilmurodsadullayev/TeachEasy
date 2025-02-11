@@ -1,0 +1,54 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} contact {% endblock title %}
+{% block content %}
+
+<!-- Header Start -->
+<div class="container-fluid bg-primary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+        <h3 class="display-3 font-weight-bold text-white">Contact Us</h3>
+        <div class="d-inline-flex text-white">
+            <p class="m-0"><a class="text-white" href="">Home</a></p>
+            <p class="m-0 px-2">/</p>
+            <p class="m-0">Contact Us</p>
+        </div>
+    </div>
+</div>
+<!-- Header End -->
+
+
+<!-- Contact Start -->
+<div class="container-fluid pt-5">
+    <div class="container">
+        <div class="text-center pb-2">
+            <p class="section-title px-5"><span class="px-2">Get In Touch</span></p>
+            <h1 class="mb-4">Contact Us For Any Query</h1>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form">
+                    <div id="success"></div>
+                    <form method="post"> {% csrf_token %}
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject">
+
+                        </div>
+                        <div class="control-group mt-1">
+                            <textarea class="form-control" rows="6" id="message" placeholder="Message"
+                               name="message"></textarea>
+
+                        </div>
+                        <div class="d-flex justify-content-start mt-2">
+                            <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Send
+                                Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
+
+{% endblock content %}

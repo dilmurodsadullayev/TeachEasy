@@ -1,0 +1,204 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} Student Task edit{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+<style>
+    .task-container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+<!--        width: 350px;-->
+
+    }
+    .task-container h2 {
+        text-align: center;
+        color: #333;
+    }
+    label {
+        font-weight: bold;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 8px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .progress-bar {
+        height: 10px;
+        background: #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .progress {
+        height: 100%;
+        background: #4CAF50;
+        width: 0%;
+    }
+
+
+    /* From Uiverse.io by vishnupprajapat */
+.checkbox-wrapper-46 input[type="checkbox"] {
+  display: none;
+  visibility: hidden;
+}
+
+.checkbox-wrapper-46 .cbx {
+  margin: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+.checkbox-wrapper-46 .cbx span {
+  display: inline-block;
+  vertical-align: middle;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-46 .cbx span:first-child {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  transform: scale(1);
+  vertical-align: middle;
+  border: 1px solid #9098a9;
+  transition: all 0.2s ease;
+}
+.checkbox-wrapper-46 .cbx span:first-child svg {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16px;
+  stroke-dashoffset: 16px;
+  transition: all 0.3s ease;
+  transition-delay: 0.1s;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-46 .cbx span:first-child:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #506eec;
+  display: block;
+  transform: scale(0);
+  opacity: 1;
+  border-radius: 50%;
+}
+.checkbox-wrapper-46 .cbx span:last-child {
+  padding-left: 8px;
+}
+.checkbox-wrapper-46 .cbx:hover span:first-child {
+  border-color: #506eec;
+}
+
+.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child {
+  background: #506eec;
+  border-color: #506eec;
+  animation: wave-46 0.4s ease;
+}
+.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child svg {
+  stroke-dashoffset: 0;
+}
+.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child:before {
+  transform: scale(3.5);
+  opacity: 0;
+  transition: all 0.6s ease;
+}
+
+@keyframes wave-46 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+
+</style>
+<nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="{% url 'courses' %}" class="text-decoration-none">Courses</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'course_students' course_id=student_task.course.id %}" class="text-decoration-none">Course Students</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'student_detail' course_id=student_task.course.id student_id=student_task.student.id %}">{{ student_task.student.user.username }} - detail</a>
+            <li class="breadcrumb-item active" aria-current="page">{{ student_task.name }} - edit
+            </li>
+        </ol>
+    </nav>
+    <div class="d-flex justify-content-center mb-3">
+        <h1>{{ student_task.student.user.username }} talabani {{ student_task.name }} - topshiriqni yangilash  </h1>
+    </div>
+
+<div class="task-container">
+
+    <form method="post"> {% csrf_token %}
+        <h2>Task Update</h2>
+        <label for="task-name">Task Name:</label>
+        <input type="text" id="task-name" placeholder="Enter task name" name="name" value="{{ student_task.name }}">
+        <label for="until_date">Tugash Sana:</label>
+        <input type="date" id="until_date" name="until_date" value="{{ student_task.until_date | date:'Y-m-d' }}">
+        <input type="hidden" value="{{ student_task.given_date | date:'Y-m-d' }}" name="given_date">
+        <label for="description">Description:</label>
+        <textarea id="description" rows="3" placeholder="Enter task details..." name="description">{{ student_task.description }}</textarea>
+        <div class="checkbox-wrapper-46 pb-3">
+          <input type="checkbox" id="cbx-46" class="inp-cbx" name="is_done" {% if student_task.is_done %} checked {% endif %}/>
+          <label for="cbx-46" class="cbx"
+            ><span>
+              <svg viewBox="0 0 12 10" height="10px" width="12px">
+                <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+            ><span>Checkbox</span>
+          </label>
+        </div>
+        <button class="btn btn-outline-success mb-1" type="submit">Update Task</button>
+
+        <a class="btn btn-outline-secondary" href="{% url 'student_detail' course_id=student_task.course.id student_id=student_task.student.id %}">Back</a>
+        <button class="btn btn-outline-danger mb-1 delete-task"
+                data-student-id="{{ student_task.student.id }}"
+                data-course-id="{{ student_task.course.id }}"
+                data-task-id="{{ student_task.id }}"
+                type="button">Delete</button>
+    </form>
+</div>
+
+
+
+
+</div>
+
+<script>
+document.querySelectorAll('.delete-task').forEach(button => {
+    button.addEventListener('click', function() {
+        const studentId = this.getAttribute('data-student-id');
+        const courseId = this.getAttribute('data-course-id');
+        const taskId = this.getAttribute('data-task-id');
+
+        if (confirm("Siz bu taskni o'chirmoqchimisiz?")) {
+            fetch(`/course/${courseId}/student/${studentId}/task/${taskId}/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({ studentId: studentId, course_id: courseId })
+            })
+            .then(response => response.json())  // JSON javobni o'qish
+            .then(data => {
+                if (data.redirect_url) {
+                    window.location.href = data.redirect_url;  // Yangi sahifaga yo‘naltirish
+                } else {
+                    alert("Xatolik.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+});
+
+
+</script>
+{% endblock content %}

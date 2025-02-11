@@ -1,0 +1,23 @@
+translations = {
+    'our_courses': "Bizning kurslarimiz",
+    'home': "Bosh sahifa",
+    'popular_courses': "Mashhur kurslar",
+    'course_for_you': "Siz uchun kurslar",
+    'course_data': "Kurs haqida ma'lumot",
+    'create_course': 'Kurs yaratish',
+    'days': "Kunlar",
+    'course_time': "Kurs Vaqti",
+    'course_fee': "Kurs narxi",
+    'tasks': "Vazifalar",
+    'see_tasks': "Vazifalarni ko'rish",
+    'attendances': 'Davomat',
+    'see_attendances': "Davomatlarni ko'rish",
+    'course_payments': "Kurs to'lovlari",
+    'see_payments': "To'lovlarni ko'rish",
+    'course_student':"Kurs talabalari",
+    'see_students': "Talabalarni ko'rish",
+    'you_have_submit': "Siz kursga qo'shilish uchun so'rov yubordingiz",
+    'join_request': "Qo'shilish so'rovi",
+    'edit': "Tahrirlash",
+    'delete': "O'chirish"
+}
