@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+
+import rest_framework.permissions
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -57,11 +60,27 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # local
     'main',
+    'api',
+    # global
+    'rest_framework',
+    'drf_yasg',
     'phonenumber_field', # telefon raqamlar uchun maydon yani field
     'crispy_forms',
     "crispy_bootstrap5",
 ]
+# DRF permission
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASS': [
+        'rest_framework.permissions.IsAdminUser'
+        # rest_framework.permissions.AllowAny,
+    ]
+}
+
+
+
+
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
