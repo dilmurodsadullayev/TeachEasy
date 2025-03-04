@@ -140,7 +140,12 @@ class Course(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()  
     schedule_days = models.CharField(max_length=70)  
-    teacher = models.ForeignKey(Teacher,on_delete=models.SET_NULL,null=True)
+    teacher = models.ForeignKey(Teacher,on_delete=models.CASCADE, related_name='courses')
+
+    def delete(self, *args, **kwargs):# bu rasmni ochriganda medi fayllardan o'chirb tashlash uchun
+        if self.image and os.path.isfile(self.image.path):
+            os.remove(self.image.path)
+        super().delete(*args, **kwargs)
 
 
     def __str__(self):
@@ -233,6 +238,11 @@ class TeacherPayment(models.Model):
     image = models.ImageField(upload_to='teacher_payments/')
     is_paid = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def delete(self, *args, **kwargs):# bu rasmni ochriganda medi fayllardan o'chirb tashlash uchun
+        if self.image and os.path.isfile(self.image.path):
+            os.remove(self.image.path)
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return f"{self.teacher.name} - {self.price}"

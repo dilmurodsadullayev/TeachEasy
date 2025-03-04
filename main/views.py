@@ -162,7 +162,7 @@ class CoursesView(View):
             elif request.user.role == "STUDENT":
                 student = request.user
                 course_data = Course.objects.all()
-                course_student = CourseStudent.objects.filter(student=request.user.id).exists()
+                course_student = CourseStudent.objects.get(student=request.user.id)
                 form = CourseCreateForm()
 
                 is_join_request = JoinRequest.objects.filter(student=student.id).exists()
@@ -176,6 +176,7 @@ class CoursesView(View):
 
                 ctx = {
                     'course_data': course_data,
+                    'student': student,
                     'form': form,
                     'is_join_request': is_join_request,
                     'course_student': course_student,
@@ -879,7 +880,7 @@ def teacher_edit_view(request):
 def teachers_view(request):
     # only_admin = request.user.role == 'ADMIN'
     user = request.user
-    if user.role == "ADMIN" or user.role == "STUDENT":
+    if user.role == "ADMIN":
 
         teachers = Teacher.objects.all()
 
@@ -901,6 +902,7 @@ def teachers_view(request):
         }
 
         return render(request, 'teacher/teachers.html', ctx)
+
     elif user.role == "TEACHER":
         teacher = Teacher.objects.get(user=user.id)
         courses = Course.objects.filter(teacher=teacher)
@@ -915,17 +917,18 @@ def teachers_view(request):
 
 
     elif user.role == "STUDENT":
-        teachers = Teacher.objects.all()
-
+        student = Student.objects.get(user=request.user)
+        teachers = CourseStudent.objects.filter(student=student)
         teacher_courses = []
         for teacher in teachers:
-            course = Course.objects.filter(teacher=teacher)
+            course = Course.objects.filter(teacher=teacher.teacher)
             teacher_courses.append(
                 {
-                    'teacher': teacher,
+                    'teacher': teacher.teacher,
                     'course': course
                 }
             )
+        print(teacher_courses)
         # print(teacher_courses)
 
         ctx = {
@@ -938,7 +941,7 @@ def teachers_view(request):
 
 
 def teacher_detail_view(request, teacher_id):
-    teacher = get_object_or_404(Teacher, id=teacher_id)
+    teacher = Teacher.objects.filter(user=teacher_id).first()
 
     courses = Course.objects.filter(teacher=teacher)
 

@@ -65,18 +65,47 @@ INSTALLED_APPS = [
     'api',
     # global
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'djoser',
+    'corsheaders',
     'drf_yasg',
     'phonenumber_field', # telefon raqamlar uchun maydon yani field
     'crispy_forms',
     "crispy_bootstrap5",
+
 ]
 # DRF permission
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASS': [
-        'rest_framework.permissions.IsAdminUser'
-        # rest_framework.permissions.AllowAny,
-    ]
+        # 'rest_framework.permissions.IsAdminUser',
+        "rest_framework.permissions.AllowAny",
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+
 }
+
+from datetime import timedelta
+SIMPLE_JWT = {
+    # 'AUTH_HEADER_TYPES': ('JWT',), # bu qo'shilgandan so'ng
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": "HS256",
+    "TOKEN_OBTAIN_SERIALIZER": "api.serializers.MyTokenObtainPairSerializer",
+
+}
+
+
+CORS_ALLOWED_ORIGINS = [ "*"
+    # 'http://127.0.0.1:8000',
+    # 'http://127.0.0.1:3000',
+]
 
 
 
@@ -89,6 +118,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -96,6 +126,13 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+    "http://127.0.0.1:8000",
+]
+
+
 
 ROOT_URLCONF = "config.urls"
 

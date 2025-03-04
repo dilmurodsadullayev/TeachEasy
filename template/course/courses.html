@@ -196,8 +196,7 @@
                     <div class="row mb-3">
                         {% if request.user.is_authenticated %}
                             {% if request.user.role == "STUDENT" %}
-
-                                {% if course_student %}
+                                {% if course_student.course.id == course.id %}
                                     <p style="font-size: 15px; text-align: center;">{{ translations.you_have_submit }}</p>
                                 {% else %}
                                     <div class="col-6 py-1 text-right border-right"><strong>{{ translations.join_request }}:</strong></div>

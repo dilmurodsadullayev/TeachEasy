@@ -43,7 +43,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card text-center p-4">
-              {% if teacher.user.image.url %}
+              {% if teacher.user.image %}
                 <img src="{{ teacher.user.image.url }}" alt="Profile Picture" class="profile-pic mx-auto">
               {% else %}
                 <img src="{% static 'img/user.png' %}" alt="Profile Picture" class="profile-pic mx-auto">

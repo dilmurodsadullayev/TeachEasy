@@ -37,12 +37,12 @@
                 <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
                     <!-- teacherni rasmi boligini tekshirish ochilgan -->
                     {% if teacher.user.image %}
-                        <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
+                        <a href="{% url 'teacher_detail' teacher.user.id %}" class="text-decoration-none">
                             <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{{ teacher.user.image.url }}" alt="">
                         </a>
                     {% else %}
                         <a href="{% url 'teacher_detail' teacher.id %}" class="text-decoration-none">
-                            <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
+                            <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{% static 'img/user.png' %}" alt="">
                         </a>
                     {% endif %}
                     <!-- teacherni rasmi boligini tekshirish yopilgan -->
@@ -80,12 +80,12 @@
                         <div class="col-md-6 col-lg-3 text-center team mb-5">
                             <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
                                 {% if teacher.teacher.user.image %}
-                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                <a href="{% url 'teacher_detail' teacher.teacher.user.id %}" class="text-decoration-none">
                                     <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{{ teacher.teacher.user.image.url }}" alt="">
                                 </a>
                                 {% else %}
                                 <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
-                                    <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
+                                    <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{% static 'img/user.png' %}" alt="">
                                 </a>
                                 {% endif %}
                                 <div
@@ -119,12 +119,12 @@
                         <div class="col-md-6 col-lg-3 text-center team mb-5">
                             <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
                                 {% if teacher.teacher.user.image %}
-                                <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
+                                <a href="{% url 'teacher_detail' teacher.teacher.user.id %}" class="text-decoration-none">
                                     <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{{ teacher.teacher.user.image.url }}" alt="">
                                 </a>
                                 {% else %}
                                 <a href="{% url 'teacher_detail' teacher.teacher.id %}" class="text-decoration-none">
-                                    <img class="img-fluid" style="width: 100px;" src="{% static 'img/user.png' %}" alt="">
+                                    <img class="img-fluid" style="width: 220px; height: 220px; border-radius: 50%; object-fit: contain" src="{% static 'img/user.png' %}" alt="">
                                 </a>
                                 {% endif %}
                                 <div
