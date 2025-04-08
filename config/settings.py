@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 from decouple import config
 
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = False
 # DATABASES = {
 #     'default': dj_database_url.parse(config('DATABASE_URL'))
 # }
@@ -101,10 +101,14 @@ SIMPLE_JWT = {
 
 }
 
+#
+# CORS_ALLOWED_ORIGINS = [ "*"]
+#     # 'http://127.0.0.1:8000',
+#     # 'http://127.0.0.1:3000',
 
-CORS_ALLOWED_ORIGINS = [ "*"
-    # 'http://127.0.0.1:8000',
-    # 'http://127.0.0.1:3000',
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8081",   # React Native dev server
+    "http://192.168.1.100",    # Django server
 ]
 
 
@@ -117,6 +121,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -204,7 +209,7 @@ LOCALE_PATHS = [
 ]
 
 
-USE_I18N = True
+
 
 
 # Internationalization
@@ -236,6 +241,7 @@ import os
 # MEDIA_ROOT = os.path.join(BASE_DIR, config("MEDIA_ROOT"))
 
 # Statik fayllar Windows uchun
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -244,8 +250,8 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-MEDIA_URL = '/media/'  # Media fayllar uchun URL
-MEDIA_ROOT = BASE_DIR / 'media'  # Foydalanuvchi yuklagan fayllar saqlanadigan joy
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 

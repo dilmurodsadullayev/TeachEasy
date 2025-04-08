@@ -45,7 +45,7 @@ from .views import (
     # feedbacks
     FeedbacksView,
     # 404
-    error_404_view,
+    custom_404,
     set_language, delete_task
 
 )
@@ -98,7 +98,7 @@ urlpatterns = [
     #Feedbacks
     path('feedbacks',FeedbacksView.as_view(),name='feedbacks'),
     #404
-    path('404',error_404_view,name='error'),
+    path('404',custom_404,name='error'),
 
 ]
 

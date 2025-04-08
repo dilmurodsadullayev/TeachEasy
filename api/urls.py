@@ -18,14 +18,22 @@ schema_view = get_schema_view(
 )
 
 
+
 urlpatterns = [
-    path('',views.UserSayListAPI.as_view()),
-    path('<int:pk>/', views.UserSayDetailAPI.as_view()),
+    path('comments/',views.UserSayListAPI.as_view()),
+    path('comment/<int:pk>/', views.UserSayDetailAPI.as_view()),
 
     path('courses/',views.CourseListAPI.as_view()),
     path('course/<int:pk>/',views.CourseDetailAPI.as_view()),
+    path('course/<int:course_id>/student/<int:student_id>/requests/', views.JoinRequestListAPI.as_view()),
+    path('teacher/<int:pk>/requests/', views.JoinRequestListsAPI.as_view()),
     path('teachers/',views.TeacherListAPI.as_view()),
     path("teacher/<int:pk>/", views.TeacherDetailAPI.as_view()),
+    path("course/<int:course_id>/tasks", views.CourseTasksAPI.as_view()),
+    path("course/<int:course_id>/task/<int:task_id>", views.CourseTaskEditAPI.as_view()),
+    path("course/<int:course_id>/attendances", views.CourseAttendancesAPI.as_view()),
+    #profile
+    path('profile/', views.ProfileAPI.as_view()),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

@@ -2339,7 +2339,7 @@ textarea.form-control {
 .form-check {
   position: relative;
   display: block;
-  padding-left: 1.25rem;
+  padding-left: 0.25rem;
 }
 
 .form-check-input[disabled]~.form-check-label,
@@ -3438,6 +3438,7 @@ input[type="button"].btn-block {
 .dropdown-menu {
   position: absolute;
   top: 100%;
+  width: 100%;
   left: 0;
   z-index: 1000;
   display: none;
@@ -5230,7 +5231,7 @@ input[type="button"].btn-block {
 .breadcrumb-item+.breadcrumb-item::before {
   display: inline-block;
   padding-right: 0.5rem;
-  color: #6c757d;
+  color: red;
   content: "/";
 }
 
@@ -6337,6 +6338,7 @@ a.close.disabled {
   border-top: 1px solid #dee2e6;
   border-bottom-right-radius: calc(0.3rem - 1px);
   border-bottom-left-radius: calc(0.3rem - 1px);
+  flex-direction: row-reverse;
 }
 
 .modal-footer>* {
@@ -11040,3 +11042,4 @@ a.text-dark:focus {
   padding: 0;
   list-style-type: none;
 }
+

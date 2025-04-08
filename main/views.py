@@ -928,7 +928,7 @@ def teachers_view(request):
                     'course': course
                 }
             )
-        print(teacher_courses)
+        # print(teacher_courses)
         # print(teacher_courses)
 
         ctx = {
@@ -968,7 +968,7 @@ def profile_view(request):
         for course_student in course_students:
             JoinRequest.objects.filter(student=course_student.student).update(joinded=True)
             number += 1
-        # print(number)
+        # print(join_requests)
         ctx = {
             'join_requests': join_requests,
             'user': user,
@@ -1022,8 +1022,7 @@ def user_edit_view(request, user_id):
     return render(request, 'main/user_edit.html', ctx)
 
 
-def error_404_view(request):
-    return render(request, '404.html')
+
 
 
 def join_request_view(request, course_id):
@@ -1240,3 +1239,7 @@ class FeedbacksView(LoginRequiredMixin,View):
 
 
         return render(request,'main/feedbacks.html',ctx)
+
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)

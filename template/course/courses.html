@@ -139,7 +139,7 @@
                                     <div class="row border-bottom">
                                         <div class="col-6 py-1 text-right border-right"><strong>Teacher Name</strong>
                                         </div>
-                                        <div class="col-6 py-1"><a href="{% url 'teacher_detail' teacher_id=course.teacher.id %}">{{ course.teacher.user.username }}</a></div>
+                                        <div class="col-6 py-1"><a href="{% url 'teacher_detail' teacher_id=course.teacher.user.id %}">{{ course.teacher.user.username }}</a></div>
                                     </div>
                                     {% if course_student %}
                                     <div class="row border-bottom">
