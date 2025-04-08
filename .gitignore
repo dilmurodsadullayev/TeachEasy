@@ -1,46 +1,105 @@
-# Python bytecode files
+# Python cache files
+__pycache__/
 *.py[cod]
-__pycache__
+*$py.class
 
-# Django stuff:
+# Django specific
+db.sqlite3
+*.sqlite3
 *.log
 *.pot
 *.pyc
 *.pyo
+*.pyd
+*.db
+*.sqlite3-journal
+*.sql
+*.pdf
+*.swp
+.gitignore
 
+# Media files (user uploads)
+media/
 
+# Static files
+staticfiles/
 
-
-
-# Virtual environment
+# Virtual environments
 venv/
-ENV/
 env/
+ENV/
 .venv/
-
-# VS Code settings
-.vscode/
-
-# PyCharm settings
-.idea/
-
-db.sqlite3
-sqlite3
-
-
-# Environment variable files
-.env
-.env.*
+.virtualenv/
 
 # Jupyter Notebook files
 .ipynb_checkpoints/
 
-# macOS system files
-.DS_Store
+# Editor files
+*.idea/
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
 
-# Windows system files
+# Operating system files
+.DS_Store
 Thumbs.db
 ehthumbs.db
+Desktop.ini
 
-# Backup files
-*~
+# Git and versioning
+*.orig
+*.rej
+*.bak
+
+# Compressed files
+*.gz
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Test files
+coverage/
+.tox/
+.pytest_cache/
+
+# Build files
+build/
+dist/
+*.egg-info/
+*.eggs/
+
+# PyCharm settings
+.idea/
+*.iml
+
+# Pipenv and Poetry files
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# Alembic migrations
+alembic/versions/*.pyc
+alembic/versions/*.py
+alembic.ini
+migrations/
+
+# Local and temporary files
+*.log
+*.tmp
+*.pid
+*.seed
+*.bak
+*.swp
+*.swo
+
+# Ignore node_modules if using JS for frontend
+node_modules/
+package-lock.json
+yarn.lock
+
+# Ignore environment variables or sensitive data
+.env
+.env.*
+secret_key.json
