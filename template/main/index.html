@@ -14,7 +14,7 @@
             <h1 class="text-white" style="font-size: 50px; letter-spacing: 2px;">
                 {% if request.user.is_authenticated %}
                 {{ translations.welcome }},
-                {{request.user.username}} {{ request.user.id }}<br>
+                {{request.user.username}}<br>
                 {{ translations.stay_with }}</h1>
             {% else %}
             {% endif %}

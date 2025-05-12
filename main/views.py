@@ -958,7 +958,7 @@ def profile_view(request):
     user = request.user
 
 
-    if user.role == "TEACHER" or user.role == "ADMIN":
+    if user.role == "TEACHER":
         teacher = Teacher.objects.get(user=user)
         courses = Course.objects.filter(teacher=teacher)
         course_students = CourseStudent.objects.filter(teacher=teacher)
@@ -1003,6 +1003,18 @@ def profile_view(request):
 
             }
             return render(request, 'main/profile.html', ctx)
+    elif request.user.role == "ADMIN":
+        courses = Course.objects.all()
+        ctx = {
+            # 'join_requests': join_requests,
+            'user': user,
+            'courses': courses
+
+
+        }
+        return render(request, 'main/profile.html', ctx)
+    else:
+        HttpResponse("Siz boshqa role dasiz")
 
 
 def user_edit_view(request, user_id):
