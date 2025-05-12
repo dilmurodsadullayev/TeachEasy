@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 from decouple import config
 
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = True
+DEBUG = False
 # DATABASES = {
 #     'default': dj_database_url.parse(config('DATABASE_URL'))
 # }
